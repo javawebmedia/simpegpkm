@@ -10,7 +10,7 @@ $site_config = DB::table('konfigurasi')->first();
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	  <title>{{ $title }}</title>
 <!--===============================================================================================-->	
-	<link rel="icon" type="image/png" href="{{ asset('assets/assets/login/images/icons/favicon.ico') }} "/>
+	<link rel="icon" href="{{ asset('assets/upload/image/'.$site_config->icon) }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('assets/login/vendor/bootstrap/css/bootstrap.min.css') }} ">
 <!--===============================================================================================-->
@@ -37,7 +37,7 @@ $site_config = DB::table('konfigurasi')->first();
 		<div class="container-login100">
 			<div class="wrap-login100">
 				<div class="login100-pic js-tilt" data-tilt>
-					<img src="{{ asset('assets/login/LOGO PKC CENGKARENG.png')}} " alt="IMG">
+					<img src="{{ asset('assets/upload/image/'.$site_config->logo) }}" alt="IMG">
 				</div>
 
 				<form class="login100-form validate-form" action="{{ asset('login/check') }}" method="POST">
@@ -76,7 +76,7 @@ $site_config = DB::table('konfigurasi')->first();
 						<span class="txt1">
 							Created by
 						</span>
-						<a class="txt2" href="#">
+						<a class="txt2" href="{{ asset('/') }}">
 							IT Puskesmas Kecamatan Kramat Jati
 						</a>
 					</div>
