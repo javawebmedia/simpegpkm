@@ -1,0 +1,5 @@
+@include('admin/layout/head')
+@include('pegawai/layout/header')
+@include('pegawai/layout/menu')
+@include($content)
+@include('admin/layout/footer')
