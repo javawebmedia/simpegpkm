@@ -48,6 +48,15 @@ Route::get('pegawai/pegawai/unduh', 'App\Http\Controllers\Pegawai\Pegawai@unduh'
 Route::get('pegawai/pegawai/cetak-riwayat', 'App\Http\Controllers\Pegawai\Pegawai@cetak_riwayat');
 Route::get('pegawai/pegawai/unduh-riwayat', 'App\Http\Controllers\Pegawai\Pegawai@unduh_riwayat');
 Route::get('pegawai/pegawai/riwayat', 'App\Http\Controllers\Pegawai\Pegawai@riwayat');
+// modul str-sip
+Route::get('pegawai/str-sip', 'App\Http\Controllers\Pegawai\Str_sip@index');
+Route::get('pegawai/str-sip/edit/{par1}', 'App\Http\Controllers\Pegawai\Str_sip@edit');
+Route::post('pegawai/str-sip/proses-edit', 'App\Http\Controllers\Pegawai\Str_sip@proses_edit');
+Route::get('pegawai/str-sip/cetak', 'App\Http\Controllers\Pegawai\Str_sip@cetak');
+Route::get('pegawai/str-sip/unduh/{par1}', 'App\Http\Controllers\Pegawai\Str_sip@unduh');
+Route::get('pegawai/str-sip/tambah', 'App\Http\Controllers\Pegawai\Str_sip@tambah');
+Route::post('pegawai/str-sip/proses-tambah', 'App\Http\Controllers\Pegawai\Str_sip@proses_tambah');
+Route::get('pegawai/str-sip/hapus/{par1}', 'App\Http\Controllers\Pegawai\Str_sip@hapus');
 /* input riwayat pegawai */
 Route::post('pegawai/pegawai/proses-pendidikan', 'App\Http\Controllers\Pegawai\Pegawai@proses_pendidikan');
 Route::post('pegawai/pegawai/proses-keluarga', 'App\Http\Controllers\Pegawai\Pegawai@proses_keluarga');

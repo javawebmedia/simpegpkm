@@ -126,6 +126,21 @@ $site_config = DB::table('konfigurasi')->first();
 </a>
 </li>
 
+<li class="nav-item">
+  <a href="{{ asset('pegawai/str-sip') }}" class="nav-link">
+    <lord-icon
+    src="https://cdn.lordicon.com/dxoycpzg.json"
+    trigger="loop"
+    colors="primary:#f24c00,secondary:#646e78,tertiary:#4bb3fd,quaternary:#ebe6ef,quinary:#f9c9c0"
+    state="loop"
+    style="width:40px;height:40px">
+  </lord-icon>
+  <p>
+   Riwayat STR &amp; SIP
+ </p>
+</a>
+</li>
+
 </ul>
 </nav>
 <!-- /.sidebar-menu -->
