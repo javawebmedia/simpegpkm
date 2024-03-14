@@ -31,7 +31,7 @@ $total_pegawai  = $m_dasbor->pegawai();
               <lord-icon
               src="https://cdn.lordicon.com/hftgdgfo.json"
               trigger="hover"
-              style="width:40px;height:40px">
+              style="width:30px;height:30px">
             </lord-icon>
             <p>
               Dashboard Aplikasi
@@ -45,7 +45,7 @@ $total_pegawai  = $m_dasbor->pegawai();
             <lord-icon
             src="https://cdn.lordicon.com/eaawyrxp.json"
             trigger="hover"
-            style="width:40px;height:40px">
+            style="width:30px;height:30px">
           </lord-icon>
           <p>
             Kinerja Pegawai
@@ -60,7 +60,7 @@ $total_pegawai  = $m_dasbor->pegawai();
           <lord-icon
           src="https://cdn.lordicon.com/wvqpnihn.json"
           trigger="hover"
-          style="width:40px;height:40px">
+          style="width:30px;height:30px">
         </lord-icon>
         <p>
           Generate Gaji &amp; TKD
@@ -104,7 +104,7 @@ $total_pegawai  = $m_dasbor->pegawai();
     <lord-icon
     src="https://cdn.lordicon.com/ljvjsnvh.json"
     trigger="hover"
-    style="width:40px;height:40px">
+    style="width:30px;height:30px">
   </lord-icon>
   <p>
     Data Pegawai
@@ -160,7 +160,7 @@ $total_pegawai  = $m_dasbor->pegawai();
     <lord-icon
     src="https://cdn.lordicon.com/nqwqiffl.json"
     trigger="hover"
-    style="width:40px;height:40px">
+    style="width:30px;height:30px">
   </lord-icon>
   <p>
     Data Gaji dan Absensi
@@ -214,7 +214,7 @@ $total_pegawai  = $m_dasbor->pegawai();
     <lord-icon
     src="https://cdn.lordicon.com/xqgancly.json"
     trigger="hover"
-    style="width:40px;height:40px">
+    style="width:30px;height:30px">
   </lord-icon>
   <p>
     Master eKinerja
@@ -268,7 +268,7 @@ $total_pegawai  = $m_dasbor->pegawai();
             <lord-icon
             src="https://cdn.lordicon.com/hursldrn.json"
             trigger="hover"
-            style="width:40px;height:40px">
+            style="width:30px;height:30px">
           </lord-icon>
           <p>
             Master Data
@@ -378,7 +378,7 @@ $total_pegawai  = $m_dasbor->pegawai();
               <lord-icon
               src="https://cdn.lordicon.com/yrxnwkni.json"
               trigger="hover"
-              style="width:40px;height:40px">
+              style="width:30px;height:30px">
             </lord-icon>
             <p>
               Setting Struktur
@@ -392,7 +392,7 @@ $total_pegawai  = $m_dasbor->pegawai();
             <lord-icon
             src="https://cdn.lordicon.com/tsnvgrkp.json"
             trigger="hover"
-            style="width:40px;height:40px">
+            style="width:30px;height:30px">
           </lord-icon>
           <p>
             Konfigurasi
