@@ -39,6 +39,54 @@ $total_pegawai  = $m_dasbor->pegawai();
           </a>
         </li>
 
+        <!-- Absensi -->
+        <li class="nav-item">
+            <a href="{{ asset('admin/kehadiran') }}" class="nav-link">
+              <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
+              <lord-icon
+              src="https://cdn.lordicon.com/lzgqzxrq.json"
+              trigger="hover"
+              style="width:30px;height:30px">
+            </lord-icon>
+            <p>
+              Data Absensi
+            </p>
+          </a>
+        </li>
+
+        <!-- cuti -->
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <lord-icon
+            src="https://cdn.lordicon.com/tsnvgrkp.json"
+            trigger="hover"
+            style="width:30px;height:30px">
+          </lord-icon>
+          <p>
+            Data Cuti
+            <i class="fas fa-angle-left right"></i>
+
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          
+          <li class="nav-item"><a href="{{ asset('admin/cuti/status/Pengajuan') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Data Pengajuan Cuti</p></a>
+          </li>
+
+          <li class="nav-item"><a href="{{ asset('admin/cuti') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Data Cuti</p></a>
+          </li>
+
+          <li class="nav-item"><a href="{{ asset('admin/jenis-cuti') }}" class="nav-link"><i class="fas fa-file-pdf nav-icon"></i><p>Jenis Cuti</p></a>
+          </li>
+
+          <li class="nav-item"><a href="{{ asset('admin/libur') }}" class="nav-link"><i class="fa fa-home nav-icon"></i><p>Setting Tanggal Libur</p></a>
+          </li>
+          <li class="nav-item"><a href="{{ asset('admin/jenis-libur') }}" class="nav-link"><i class="fa fa-upload nav-icon"></i><p>Jenis Libur</p></a>
+          </li>
+          
+        </ul>
+      </li>
+
         <li class="nav-item">
           <a href="{{ asset('admin/kinerja') }}" class="nav-link">
             <!-- <i class="nav-icon fas fa-book"></i> -->

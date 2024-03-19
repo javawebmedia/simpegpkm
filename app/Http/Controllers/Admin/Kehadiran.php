@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pegawai_model;
-use App\Models\Absensi_model;
+use App\Models\Kehadiran_model;
 use Image;
 use PDF;
 
-class Absensi extends Controller
+class Kehadiran extends Controller
 {
-    // halaman absensi
+    // halaman kehadiran
     public function index()
     {
         // proteksi halaman
@@ -22,28 +22,28 @@ class Absensi extends Controller
             return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
         }
         // end proteksi halaman
-        if(isset($_GET['thbl'])) {
+        if(isset($_GET['tanggal'])) {
             $tahun  = $_GET['tahun'];
             $bulan  = $_GET['bulan'];
-            $thbl   = $_GET['tahun'].$_GET['bulan'];
+            $tanggal   = $_GET['tanggal'];
         }else{
             $tahun  = date('Y');
             $bulan  = date('m');
-            $thbl   = date('Ym');
+            $tanggal   = date('Y-m-d');
         }
-        // ambil data absensi
-        $m_absensi  = new Absensi_model();
+        // ambil data kehadiran
+        $m_kehadiran  = new Kehadiran_model();
         $m_pegawai  = new Pegawai_model();
-        $absensi    = $m_absensi->thbl($thbl);
+        $kehadiran    = $m_kehadiran->tanggal($tanggal);
         $pegawai    = $m_pegawai->listing();
 
-        $data = [   'title'     => 'Data Master Absensi: '.$thbl,
-                    'absensi'      => $absensi,
+        $data = [   'title'     => 'Data Master Kehadiran: '.$tanggal,
+                    'kehadiran'      => $kehadiran,
                     'pegawai'   => $pegawai,
-                    'thbl'      => $thbl,
+                    'tanggal'      => $tanggal,
                     'tahun'     => $tahun,
                     'bulan'     => $bulan,
-                    'content'   => 'admin/absensi/index'
+                    'content'   => 'admin/kehadiran/index'
                 ];
         return view('admin/layout/wrapper',$data);
     }
@@ -63,15 +63,15 @@ class Absensi extends Controller
                             'nip'       => 'required',
                             ]);
         // check
-        $thbl       = $request->tahun.$request->bulan;
-        $nip        = $request->nip;
-        $m_absensi  = new Absensi_model();
-        $check      = $m_absensi->thbl_pegawai($thbl,$nip);
+        $tanggal        = $request->tanggal;
+        $nip            = $request->nip;
+        $m_kehadiran    = new Kehadiran_model();
+        $check          = $m_kehadiran->tanggal_pegawai($tanggal,$nip);
         if($check) {
-            DB::table('absensi')->where(['nip' => $check->nip, 'thbl' => $check->thbl])->update([
+            DB::table('kehadiran')->where(['nip' => $check->nip, 'tanggal' => $check->tanggal])->update([
                 'id_pegawai'        => Session()->get('id_pegawai'),
                 'nip'               => $request->nip,
-                'thbl'              => $request->tahun.$request->bulan,
+                'tanggal'              => $request->tahun.$request->bulan,
                 'bulan'             => $request->bulan,
                 'tahun'             => $request->tahun,
                 'menit_terlambat'   => $request->menit_terlambat,
@@ -83,10 +83,10 @@ class Absensi extends Controller
                 'keterangan'        => $request->keterangan,
             ]); 
         }else{
-           DB::table('absensi')->insert([
+           DB::table('kehadiran')->insert([
                 'id_pegawai'        => Session()->get('id_pegawai'),
                 'nip'               => $request->nip,
-                'thbl'              => $request->tahun.$request->bulan,
+                'tanggal'           => $request->tahun.$request->bulan,
                 'bulan'             => $request->bulan,
                 'tahun'             => $request->tahun,
                 'menit_terlambat'   => $request->menit_terlambat,
@@ -100,7 +100,7 @@ class Absensi extends Controller
             ]); 
         }
         
-        return redirect('admin/absensi?bulan='.$request->bulan.'&tahun='.$request->tahun.'&thbl=submit')->with(['sukses' => 'Data telah ditambah']);
+        return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&tanggal=submit')->with(['sukses' => 'Data telah ditambah']);
     }
 
     // import
@@ -113,8 +113,8 @@ class Absensi extends Controller
         }
         // end proteksi halaman
 
-        $data = [   'title'     => 'Import Data Absensi Pegawai',
-                    'content'   => 'admin/absensi/import'
+        $data = [   'title'     => 'Import Data Kehadiran Pegawai',
+                    'content'   => 'admin/kehadiran/import'
                 ];
         return view('admin/layout/wrapper',$data);
     }
@@ -127,7 +127,7 @@ class Absensi extends Controller
             $last_page = url()->full();
             return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
         }
-        $m_absensi     = new Absensi_model();
+        $m_kehadiran     = new Kehadiran_model();
         $m_pegawai  = new Pegawai_model();
         // end proteksi halaman
         // start import
@@ -169,26 +169,26 @@ class Absensi extends Controller
                 $keterangan         = $rows[$i][8];
                 // check nip
                 // check
-                $thbl               = $request->tahun.$request->bulan;
+                $tanggal               = $request->tahun.$request->bulan;
                 
 
-                $absensi            = $m_absensi->thbl($thbl);
+                $kehadiran            = $m_kehadiran->tanggal($tanggal);
                 
 
                 if($nrk=='') {
 
                 }else{
                     $pegawai    = $m_pegawai->nrk($nrk);
-                    If($pegawai) {
+                    if($pegawai) {
                     $nip        = $pegawai->nip;
-                    $check      = $m_absensi->thbl_pegawai($thbl,$nip);
+                    $check      = $m_kehadiran->tanggal_pegawai($tanggal,$nip);
 
                     if($check) {
-                        DB::table('absensi')->where(['nip' => $nip, 'thbl' => $thbl])->update([
+                        DB::table('kehadiran')->where(['nip' => $nip, 'tanggal' => $tanggal])->update([
                             'id_pegawai'        => Session()->get('id_pegawai'),
                             'nip'               => $nip,
                             'nrk'               => $nrk,
-                            'thbl'              => $request->tahun.$request->bulan,
+                            'tanggal'              => $request->tahun.$request->bulan,
                             'bulan'             => $request->bulan,
                             'tahun'             => $request->tahun,
                             'menit_terlambat'   => $menit_terlambat,
@@ -200,11 +200,11 @@ class Absensi extends Controller
                             'keterangan'        => $keterangan,
                         ]); 
                     }else{
-                       DB::table('absensi')->insert([
+                       DB::table('kehadiran')->insert([
                             'id_pegawai'        => Session()->get('id_pegawai'),
                             'nip'               => $nip,
                             'nrk'               => $nrk,
-                            'thbl'              => $request->tahun.$request->bulan,
+                            'tanggal'              => $request->tahun.$request->bulan,
                             'bulan'             => $request->bulan,
                             'tahun'             => $request->tahun,
                             'menit_terlambat'   => $menit_terlambat,
@@ -229,12 +229,12 @@ class Absensi extends Controller
         }
         // hapus
         unlink('./assets/upload/file/'.$input['nama_file']);
-        return redirect('admin/absensi?bulan='.$request->bulan.'&tahun='.$request->tahun.'&thbl=submit')->with(['sukses' => 'Data telah ditambah']);
+        return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&tanggal=submit')->with(['sukses' => 'Data telah ditambah']);
         // end import
     }
 
     // delete
-    public function delete($id_absensi,$tahun,$bulan)
+    public function delete($id_kehadiran,$tahun,$bulan)
     {
         // proteksi halaman
         if(Session()->get('username')=="") { 
@@ -242,7 +242,7 @@ class Absensi extends Controller
             return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
         }
         // end proteksi halaman
-        DB::table('absensi')->where('id_absensi',$id_absensi)->delete();
-        return redirect('admin/absensi?bulan='.$bulan.'&tahun='.$tahun.'&thbl=submit')->with(['sukses' => 'Data telah dihapus']);
+        DB::table('kehadiran')->where('id_kehadiran',$id_kehadiran)->delete();
+        return redirect('admin/kehadiran?bulan='.$bulan.'&tahun='.$tahun.'&tanggal=submit')->with(['sukses' => 'Data telah dihapus']);
     }
 }

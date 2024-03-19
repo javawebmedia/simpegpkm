@@ -180,6 +180,13 @@ Route::get('admin/absensi/delete/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\
 Route::get('admin/absensi/import', 'App\Http\Controllers\Admin\Absensi@import');
 Route::post('admin/absensi/proses-import', 'App\Http\Controllers\Admin\Absensi@proses_import');
 
+// modul kehadiran
+Route::get('admin/kehadiran', 'App\Http\Controllers\Admin\Kehadiran@index');
+Route::post('admin/kehadiran/tambah', 'App\Http\Controllers\Admin\Kehadiran@tambah');
+Route::get('admin/kehadiran/delete/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Kehadiran@delete');
+Route::get('admin/kehadiran/import', 'App\Http\Controllers\Admin\Kehadiran@import');
+Route::post('admin/kehadiran/proses-import', 'App\Http\Controllers\Admin\Kehadiran@proses_import');
+
 // modul pegawai
 Route::get('admin/pegawai', 'App\Http\Controllers\Admin\Pegawai@index');
 Route::get('admin/pegawai/tambah', 'App\Http\Controllers\Admin\Pegawai@tambah');
@@ -195,6 +202,26 @@ Route::get('admin/pegawai/unduh/{id}', 'App\Http\Controllers\Admin\Pegawai@unduh
 Route::get('admin/pegawai/cetak-riwayat/{id}', 'App\Http\Controllers\Admin\Pegawai@cetak_riwayat');
 Route::get('admin/pegawai/unduh-riwayat/{id}', 'App\Http\Controllers\Admin\Pegawai@unduh_riwayat');
 Route::get('admin/pegawai/riwayat/{id}', 'App\Http\Controllers\Admin\Pegawai@riwayat');
+
+// modul libur
+Route::get('admin/libur', 'App\Http\Controllers\Admin\Libur@index');
+Route::get('admin/libur/tambah', 'App\Http\Controllers\Admin\Libur@tambah');
+Route::get('admin/libur/weekend', 'App\Http\Controllers\Admin\Libur@weekend');
+Route::get('admin/libur/tahunan', 'App\Http\Controllers\Admin\Libur@tahunan');
+Route::post('admin/libur/proses-tambah', 'App\Http\Controllers\Admin\Libur@proses_tambah');
+Route::post('admin/libur/proses-weekend', 'App\Http\Controllers\Admin\Libur@proses_weekend');
+Route::get('admin/libur/edit/{id}', 'App\Http\Controllers\Admin\Libur@edit');
+Route::post('admin/libur/proses-edit', 'App\Http\Controllers\Admin\Libur@proses_edit');
+Route::get('admin/libur/delete/{id}', 'App\Http\Controllers\Admin\Libur@delete');
+Route::get('admin/libur/import', 'App\Http\Controllers\Admin\Libur@import');
+Route::post('admin/libur/proses-import', 'App\Http\Controllers\Admin\Libur@proses_import');
+Route::get('admin/libur/detail/{id}', 'App\Http\Controllers\Admin\Libur@detail');
+Route::get('admin/libur/cetak/{id}', 'App\Http\Controllers\Admin\Libur@cetak');
+Route::get('admin/libur/unduh/{id}', 'App\Http\Controllers\Admin\Libur@unduh');
+Route::get('admin/libur/cetak-riwayat/{id}', 'App\Http\Controllers\Admin\Libur@cetak_riwayat');
+Route::get('admin/libur/unduh-riwayat/{id}', 'App\Http\Controllers\Admin\Libur@unduh_riwayat');
+Route::get('admin/libur/riwayat/{id}', 'App\Http\Controllers\Admin\Libur@riwayat');
+
 /* input riwayat pegawai */
 Route::post('admin/pegawai/proses-jabatan', 'App\Http\Controllers\Admin\Pegawai@proses_jabatan');
 Route::post('admin/pegawai/proses-pendidikan', 'App\Http\Controllers\Admin\Pegawai@proses_pendidikan');
@@ -217,6 +244,20 @@ Route::post('admin/divisi/tambah', 'App\Http\Controllers\Admin\Divisi@tambah');
 Route::get('admin/divisi/edit/{id}', 'App\Http\Controllers\Admin\Divisi@edit');
 Route::post('admin/divisi/proses-edit', 'App\Http\Controllers\Admin\Divisi@proses_edit');
 Route::get('admin/divisi/delete/{id}', 'App\Http\Controllers\Admin\Divisi@delete');
+
+// modul jenis_cuti
+Route::get('admin/jenis-cuti', 'App\Http\Controllers\Admin\Jenis_cuti@index');
+Route::post('admin/jenis-cuti/tambah', 'App\Http\Controllers\Admin\Jenis_cuti@tambah');
+Route::get('admin/jenis-cuti/edit/{id}', 'App\Http\Controllers\Admin\Jenis_cuti@edit');
+Route::post('admin/jenis-cuti/proses-edit', 'App\Http\Controllers\Admin\Jenis_cuti@proses_edit');
+Route::get('admin/jenis-cuti/delete/{id}', 'App\Http\Controllers\Admin\Jenis_cuti@delete');
+
+// modul jenis_libur
+Route::get('admin/jenis-libur', 'App\Http\Controllers\Admin\Jenis_libur@index');
+Route::post('admin/jenis-libur/tambah', 'App\Http\Controllers\Admin\Jenis_libur@tambah');
+Route::get('admin/jenis-libur/edit/{id}', 'App\Http\Controllers\Admin\Jenis_libur@edit');
+Route::post('admin/jenis-libur/proses-edit', 'App\Http\Controllers\Admin\Jenis_libur@proses_edit');
+Route::get('admin/jenis-libur/delete/{id}', 'App\Http\Controllers\Admin\Jenis_libur@delete');
 
 // modul panduan
 Route::get('admin/panduan', 'App\Http\Controllers\Admin\Panduan@index');
