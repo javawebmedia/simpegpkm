@@ -19,6 +19,29 @@ class Libur_model extends Model
         return $query;
     }
 
+    // tahun
+    public function tahun($tahun)
+    {
+        $query = DB::table('libur')
+            ->join('jenis_libur', 'jenis_libur.id_jenis_libur', '=', 'libur.id_jenis_libur','LEFT')
+            ->select('libur.*', 'jenis_libur.id_jenis_libur', 'jenis_libur.nama_jenis_libur')
+            ->where('libur.tahun',$tahun)
+            ->orderBy('libur.tanggal_libur','ASC')
+            ->get();
+        return $query;
+    }
+
+    // list_tahun
+    public function list_tahun()
+    {
+        $query = DB::table('libur')
+            ->select('tahun')
+            ->groupBy('tahun')
+            ->orderBy('tahun','DESC')
+            ->get();
+        return $query;
+    }
+
     // listing thbl
     public function thbl($thbl)
     {

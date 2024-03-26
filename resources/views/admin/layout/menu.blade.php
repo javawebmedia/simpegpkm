@@ -83,6 +83,9 @@ $total_pegawai  = $m_dasbor->pegawai();
           </li>
           <li class="nav-item"><a href="{{ asset('admin/jenis-libur') }}" class="nav-link"><i class="fa fa-upload nav-icon"></i><p>Jenis Libur</p></a>
           </li>
+
+          <li class="nav-item"><a href="{{ asset('admin/kuota-cuti') }}" class="nav-link"><i class="fa fa-upload nav-icon"></i><p>Kuota Cuti Pegawai</p></a>
+          </li>
           
         </ul>
       </li>

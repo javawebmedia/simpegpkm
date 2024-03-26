@@ -8,7 +8,7 @@
 </p>
 
 
-<table class="table table-bordered table-striped table-sm" id="example1">
+<table class="table table-bordered table-sm" id="example1">
 	<thead>
 		<tr class="bg-secondary text-center">
 			<th>No</th>
@@ -28,7 +28,9 @@
 		<?php $no=1; foreach($pegawai as $pegawai) { ?>
 		<tr>
 			<td><?php echo $no ?></td>
-			<td><?php echo $pegawai->nama_lengkap ?></td>
+			<td><?php echo $pegawai->nama_lengkap ?>
+				<br><small>NIP: <?php echo $pegawai->nip ?></small>
+			</td>
 			<td><?php echo $pegawai->tmt_masuk ?></td>
 			<td><?php echo $pegawai->tempat_lahir ?>, <?php echo $pegawai->tanggal_lahir ?></td>
 			<td><?php echo $pegawai->nama_divisi ?></td>

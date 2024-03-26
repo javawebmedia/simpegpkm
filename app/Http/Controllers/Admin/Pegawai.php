@@ -12,6 +12,10 @@ use App\Models\Jabatan_model;
 use App\Models\Riwayat_jabatan_model;
 use App\Models\Pendidikan_model;
 use App\Models\Keluarga_model;
+// EXCEL
+use PhpOffice\PhpSpreadsheet\Helper\Sample;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Image;
 use PDF;
 

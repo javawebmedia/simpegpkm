@@ -19,13 +19,25 @@ class Libur extends Controller
         // end proteksi halaman
 		$m_libur 		= new Libur_model();
 		$m_jenis_libur 	= new Jenis_libur_model();
-		$libur 			= $m_libur->listing();
+
+		if(isset($_GET['tahun'])) {
+			$tahun 	= $_GET['tahun'];
+		}else{
+			$tahun 	= date('Y');
+		}
+
+		$list_tahun 	= $m_libur->list_tahun();
+		$libur 			= $m_libur->tahun($tahun);
+
 		$jenis_libur 	= $m_jenis_libur->listing();
 		$total 			= $m_libur->total();
+
+		// print_r($libur);
 
 		$data = [   'title'     		=> 'Hari dan Tanggal Libur',
 					'libur'				=> $libur,
 					'jenis_libur'		=> $jenis_libur,
+					'list_tahun'		=> $list_tahun,
 					'content'			=> 'admin/libur/index'
                 ];
         return view('admin/layout/wrapper',$data);

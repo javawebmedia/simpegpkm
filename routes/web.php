@@ -252,6 +252,15 @@ Route::get('admin/jenis-cuti/edit/{id}', 'App\Http\Controllers\Admin\Jenis_cuti@
 Route::post('admin/jenis-cuti/proses-edit', 'App\Http\Controllers\Admin\Jenis_cuti@proses_edit');
 Route::get('admin/jenis-cuti/delete/{id}', 'App\Http\Controllers\Admin\Jenis_cuti@delete');
 
+// modul kuota_cuti
+Route::get('admin/kuota-cuti', 'App\Http\Controllers\Admin\Kuota_cuti@index');
+Route::post('admin/kuota-cuti/proses-tambah', 'App\Http\Controllers\Admin\Kuota_cuti@proses_tambah');
+Route::get('admin/kuota-cuti/edit/{id}', 'App\Http\Controllers\Admin\Kuota_cuti@edit');
+Route::post('admin/kuota-cuti/proses-edit', 'App\Http\Controllers\Admin\Kuota_cuti@proses_edit');
+Route::get('admin/kuota-cuti/delete/{id}', 'App\Http\Controllers\Admin\Kuota_cuti@delete');
+Route::get('admin/kuota-cuti/import', 'App\Http\Controllers\Admin\Kuota_cuti@import');
+Route::post('admin/kuota-cuti/proses-import', 'App\Http\Controllers\Admin\Kuota_cuti@proses_import');
+
 // modul jenis_libur
 Route::get('admin/jenis-libur', 'App\Http\Controllers\Admin\Jenis_libur@index');
 Route::post('admin/jenis-libur/tambah', 'App\Http\Controllers\Admin\Jenis_libur@tambah');
