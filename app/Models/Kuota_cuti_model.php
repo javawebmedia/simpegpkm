@@ -44,6 +44,19 @@ class Kuota_cuti_model extends Model
         return $query;
     }
 
+    // tahun_nip_total
+    public function tahun_nip_total($tahun,$nip)
+    {
+        $query = DB::table('kuota_cuti')
+            ->join('pegawai', 'pegawai.nip', '=', 'kuota_cuti.nip','LEFT')
+            ->select('kuota_cuti.*', 'pegawai.nip', 'pegawai.nama_lengkap')
+            ->where('kuota_cuti.tahun',$tahun)
+            ->where('kuota_cuti.nip',$nip)
+            ->orderBy('kuota_cuti.tahun','DESC')
+            ->first();
+        return $query;
+    }
+
     // list_tahun
     public function list_tahun()
     {

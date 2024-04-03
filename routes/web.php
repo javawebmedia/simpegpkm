@@ -57,6 +57,18 @@ Route::get('pegawai/str-sip/unduh/{par1}', 'App\Http\Controllers\Pegawai\Str_sip
 Route::get('pegawai/str-sip/tambah', 'App\Http\Controllers\Pegawai\Str_sip@tambah');
 Route::post('pegawai/str-sip/proses-tambah', 'App\Http\Controllers\Pegawai\Str_sip@proses_tambah');
 Route::get('pegawai/str-sip/hapus/{par1}', 'App\Http\Controllers\Pegawai\Str_sip@hapus');
+
+// modul cuti
+Route::get('pegawai/cuti', 'App\Http\Controllers\Pegawai\Cuti@index');
+Route::get('pegawai/cuti/pengajuan/{par1}/{par2}', 'App\Http\Controllers\Pegawai\Cuti@pengajuan');
+Route::get('pegawai/cuti/edit/{par1}', 'App\Http\Controllers\Pegawai\Cuti@edit');
+Route::post('pegawai/cuti/proses-edit', 'App\Http\Controllers\Pegawai\Cuti@proses_edit');
+Route::get('pegawai/cuti/cetak', 'App\Http\Controllers\Pegawai\Cuti@cetak');
+Route::get('pegawai/cuti/unduh/{par1}', 'App\Http\Controllers\Pegawai\Cuti@unduh');
+Route::get('pegawai/cuti/tambah', 'App\Http\Controllers\Pegawai\Cuti@tambah');
+Route::post('pegawai/cuti/proses-tambah', 'App\Http\Controllers\Pegawai\Cuti@proses_tambah');
+Route::get('pegawai/cuti/hapus/{par1}', 'App\Http\Controllers\Pegawai\Cuti@hapus');
+
 /* input riwayat pegawai */
 Route::post('pegawai/pegawai/proses-pendidikan', 'App\Http\Controllers\Pegawai\Pegawai@proses_pendidikan');
 Route::post('pegawai/pegawai/proses-keluarga', 'App\Http\Controllers\Pegawai\Pegawai@proses_keluarga');
@@ -191,6 +203,7 @@ Route::post('admin/kehadiran/proses-import', 'App\Http\Controllers\Admin\Kehadir
 Route::get('admin/pegawai', 'App\Http\Controllers\Admin\Pegawai@index');
 Route::get('admin/pegawai/tambah', 'App\Http\Controllers\Admin\Pegawai@tambah');
 Route::post('admin/pegawai/proses-tambah', 'App\Http\Controllers\Admin\Pegawai@proses_tambah');
+Route::post('admin/pegawai/proses', 'App\Http\Controllers\Admin\Pegawai@proses');
 Route::get('admin/pegawai/edit/{id}', 'App\Http\Controllers\Admin\Pegawai@edit');
 Route::post('admin/pegawai/proses-edit', 'App\Http\Controllers\Admin\Pegawai@proses_edit');
 Route::get('admin/pegawai/delete/{id}', 'App\Http\Controllers\Admin\Pegawai@delete');

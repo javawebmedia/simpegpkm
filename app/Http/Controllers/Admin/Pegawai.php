@@ -31,7 +31,12 @@ class Pegawai extends Controller
         }
         // end proteksi halaman
         $m_pegawai  = new Pegawai_model();
-        $pegawai    = $m_pegawai->listing();
+        if(isset($_GET['keywords'])) {
+            $pegawai    = $m_pegawai->cari($_GET['keywords']);
+        }else{
+            $pegawai    = $m_pegawai->listing();
+        }
+        
 
         $data = [   'title'     => 'Data Pegawai',
                     'pegawai'   => $pegawai,
@@ -649,6 +654,36 @@ class Pegawai extends Controller
             // end ganti password
         }
         return redirect('admin/pegawai')->with(['sukses' => 'Data telah diedit']);
+    }
+
+    // proses
+    public function proses(Request $request)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+
+        // proses
+        $id_pegawai     = $request->id_pegawai;
+        $status_shift   = $request->status_shift;
+
+        // check berita
+        if(empty($id_pegawai))
+        {
+           return redirect('admin/pegawai')->with(['sukses' => 'Anda belum memilih pegawai']);
+        }
+        // end check berita
+        // proses
+        if(isset($status_shift)) {
+            for($i=0; $i < sizeof($id_pegawai);$i++) {
+                DB::table('pegawai')->where('id_pegawai',$id_pegawai[$i])->update([
+                    'status_shift'      => $status_shift
+                ]);
+            }
+        }
+        return redirect('admin/pegawai')->with(['sukses' => 'Data telah diupdate']);
     }
 
     // proses jabatan

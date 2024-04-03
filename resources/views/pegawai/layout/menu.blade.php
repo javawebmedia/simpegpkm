@@ -60,6 +60,20 @@ $site_config = DB::table('konfigurasi')->first();
       </a>
     </li>
 
+    <!-- pengajuan cuti -->
+     <li class="nav-item">
+        <a href="{{ asset('pegawai/cuti') }}" class="nav-link">
+          <lord-icon
+          src="https://cdn.lordicon.com/ckatldkn.json"
+          trigger="loop"
+          style="width:40px;height:40px">
+        </lord-icon>
+        <p>
+          Pengajuan Cuti
+        </p>
+      </a>
+    </li>
+
     <?php 
     use App\Models\Atasan_model;
     $m_atas       = new Atasan_model();

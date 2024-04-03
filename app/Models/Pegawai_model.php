@@ -23,6 +23,26 @@ class Pegawai_model extends Model
         return $query;
     }
 
+    // listing semua
+    public function cari($keywords)
+    {
+        $query = DB::table('pegawai')
+            ->leftJoin('agama', 'agama.id_agama', '=', 'pegawai.id_agama')
+            ->leftJoin('divisi', 'divisi.id_divisi', '=', 'pegawai.id_divisi')
+            ->leftJoin('jabatan', 'jabatan.id_jabatan', '=', 'pegawai.id_jabatan')
+            ->select('pegawai.*', 'agama.nama_agama', 'divisi.nama_divisi', 'jabatan.nama_jabatan')
+            ->where(function ($query) use ($keywords) {
+                $query->where('pegawai.nama_lengkap', 'like', '%' . $keywords . '%')
+                    ->orWhere('pegawai.nip', 'like', '%' . $keywords . '%')
+                    ->orWhere('pegawai.nrk', 'like', '%' . $keywords . '%');
+            })
+            ->orderBy('pegawai.nama_lengkap', 'ASC')
+            ->get();
+
+        return $query;
+    }
+
+
     // Pegawai aktif
     public function aktif()
     {
