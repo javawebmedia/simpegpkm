@@ -1,7 +1,7 @@
 <?php 
 date_default_timezone_set('Asia/Jakarta');
 // include('parse.php');
-$IP         = "192.168.1.13";
+$IP         = "192.168.1.14";
 $Key        = "8050";
 $Connect    = @fsockopen($IP, "80", $errno, $errstr, 1);
 if ($Connect) {

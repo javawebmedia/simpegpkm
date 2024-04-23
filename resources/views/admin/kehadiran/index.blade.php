@@ -2,7 +2,7 @@
 	<a href="{{ asset('admin/kehadiran') }}" class="btn btn-outline-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</a>
 </p>
 
-<table class="table table-bordered">
+<table class="table table-sm tabelku">
 	<tbody>
 		<tr>
 			<th class="bg-light" width="25%">Tahun Absensi</th>
@@ -43,9 +43,8 @@
 	</tbody>
 </table>
 
-<form action="{{ asset('admin/kehadiran') }}" method="get">
-
-<hr>
+<form action="{{ asset('admin/kehadiran/tambah') }}" method="post" accept-charset="utf-8" class="mt-2">
+        {{ csrf_field() }}
 
 <div class="input-group">
 
@@ -69,16 +68,8 @@
 
 	<span class="input-group-append">
 		<button type="submit" class="btn btn-info btn-flat" name="tanggal" value="submit">
-			<i class="fa fa-arrow-right"></i> Lihat Data Absensi
+			<i class="fa fa-arrow-right"></i> Generate Data Kehadiran
 		</button>
-
-		<button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-default">
-		  <i class="fa fa-plus-circle"></i> Tambah/Update Data Absensi
-		</button>
-
-		<a href="{{ asset('admin/kehadiran/import') }}" class="btn btn-success btn-flat">
-			<i class="fa fa-file-excel"></i> Import Data Absensi (Excel)
-		</a>
 
 	</span>
 
@@ -88,40 +79,41 @@
 
 <div class="table-responsive mailbox-messages">
 
-<table class="table table-bordered table-sm">
+<table class="table table-sm tabelku">
 	<thead>
 		<tr class="bg-secondary text-center align-middle">
-			<th width="5%">No</th>
-			<th width="20%">Nama</th>
-			<th width="10%">Menit Terlambat</th>
-			<th width="10%">Nilai Perilaku</th>
-			<th width="10%">Nilai Serapan</th>
-			<th width="10%">Sakit</th>
-			<th width="10%">Izin</th>
-			<th width="10%">Alpa</th>
-			<th width="10%">Keterangan</th>
+			<th width="5%" class="align-middle">No</th>
+			<th width="20%" class="align-middle">Nama</th>
+			<th width="10%" class="align-middle">Total Jam Kerja</th>
+			<th width="10%" class="align-middle">Total Menit Terlambat</th>
+			<th width="10%" class="align-middle">Total Hari Kehadiran</th>
+			<th width="10%" class="align-middle">Sakit</th>
+			<th width="10%" class="align-middle">Izin</th>
+			<th width="10%" class="align-middle">Alpa</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php $no=1; foreach($kehadiran as $kehadiran) { ?>
+		<?php 
+		$no=1; foreach($pegawai as $pegawai) { 
+			$total 	= $m_kehadiran->pegawai_thbl($pegawai->nip,$thbl);
+		?>
 		<tr>
 			<td class="text-center">{{ $no }}</td>
-			<td>{{ $kehadiran->nama_lengkap }}
+			<td>{{ $pegawai->nama_lengkap }}
 					<small>
-						<br>NIP: <?php echo $kehadiran->nip ?>
+						<br>NIP: <?php echo $pegawai->nip ?>
 					</small>
 			</td>
-			<td class="text-center"><?php echo $kehadiran->menit_terlambat ?></td>
-			<td class="text-center"><?php echo number_format($kehadiran->nilai_perilaku,2) ?></td>
-			<td class="text-center"><?php echo $kehadiran->nilai_serapan ?>%</td>
-			<td class="text-center"><?php echo $kehadiran->sakit ?></td>
-			<td class="text-center"><?php echo $kehadiran->izin ?></td>
-			<td class="text-center"><?php echo $kehadiran->alpa ?></td>
-			<td>{{ $kehadiran->keterangan }}</td>
+			<td><?php echo $total->total_jam_kerja ?></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
 			<td>
 
-				<a href="{{ asset('admin/kehadiran/delete/'.$kehadiran->id_kehadiran.'/'.$tahun.'/'.$bulan) }}" class="btn btn-warning btn-sm delete-link mb-1"><i class="fa fa-trash"></i></a>
+				<a href="{{ asset('admin/kehadiran/detail/'.$pegawai->nip.'/'.$tahun.'/'.$bulan) }}" class="btn btn-warning btn-sm mb-1"><i class="fa fa-eye"></i> Detail</a>
 			</td>
 		</tr>
 		<?php $no++; } ?>
@@ -131,4 +123,3 @@
 
 </form>
 
-@include('admin/kehadiran/tambah')

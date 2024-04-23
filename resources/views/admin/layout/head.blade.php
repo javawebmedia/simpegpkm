@@ -27,6 +27,7 @@ $site_config = DB::table('konfigurasi')->first();
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('assets/admin/dist/css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/css-admin.css') }}">
     <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/summernote/summernote-bs4.min.css') }}">
   <!-- jQuery -->

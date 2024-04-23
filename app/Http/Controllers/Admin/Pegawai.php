@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Libraries\Parser;
 // panggil model
 use App\Models\Pegawai_model;
 use App\Models\Jabatan_model;
 use App\Models\Riwayat_jabatan_model;
 use App\Models\Pendidikan_model;
 use App\Models\Keluarga_model;
+use App\Models\Mesin_absen_model;
+use App\Models\Pin_pegawai_model;
 // EXCEL
 use PhpOffice\PhpSpreadsheet\Helper\Sample;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -43,6 +46,128 @@ class Pegawai extends Controller
                     'content'   => 'admin/pegawai/index'
                 ];
         return view('admin/layout/wrapper',$data);
+    }
+
+    // generate_pin
+    public function generate_pin()
+    {
+        $m_pegawai  = new Pegawai_model();
+        $pegawai    = $m_pegawai->listing();
+        foreach($pegawai as $pegawai) {
+            $data = ['pin'  => substr($pegawai->nip, -9)];
+            DB::table('pegawai')->where('id_pegawai',$pegawai->id_pegawai)->update($data);
+        }
+        return redirect('admin/pegawai')->with(['sukses' => 'Data PIN berhasil dibuat']);
+    }
+
+    // mesin
+    public function mesin($id_pegawai)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_pegawai          = new Pegawai_model();
+        $m_riwayat_jabatan  = new Riwayat_jabatan_model();
+        $m_pendidikan       = new Pendidikan_model();
+        $m_keluarga         = new Keluarga_model();
+        $m_mesin_absen      = new Mesin_absen_model();
+
+        $pegawai            = $m_pegawai->detail($id_pegawai);
+        $riwayat_jabatan    = $m_riwayat_jabatan->pegawai($id_pegawai);
+        $pendidikan         = $m_pendidikan->pegawai($id_pegawai);
+        $keluarga           = $m_keluarga->pegawai($id_pegawai);
+        $mesin_absen        = $m_mesin_absen->listing();
+
+        $data = [   'title'             => $pegawai->nama_lengkap.' (NIP: '.$pegawai->nip.')',
+                    'pegawai'           => $pegawai,
+                    'riwayat_jabatan'   => $riwayat_jabatan,
+                    'pendidikan'        => $pendidikan,
+                    'keluarga'          => $keluarga,
+                    'mesin_absen'       => $mesin_absen,
+                    'm_pin_pegawai'     => new Pin_pegawai_model(),
+                    'content'           => 'admin/pegawai/mesin'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
+    // proses_mesin
+    public function proses_mesin(Request $request)
+    {
+        $m_pin_pegawai  = new Pin_pegawai_model();
+        $m_pegawai      = new Pegawai_model();
+        $m_mesin_absen = new Mesin_absen_model();
+
+        $id_pegawai     = $request->id_pegawai;
+        $id_mesin_absen = $request->id_mesin_absen;
+        $pegawai        = $m_pegawai->detail($id_pegawai);
+
+        // check sudah memilih mesin
+        if(empty($id_mesin_absen)) {
+            return redirect('admin/pegawai/mesin/'.$id_pegawai)->with(['warning' => 'Anda belum memilih mesin']);
+        }
+        // end check
+
+        if(isset($_POST['aktifkan'])) {
+            for($i=0; $i < sizeof($id_mesin_absen);$i++) {
+                $mesin_absen    = $m_mesin_absen->detail($id_mesin_absen[$i]);
+                $IP             = $mesin_absen->ip_mesin_absen;
+                $Key            = $mesin_absen->key_mesin_absen;
+
+                $check          = $m_pin_pegawai->check_pegawai_mesin($pegawai->nip,$mesin_absen->id_mesin_absen);
+                if(!empty($check)) {}else{
+                    $nama           = $pegawai->nama_lengkap;
+                    $id             = substr($pegawai->nip, -9);
+                    $data = [   'nip'               => $pegawai->nip,
+                                'pin'               => $id,
+                                'id_mesin_absen'    => $mesin_absen->id_mesin_absen,
+                                'ip_mesin_absen'    => $mesin_absen->ip_mesin_absen
+                            ];
+                    DB::table('pin_pegawai')->insert($data);
+                    // proses masukin ke mesin absen
+                    $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
+                    if($Connect){
+                        $soap_request="<SetUserInfo><ArgComKey Xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><PIN>".$id."</PIN><Name>".$nama."</Name></Arg></SetUserInfo>";
+                        $newLine="\r\n";
+                        fputs($Connect, "POST /iWsService HTTP/1.0".$newLine);
+                        fputs($Connect, "Content-Type: text/xml".$newLine);
+                        fputs($Connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
+                        fputs($Connect, $soap_request.$newLine);
+                        $buffer="";
+                        while($Response=fgets($Connect, 1024)){
+                            $buffer=$buffer.$Response;
+                        }
+                    }else{ 
+                        $buffer = 0;
+                        echo "Koneksi Gagal";
+                    }
+                    $buffer = Parser::parseData($buffer,"<Information>","</Information>");
+                    echo "<B>Result:</B><BR>";
+                    echo $buffer.'<hr>';
+                }
+            }
+            return redirect('admin/pegawai/mesin/'.$pegawai->id_pegawai)->with(['sukses' => 'Data pegawai telah dimasukkan ke mesin absensi']);
+        }
+    }
+
+    // delete_mesin
+    public function delete_mesin($id_mesin_absen,$id_pegawai)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_pegawai          = new Pegawai_model();
+        $pegawai            = $m_pegawai->detail($id_pegawai);
+
+        DB::table('pin_pegawai')->where([   'nip'               => $pegawai->nip,
+                                            'id_mesin_absen'    => $id_mesin_absen
+                        ])->delete();
+        return redirect('admin/pegawai/mesin/'.$id_pegawai)->with(['sukses' => 'Data telah dihapus']);
     }
 
     // halaman detail pegawai

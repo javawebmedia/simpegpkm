@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pegawai_model;
 use App\Models\Kehadiran_model;
+use App\Models\Data_finger_model;
 use Image;
 use PDF;
 
@@ -22,28 +23,25 @@ class Kehadiran extends Controller
             return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
         }
         // end proteksi halaman
-        if(isset($_GET['tanggal'])) {
-            $tahun  = $_GET['tahun'];
-            $bulan  = $_GET['bulan'];
-            $tanggal   = $_GET['tanggal'];
+        if(isset($_GET['tahun'])) {
+            $tahun      = $_GET['tahun'];
+            $bulan      = $_GET['bulan'];
         }else{
-            $tahun  = date('Y');
-            $bulan  = date('m');
-            $tanggal   = date('Y-m-d');
+            $tahun      = date('Y');
+            $bulan      = date('m');
         }
         // ambil data kehadiran
-        $m_kehadiran  = new Kehadiran_model();
-        $m_pegawai  = new Pegawai_model();
-        $kehadiran    = $m_kehadiran->tanggal($tanggal);
-        $pegawai    = $m_pegawai->listing();
+        $m_kehadiran    = new Kehadiran_model();
+        $m_pegawai      = new Pegawai_model();
+        $pegawai        = $m_pegawai->listing();
 
-        $data = [   'title'     => 'Data Master Kehadiran: '.$tanggal,
-                    'kehadiran'      => $kehadiran,
-                    'pegawai'   => $pegawai,
-                    'tanggal'      => $tanggal,
-                    'tahun'     => $tahun,
-                    'bulan'     => $bulan,
-                    'content'   => 'admin/kehadiran/index'
+        $data = [   'title'             => 'Data Kehadiran Pegawai',
+                    'pegawai'           => $pegawai,
+                    'tahun'             => $tahun,
+                    'bulan'             => $bulan,
+                    'thbl'              => $tahun.$bulan,
+                    'm_kehadiran'       => $m_kehadiran,
+                    'content'           => 'admin/kehadiran/index'
                 ];
         return view('admin/layout/wrapper',$data);
     }
@@ -57,50 +55,89 @@ class Kehadiran extends Controller
             return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
         }
         // end proteksi halaman
+        $m_pegawai      = new Pegawai_model();
+        $m_kehadiran    = new Kehadiran_model();
+        $m_data_finger  = new Data_finger_model();
+        $pegawai        = $m_pegawai->listing();
+
         request()->validate([
                             'tahun'     => 'required',
                             'bulan'     => 'required',
-                            'nip'       => 'required',
                             ]);
         // check
-        $tanggal        = $request->tanggal;
-        $nip            = $request->nip;
-        $m_kehadiran    = new Kehadiran_model();
-        $check          = $m_kehadiran->tanggal_pegawai($tanggal,$nip);
-        if($check) {
-            DB::table('kehadiran')->where(['nip' => $check->nip, 'tanggal' => $check->tanggal])->update([
-                'id_pegawai'        => Session()->get('id_pegawai'),
-                'nip'               => $request->nip,
-                'tanggal'              => $request->tahun.$request->bulan,
-                'bulan'             => $request->bulan,
-                'tahun'             => $request->tahun,
-                'menit_terlambat'   => $request->menit_terlambat,
-                'nilai_perilaku'    => $request->nilai_perilaku,
-                'nilai_serapan'     => $request->nilai_serapan,
-                'sakit'             => $request->sakit,
-                'izin'              => $request->izin,
-                'alpa'              => $request->alpa,
-                'keterangan'        => $request->keterangan,
-            ]); 
-        }else{
-           DB::table('kehadiran')->insert([
-                'id_pegawai'        => Session()->get('id_pegawai'),
-                'nip'               => $request->nip,
-                'tanggal'           => $request->tahun.$request->bulan,
-                'bulan'             => $request->bulan,
-                'tahun'             => $request->tahun,
-                'menit_terlambat'   => $request->menit_terlambat,
-                'nilai_perilaku'    => $request->nilai_perilaku,
-                'nilai_serapan'     => $request->nilai_serapan,
-                'sakit'             => $request->sakit,
-                'izin'              => $request->izin,
-                'alpa'              => $request->alpa,
-                'keterangan'        => $request->keterangan,
-                'tanggal_post'      => date('Y-m-d H:i:s')
-            ]); 
+        $TAHUN  = $request->tahun;
+        $BULAN  = $request->bulan;
+        $THBL   = $TAHUN.$BULAN;
+
+        DB::table('kehadiran')->where(['thbl' => $THBL])->delete();
+
+        foreach($pegawai as $pegawai)
+        {
+            $pin            = $pegawai->pin;
+            $jumlah_hari    = cal_days_in_month(CAL_GREGORIAN, $BULAN, $TAHUN);
+            $semua_tanggal = [];
+            for ($hari = 1; $hari <= $jumlah_hari; $hari++) {
+                $tanggal = sprintf('%04d-%02d-%02d', $TAHUN, $BULAN, $hari);
+                $semua_tanggal[] = $tanggal;
+            }
+            // Menampilkan semua tanggal
+            foreach ($semua_tanggal as $tanggal) {
+                // echo $tanggal . "<br>";
+                $check_finger_awal      = $m_data_finger->check_finger_awal($pegawai->pin,$tanggal,'0');
+                $check_finger_akhir     = $m_data_finger->check_finger_akhir($pegawai->pin,$tanggal,'1');
+
+                if(!empty($check_finger_awal)) {
+                    $tanggal_masuk  = date('Y-m-d H:i:s',strtotime($check_finger_awal->waktu_finger));
+                }else{
+                    $tanggal_masuk  = null;
+                }
+
+                if(!empty($check_finger_akhir)) {
+                    $tanggal_keluar  = date('Y-m-d H:i:s',strtotime($check_finger_akhir->waktu_finger));
+                }else{
+                    $tanggal_keluar  = null;
+                }
+
+                if(!empty($check_finger_awal) && !empty($check_finger_akhir)) {
+                    $kehadiran          = 'Hadir';
+                    $keterangan         = '-';
+                    $waktu_awal         = $check_finger_awal->waktu_finger;
+                    $waktu_akhir        = $check_finger_akhir->waktu_finger;
+                    $timestamp_awal     = strtotime($waktu_awal);
+                    $timestamp_akhir    = strtotime($waktu_akhir);
+                    // Menghitung selisih waktu dalam detik
+                    $total_jam_kerja = $timestamp_akhir - $timestamp_awal;
+                }else{
+                    $kehadiran          = '';
+                    $keterangan         = '-';
+                    $total_jam_kerja    = 13500;
+                }
+
+                $jumlah_menit_terlambat     = 0;
+                $pulang_cepat               = 0;
+                $lembur               = 0;
+
+                $data = [   'id_shift'                  => 1,
+                            'nip'                       => $pegawai->nip,
+                            'pin'                       => $pegawai->pin,
+                            'tanggal_kehadiran'         => $tanggal,
+                            'tanggal_masuk'             => $tanggal_masuk,
+                            'tanggal_keluar'            => $tanggal_keluar,
+                            'kehadiran'                 => $kehadiran,
+                            'keterangan'                => $keterangan,
+                            'jumlah_menit_terlambat'    => $jumlah_menit_terlambat,
+                            'pulang_cepat'              => $pulang_cepat,
+                            'lembur'                    => $lembur,
+                            'total_jam_kerja'           => $total_jam_kerja,
+                            'thbl'                      => $THBL,
+                            'tahun'                     => $TAHUN,
+                            'bulan'                     => $BULAN,
+                            'id_pengguna'               => Session()->get('id_pegawai')
+                        ];
+                DB::table('kehadiran')->insert($data);
+            }
         }
-        
-        return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&tanggal=submit')->with(['sukses' => 'Data telah ditambah']);
+        return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&tanggal_kehadiran=submit')->with(['sukses' => 'Data telah ditambah']);
     }
 
     // import
@@ -169,10 +206,10 @@ class Kehadiran extends Controller
                 $keterangan         = $rows[$i][8];
                 // check nip
                 // check
-                $tanggal               = $request->tahun.$request->bulan;
+                $tanggal_kehadiran               = $request->tahun.$request->bulan;
                 
 
-                $kehadiran            = $m_kehadiran->tanggal($tanggal);
+                $kehadiran            = $m_kehadiran->tanggal_kehadiran($tanggal_kehadiran);
                 
 
                 if($nrk=='') {
@@ -181,14 +218,14 @@ class Kehadiran extends Controller
                     $pegawai    = $m_pegawai->nrk($nrk);
                     if($pegawai) {
                     $nip        = $pegawai->nip;
-                    $check      = $m_kehadiran->tanggal_pegawai($tanggal,$nip);
+                    $check      = $m_kehadiran->tanggal_kehadiran_pegawai($tanggal_kehadiran,$nip);
 
                     if($check) {
-                        DB::table('kehadiran')->where(['nip' => $nip, 'tanggal' => $tanggal])->update([
+                        DB::table('kehadiran')->where(['nip' => $nip, 'tanggal_kehadiran' => $tanggal_kehadiran])->update([
                             'id_pegawai'        => Session()->get('id_pegawai'),
                             'nip'               => $nip,
                             'nrk'               => $nrk,
-                            'tanggal'              => $request->tahun.$request->bulan,
+                            'tanggal_kehadiran'              => $request->tahun.$request->bulan,
                             'bulan'             => $request->bulan,
                             'tahun'             => $request->tahun,
                             'menit_terlambat'   => $menit_terlambat,
@@ -204,7 +241,7 @@ class Kehadiran extends Controller
                             'id_pegawai'        => Session()->get('id_pegawai'),
                             'nip'               => $nip,
                             'nrk'               => $nrk,
-                            'tanggal'              => $request->tahun.$request->bulan,
+                            'tanggal_kehadiran'              => $request->tahun.$request->bulan,
                             'bulan'             => $request->bulan,
                             'tahun'             => $request->tahun,
                             'menit_terlambat'   => $menit_terlambat,
@@ -214,7 +251,7 @@ class Kehadiran extends Controller
                             'izin'              => $izin,
                             'alpa'              => $alpa,
                             'keterangan'        => $keterangan,
-                            'tanggal_post'      => date('Y-m-d H:i:s')
+                            'tanggal_kehadiran_post'      => date('Y-m-d H:i:s')
                         ]); 
                     }
                     }else{
@@ -229,7 +266,7 @@ class Kehadiran extends Controller
         }
         // hapus
         unlink('./assets/upload/file/'.$input['nama_file']);
-        return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&tanggal=submit')->with(['sukses' => 'Data telah ditambah']);
+        return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&tanggal_kehadiran=submit')->with(['sukses' => 'Data telah ditambah']);
         // end import
     }
 
@@ -243,6 +280,6 @@ class Kehadiran extends Controller
         }
         // end proteksi halaman
         DB::table('kehadiran')->where('id_kehadiran',$id_kehadiran)->delete();
-        return redirect('admin/kehadiran?bulan='.$bulan.'&tahun='.$tahun.'&tanggal=submit')->with(['sukses' => 'Data telah dihapus']);
+        return redirect('admin/kehadiran?bulan='.$bulan.'&tahun='.$tahun.'&tanggal_kehadiran=submit')->with(['sukses' => 'Data telah dihapus']);
     }
 }

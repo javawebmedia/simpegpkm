@@ -104,6 +104,7 @@
   <thead>
     <tr>
       <th>No</th>
+      <th>Jenis</th>
       <th>Tahun</th>
       <th>Tanggal Pengajuan</th>
       <th>Tanggal Cuti</th>
@@ -113,13 +114,41 @@
     </tr>
   </thead>
   <tbody>
+    <?php $no=1; foreach($cuti as $cuti) { ?>
     <tr>
-      <td>data</td>
-      <td>data</td>
-      <td>data</td>
-      <td>data</td>
-      <td>data</td>
-      <td>data</td>
+      <td><?php echo $no ?></td>
+      <td><?php echo $cuti->nama_jenis_cuti ?></td>
+      <td><?php echo $cuti->tahun ?></td>
+      <td><?php echo $cuti->tanggal_pengajuan ?></td>
+      <td>-</td>
+      <td><?php echo $cuti->total_hari ?></td>
+      <td>
+        <?php if($cuti->status_cuti=='Menunggu') { ?>
+          <span class="badge badge-warning"><i class="fa fa-clock"></i> <?php echo $cuti->status_cuti ?></span>
+        <?php }elseif($cuti->status_cuti=='Ditolak') { ?>
+          <span class="badge badge-dark"><i class="fa fa-times"></i> <?php echo $cuti->status_cuti ?></span>
+        <?php }elseif($cuti->status_cuti=='Disetujui') { ?>
+          <span class="badge badge-success"><i class="fa fa-check"></i> <?php echo $cuti->status_cuti ?></span>
+        <?php } ?>
+      </td>
+      <td>
+        <?php if($cuti->status_cuti=='Menunggu') { ?>
+          <a href="{{ asset('pegawai/cuti/edit/'.$cuti->kode_cuti) }}" class="btn btn-secondary btn-xs">
+            <i class="fa fa-edit"></i>
+          </a>
+          <a href="{{ asset('pegawai/cuti/delete/'.$cuti->kode_cuti) }}" class="btn btn-secondary btn-xs delete-link">
+            <i class="fa fa-trash"></i>
+          </a>
+        <?php } ?>
+        <a href="{{ asset('pegawai/cuti/lihat/'.$cuti->kode_cuti) }}" class="btn btn-success btn-xs">
+            <i class="fa fa-eye"></i>
+          </a>
+        <a href="{{ asset('pegawai/cuti/unduh/'.$cuti->kode_cuti) }}" class="btn btn-danger btn-xs" target="_blank">
+            <i class="fa fa-file-pdf"></i>
+          </a>
+          
+      </td>
     </tr>
+    <?php $no++;} ?>
   </tbody>
 </table>

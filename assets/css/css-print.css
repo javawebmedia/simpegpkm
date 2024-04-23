@@ -2,6 +2,7 @@
 body {
   background: #FFF;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
 }
 body, page {
     margin: 0;
@@ -11,7 +12,6 @@ page {
   background: white;
   display: block;
   margin: 0 auto;
-  margin-bottom: 0.5cm;
 }
 h1 {
   font-size: 14px !important;
@@ -32,6 +32,10 @@ a {
   text-decoration: none;
 }
 /* page */
+  page[size="F4"] {  
+    width: 21cm;
+    min-height: 33cm; 
+  }
 
   page[size="A4"] {  
     width: 21cm;
@@ -73,6 +77,9 @@ a {
   /* Table */
 table {
   width: 100%;
+}
+td, th {
+  vertical-align: top;
 }
 /* tabel header */
 .bg-light {
@@ -122,7 +129,7 @@ table.printer {
   border: solid 2px #000;
   border-collapse:collapse;
   font-size: 11px;
-  margin-bottom: 2mm;
+  margin-bottom: 1mm;
 }
 .abu, .bg-gray {
   background-color: #eee;

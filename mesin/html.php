@@ -1,7 +1,7 @@
 <?php 
 date_default_timezone_set('Asia/Jakarta');
 include("parse.php");
-$IP         = "192.168.1.13";
+$IP         = "192.168.1.14";
 $Key        = "8050";
 $Connect    = @fsockopen($IP, "80", $errno, $errstr, 1);
 if ($Connect) {
@@ -77,7 +77,7 @@ for ($i = 1; $i < count($data); $i++) {
 	    <tbody>
 	        <?php $no=1;foreach($extracted_data as $row) { if(empty($row)) { ?>
 	        	<tr>
-	        		<td colspan="6"><?php var_dump($row) ?></td>
+	        		<td colspan="6"><?php echo 'Data tidak ditemukan'; ?></td>
 	        	</tr>
 	        <?php }else{ ?>
 	        <tr>

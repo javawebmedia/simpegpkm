@@ -49,6 +49,19 @@ class Cuti_model extends Model
         return $query;
     }
 
+    // kode_cuti
+    public function kode_cuti($kode_cuti)
+    {
+        $query = DB::table('cuti')
+           ->join('jenis_cuti', 'jenis_cuti.id_jenis_cuti', '=', 'cuti.id_jenis_cuti','LEFT')
+            ->join('pegawai', 'pegawai.nip', '=', 'cuti.nip','LEFT')
+            ->select('cuti.*', 'jenis_cuti.nama_jenis_cuti','pegawai.nama_lengkap')
+            ->where('cuti.kode_cuti',$kode_cuti)
+            ->orderBy('cuti.id_cuti','DESC')
+            ->first();
+        return $query;
+    }
+
     // get last id
     public function last_id()
     {

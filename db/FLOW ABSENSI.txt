@@ -1,0 +1,12 @@
+FLOW ABSENSI:
+--------------
+1. Register mesin
+2. Di data pegawai setting PIN (9 digit terakhir dari NIP)
+3. Register data pegawai ke dalam mesin
+4. Register biometrik melalui mesin
+5. Pegawai melakukan absen via mesin
+6. Sistem menarik data absen ke database
+7. Olah data
+
+FLOW APLIKASI:
+--------------

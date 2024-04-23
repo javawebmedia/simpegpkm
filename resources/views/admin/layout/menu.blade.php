@@ -40,19 +40,32 @@ $total_pegawai  = $m_dasbor->pegawai();
         </li>
 
         <!-- Absensi -->
-        <li class="nav-item">
-            <a href="{{ asset('admin/kehadiran') }}" class="nav-link">
-              <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
-              <lord-icon
-              src="https://cdn.lordicon.com/lzgqzxrq.json"
-              trigger="hover"
-              style="width:30px;height:30px">
-            </lord-icon>
-            <p>
-              Data Absensi
-            </p>
-          </a>
-        </li>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <lord-icon
+            src="https://cdn.lordicon.com/lzgqzxrq.json"
+            trigger="hover"
+            style="width:30px;height:30px">
+          </lord-icon>
+          <p>
+            Data Absensi
+            <i class="fas fa-angle-left right"></i>
+
+          </p>
+        </a>
+        <ul class="nav nav-treeview">
+          
+          <li class="nav-item"><a href="{{ asset('admin/kehadiran') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Data Kehadiran</p></a>
+          </li>
+
+          <li class="nav-item"><a href="{{ asset('admin/data-finger') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Data Rekaman Kehadiran</p></a>
+          </li>
+
+          <li class="nav-item"><a href="{{ asset('admin/mesin-absen') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Mesin Absen</p></a>
+          </li>
+
+        </ul>
+      </li>
 
         <!-- cuti -->
         <li class="nav-item has-treeview">

@@ -36,6 +36,9 @@
         <button type="submit" name="status_shift" value="Ya" class="btn btn-secondary"><i class="fa fa-eye-slash"></i> Pegawai Shift</button>
      
         <button type="submit" name="status_shift" value="Tidak" class="btn btn-secondary"><i class="fa fa-eye"></i> Pegawai Non Shift</button>
+        <a href="{{ asset('admin/pegawai/generate-pin') }}" class="btn btn-outline-secondary">
+        	<i class="fa fa-thumbs-up"></i> Generate PIN Absensi
+        </a>
 	</div>
 	<div class="col-md-6">
 	</div>
@@ -74,6 +77,7 @@
 							<?php echo $no ?></td>
 						<td><?php echo $pegawai->nama_lengkap ?>
 						<br><small>NIP: <?php echo $pegawai->nip ?>
+							<br>PIN: <?php echo $pegawai->pin ?>
 							<br>Shift: 
 							<?php if($pegawai->status_shift=='Ya') { ?>
 								<span class="badge badge-secondary"><i  class="fa fa-eye"></i> <?php echo $pegawai->status_shift ?></span> 
@@ -91,21 +95,23 @@
 					<td><?php echo $pegawai->status_pegawai ?></td>
 					<td><?php echo $pegawai->jenis_pegawai ?></td>
 					<td>
-						<a href="{{ asset('admin/pegawai/detail/'.$pegawai->id_pegawai) }}" class="btn btn-info btn-sm mb-1" title="Detail"><i class="fa fa-eye"></i></a>
+						<a href="{{ asset('admin/pegawai/detail/'.$pegawai->id_pegawai) }}" class="btn btn-info btn-xs mb-1" title="Detail"><i class="fa fa-eye"></i></a>
 
-						<a href="{{ asset('admin/pegawai/riwayat/'.$pegawai->id_pegawai) }}" class="btn btn-primary btn-sm mb-1" title="Riwayat Pegawai"><i class="fa fa-tasks"></i></a>
+						<a href="{{ asset('admin/pegawai/mesin/'.$pegawai->id_pegawai) }}" class="btn btn-secondary btn-xs mb-1" title="Setting Mesin Absen"><i class="fa fa-laptop"></i> Mesin Absen</a>
 
-						<a href="{{ asset('admin/pegawai/cetak/'.$pegawai->id_pegawai) }}" class="btn btn-success btn-sm mb-1" title="Cetak" target="_blank">
+						<a href="{{ asset('admin/pegawai/riwayat/'.$pegawai->id_pegawai) }}" class="btn btn-primary btn-xs mb-1" title="Riwayat Pegawai"><i class="fa fa-tasks"></i></a>
+
+						<a href="{{ asset('admin/pegawai/cetak/'.$pegawai->id_pegawai) }}" class="btn btn-success btn-xs mb-1" title="Cetak" target="_blank">
 							<i class="fa fa-print"></i>
 						</a>
 
-						<a href="{{ asset('admin/pegawai/unduh/'.$pegawai->id_pegawai) }}" class="btn btn-danger btn-sm mb-1" title="Unduh PDF"  target="_blank">
+						<a href="{{ asset('admin/pegawai/unduh/'.$pegawai->id_pegawai) }}" class="btn btn-danger btn-xs mb-1" title="Unduh PDF"  target="_blank">
 							<i class="fa fa-file-pdf"></i>
 						</a>
 
-						<a href="{{ asset('admin/pegawai/edit/'.$pegawai->id_pegawai) }}" class="btn btn-warning btn-sm mb-1" title="Edit"><i class="fa fa-edit"></i></a>
+						<a href="{{ asset('admin/pegawai/edit/'.$pegawai->id_pegawai) }}" class="btn btn-warning btn-xs mb-1" title="Edit"><i class="fa fa-edit"></i></a>
 
-						<a href="{{ asset('admin/pegawai/delete/'.$pegawai->id_pegawai) }}" class="btn btn-dark btn-sm mb-1 delete-link" title="Hapus"><i class="fa fa-trash"></i></a>
+						<a href="{{ asset('admin/pegawai/delete/'.$pegawai->id_pegawai) }}" class="btn btn-dark btn-xs mb-1 delete-link" title="Hapus"><i class="fa fa-trash"></i></a>
 					</td>
 				</tr>
 				<?php $no++; } ?>
