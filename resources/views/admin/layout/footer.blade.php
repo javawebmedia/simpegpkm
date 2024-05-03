@@ -120,7 +120,7 @@ $(document).on("click", ".approval-link", function(e){
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.2.0
     </div>
-    <strong>Copyright &copy; 2022 <a href="https://www.puskesmas-kramatjati.com">Puskesmas Kramat Jati</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2024 <a href="https://www.puskesmas-kramatjati.com">Puskesmas Kramat Jati</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->
@@ -130,7 +130,6 @@ $(document).on("click", ".approval-link", function(e){
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
-
 
 <!-- Bootstrap 4 -->
 <script src="{{ asset('assets/admin/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -149,6 +148,9 @@ $(document).on("click", ".approval-link", function(e){
 <script src="{{ asset('assets/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('assets/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('assets/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<!-- Time And Date Picker -->
+<script src="{{ asset('assets/admin/plugins/daterangepicker/daterangepicker.js')}}"></script>
+
 <!-- AdminLTE App -->
 <script src="{{ asset('assets/admin/dist/js/adminlte.min.js') }}"></script>
 <!-- Summernote -->
@@ -182,6 +184,25 @@ $awal     = $sekarang - 50;
     });
   } );
 </script>
+
+<!-- .timepicker -->
+<!-- <script>
+  $('.timepicker').timepicker({
+    timeFormat: 'H:mm',
+    interval: 15,
+    defaultTime: '07:00',
+    dynamic: true,
+    dropdown: true,
+    scrollbar: true
+  });
+</script> -->
+
+<!-- <script>
+  //Timepicker
+  $('#timepicker').datetimepicker({
+      format: 'LT'
+    })
+</script> -->
 
 <script>
   $(function () {

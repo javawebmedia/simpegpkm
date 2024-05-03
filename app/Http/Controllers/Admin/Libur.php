@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Libur_model;
 use App\Models\Jenis_libur_model;
+use App\Libraries\Website;
 
 class Libur extends Controller
 {
@@ -56,12 +57,24 @@ class Libur extends Controller
         request()->validate([
                             'tanggal_libur' => 'required|unique:libur'
                             ]);
+        $website 		= new Website(); 
+        $tanggal_libur 	= date('Y-m-d',strtotime($request->tanggal_libur));
+        $check_weekend 	= $website->get_hari($tanggal_libur);
+
+        if($check_weekend=='Sabtu' || $check_weekend=='Minggu')
+        {
+        	$weekend = 'Ya';
+        }else{
+        	$weekend = 'Tidak';
+        }
+
         $data = [	'id_pegawai'		=> Session()->get('id_pegawai'),
 					'id_jenis_libur'	=> $request->id_jenis_libur,
 					'tanggal_libur'		=> date('Y-m-d',strtotime($request->tanggal_libur)),
 					'tahun'				=> date('Y',strtotime($request->tanggal_libur)),
 					'status_libur'		=> $request->status_libur,
 					'keterangan'		=> $request->keterangan,
+					'weekend'			=> $weekend,
 					'tanggal_update'	=> date('Y-m-d H:i:s')
 				];
         DB::table('libur')->insert($data);
@@ -120,6 +133,7 @@ class Libur extends Controller
 						'tahun'				=> $request->tahun,
 						'status_libur'		=> $request->status_libur,
 						'keterangan'		=> $request->keterangan,
+						'weekend'			=> 'Ya',
 						'tanggal_update'	=> date('Y-m-d H:i:s')
 					];
 			DB::table('libur')->insert($data);
@@ -131,6 +145,7 @@ class Libur extends Controller
 						'tahun'				=> $request->tahun,
 						'status_libur'		=> $request->status_libur,
 						'keterangan'		=> $request->keterangan,
+						'weekend'			=> 'Ya',
 						'tanggal_update'	=> date('Y-m-d H:i:s')
 					];
 			DB::table('libur')->insert($data);
@@ -204,11 +219,15 @@ class Libur extends Controller
 	// edit
 	public function edit($id_libur)
 	{
-		$m_libur 	= new Libur_model();
-		$libur 		= $m_libur->detail($id_libur);
-		$data = [	'title'		=> 'Edit Hari dan Tanggal Libur: '.date('Y-m-d',strtotime($libur->tanggal_libur)),
-					'libur'		=> $libur,
-					'content'	=> 'admin/libur/edit'
+		$m_libur 		= new Libur_model();
+		$libur 			= $m_libur->detail($id_libur);
+		$m_jenis_libur 	= new Jenis_libur_model();
+		$jenis_libur 	= $m_jenis_libur->listing();
+
+		$data = [	'title'			=> 'Edit Hari dan Tanggal Libur: '.date('Y-m-d',strtotime($libur->tanggal_libur)),
+					'libur'			=> $libur,
+					'jenis_libur'	=> $jenis_libur,
+					'content'		=> 'admin/libur/edit'
 				];
 		echo view('admin/layout/wrapper',$data);
 	}
@@ -226,6 +245,18 @@ class Libur extends Controller
         request()->validate([
                             'tanggal_libur' => 'required|unique:libur'
                             ]);
+
+        $website 		= new Website(); 
+        $tanggal_libur 	= date('Y-m-d',strtotime($request->tanggal_libur));
+        $check_weekend 	= $website->get_hari($tanggal_libur);
+
+        if($check_weekend=='Sabtu' || $check_weekend=='Minggu')
+        {
+        	$weekend = 'Ya';
+        }else{
+        	$weekend = 'Tidak';
+        }
+
         $data = [	'id_libur'			=> $request->id_libur,
         			'id_pegawai'		=> Session()->get('id_pegawai'),
 					'id_jenis_libur'	=> $request->id_jenis_libur,
@@ -233,6 +264,7 @@ class Libur extends Controller
 					'tahun'				=> date('Y',strtotime($request->tanggal_libur)),
 					'status_libur'		=> $request->status_libur,
 					'keterangan'		=> $request->keterangan,
+					'weekend'			=> $weekend,
 				];
         DB::table('libur')->where('id_libur',$request->id_libur)->update($data);
         return redirect('admin/libur')->with(['sukses' => 'Data telah ditambah']);

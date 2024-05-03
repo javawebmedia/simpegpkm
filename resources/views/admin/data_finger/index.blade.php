@@ -26,7 +26,7 @@
 			<td><?php echo $data_finger->nama_lengkap ?></td>
 			<td><?php echo date('d-m-Y',strtotime($data_finger->waktu_finger)) ?></td>
 			<td><?php echo date('H:i:s',strtotime($data_finger->waktu_finger)) ?></td>
-			<td><?php echo $data_finger->ip_mesin_absen ?></td>
+			<td><?php echo $data_finger->lokasi ?> (<?php echo $data_finger->ip_mesin_absen ?>)</td>
 			<td><span class="badge badge-secondary"><?php echo $data_finger->verified ?></span> 
 				<?php if($data_finger->verified==1) { ?>
 					<span class="badge badge-secondary"><i class="fa fa-fingerprint"></i> Finger Print</span>

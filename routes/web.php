@@ -115,7 +115,7 @@ Route::get('admin/akun/unduh', 'App\Http\Controllers\Admin\Akun@unduh');
 Route::post('admin/akun/ganti-password', 'App\Http\Controllers\Admin\Akun@ganti_password');
 
 // modul divisi
-Route::get('admin/divisi', 'App\Http\Controllers\Admin\Divisi@index');
+// Route::get('admin/divisi', 'App\Http\Controllers\Admin\Divisi@index');
 
 // modul jabatan
 Route::get('admin/jabatan', 'App\Http\Controllers\Admin\Jabatan@index');
@@ -163,6 +163,14 @@ Route::post('admin/periode/tambah', 'App\Http\Controllers\Admin\Periode@tambah')
 Route::get('admin/periode/edit/{id}', 'App\Http\Controllers\Admin\Periode@edit');
 Route::post('admin/periode/proses-edit', 'App\Http\Controllers\Admin\Periode@proses_edit');
 Route::get('admin/periode/delete/{id}', 'App\Http\Controllers\Admin\Periode@delete');
+
+// modul jadwal-pegawai
+Route::get('admin/jadwal-pegawai', 'App\Http\Controllers\Admin\Jadwal_pegawai@index');
+Route::get('admin/jadwal-pegawai/tambah/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Jadwal_pegawai@tambah');
+Route::get('admin/jadwal-pegawai/edit/{id}', 'App\Http\Controllers\Admin\Jadwal_pegawai@edit');
+Route::post('admin/jadwal-pegawai/proses-tambah', 'App\Http\Controllers\Admin\Jadwal_pegawai@proses_tambah');
+Route::post('admin/jadwal-pegawai/proses-edit', 'App\Http\Controllers\Admin\Jadwal_pegawai@proses_edit');
+Route::get('admin/jadwal-pegawai/delete/{id}', 'App\Http\Controllers\Admin\Jadwal_pegawai@delete');
 
 // modul gajian
 Route::get('admin/gajian', 'App\Http\Controllers\Admin\Gajian@index');
@@ -267,6 +275,13 @@ Route::post('admin/divisi/tambah', 'App\Http\Controllers\Admin\Divisi@tambah');
 Route::get('admin/divisi/edit/{id}', 'App\Http\Controllers\Admin\Divisi@edit');
 Route::post('admin/divisi/proses-edit', 'App\Http\Controllers\Admin\Divisi@proses_edit');
 Route::get('admin/divisi/delete/{id}', 'App\Http\Controllers\Admin\Divisi@delete');
+
+// modul shift
+Route::get('admin/shift', 'App\Http\Controllers\Admin\Shift@index');
+Route::post('admin/shift/tambah', 'App\Http\Controllers\Admin\Shift@tambah');
+Route::get('admin/shift/edit/{id}', 'App\Http\Controllers\Admin\Shift@edit');
+Route::post('admin/shift/proses-edit', 'App\Http\Controllers\Admin\Shift@proses_edit');
+Route::get('admin/shift/delete/{id}', 'App\Http\Controllers\Admin\Shift@delete');
 
 // modul jenis_cuti
 Route::get('admin/jenis-cuti', 'App\Http\Controllers\Admin\Jenis_cuti@index');

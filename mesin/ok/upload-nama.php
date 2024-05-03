@@ -12,8 +12,8 @@ if(isset($_GET['ip'])) {
 	$nama 	= $_GET['nama'];
 	$id 	= $_GET['id'];
 }else{
-	$IP 	= "192.168.1.13";
-	$Key 	= "8050";
+	$IP 	= "192.168.1.21";
+	$Key 	= "8090";
 	$nama 	= '';
 	$id 	= '';
 }

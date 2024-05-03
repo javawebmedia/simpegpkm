@@ -38,7 +38,7 @@
 
 @include('admin/libur/tambah')
 
-<table class="table table-sm table-bordered">
+<table class="table table-sm tabelku">
 <thead>
 	<tr class=" text-left">
 		<th width="5%">No</th>
@@ -47,6 +47,7 @@
 		<th width="24%">Tanggal</th>
 		<th width="20%">Jenis</th>
 		<th width="20%">Status</th>
+		<th width="10%">Sabtu/Minggu<br>Weekend</th>
 		<th></th>
 	</tr>
 </thead>
@@ -62,6 +63,7 @@
 			<td><?php echo date('d-m-Y',strtotime($libur->tanggal_libur)) ?></td>
 			<td><?php echo $libur->nama_jenis_libur ?></td>
 			<td><?php echo $libur->status_libur ?></td>
+			<td><?php echo $libur->weekend ?></td>
 			<td>
 				
 				<a href="<?php echo asset('admin/libur/edit/'.$libur->id_libur) ?>" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></a>

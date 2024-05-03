@@ -46,8 +46,17 @@ $site_config = DB::table('konfigurasi')->first();
          z-index:1151 !important; 
     }
   </style>
+ 
+  <!-- Bootstrap Switch -->
+  <script src="{{ asset('assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+
+  <!-- LORD ICON -->
   <script src="https://cdn.lordicon.com/xdjxvujz.js"></script>
-</head>
+
+  <!-- RTL Time Picker -->
+  <link rel="stylesheet" href="{{ asset('assets/rtl-time/mdtimepicker.css') }}" />
+  <script src="{{ asset('assets/rtl-time/jquery.min.js') }}"></script>
+  <script src="{{ asset('assets/rtl-time/mdtimepicker.js') }}"></script>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">
 <div class="wrapper">

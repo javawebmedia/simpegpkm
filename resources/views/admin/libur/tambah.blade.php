@@ -1,6 +1,7 @@
 
 <form action="{{ asset('admin/libur/proses-tambah') }}" method="post" accept-charset="utf-8">
         {{ csrf_field() }}
+        <input type="hidden" name="weekend" value="Tidak">
 <div class="modal-basic modal fade show" id="modal-basic" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content modal-bg-white ">

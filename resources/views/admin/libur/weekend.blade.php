@@ -17,6 +17,7 @@ function showUser(str) {
   }
 }
 </script>
+<input type="hidden" name="weekend" value="Ya">
 				<div class="form-group row">
 					<label class="col-3">Nama Jenis &amp; Libur</label>
 					<div class="col-4">

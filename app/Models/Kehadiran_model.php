@@ -51,7 +51,7 @@ class Kehadiran_model extends Model
             ->select(DB::raw('SUM(kehadiran.total_jam_kerja) AS total_jam_kerja'))
             ->where('kehadiran.nip', $nip)
             ->where('kehadiran.thbl', $thbl)
-            ->groupBy('thbl')
+            // ->groupBy('thbl')
             ->orderBy('kehadiran.id_kehadiran', 'DESC')
             ->first();
 

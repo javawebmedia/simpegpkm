@@ -62,7 +62,30 @@ class Mesin_absen extends Controller
         foreach($pegawai as $pegawai) 
         {
             $check          = $m_pin_pegawai->check_pegawai_mesin($pegawai->nip,$mesin_absen->id_mesin_absen);
-            if(!empty($check)) {}else{
+            if(!empty($check)) {
+                $nama           = $pegawai->nama_lengkap;
+                $id             = substr($pegawai->nip, -9);
+                // proses masukin ke mesin absen
+                $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
+                if($Connect){
+                    $soap_request="<SetUserInfo><ArgComKey Xsi:type=\"xsd:integer\">".$Key."</ArgComKey><Arg><PIN>".$id."</PIN><Name>".$nama."</Name></Arg></SetUserInfo>";
+                    $newLine="\r\n";
+                    fputs($Connect, "POST /iWsService HTTP/1.0".$newLine);
+                    fputs($Connect, "Content-Type: text/xml".$newLine);
+                    fputs($Connect, "Content-Length: ".strlen($soap_request).$newLine.$newLine);
+                    fputs($Connect, $soap_request.$newLine);
+                    $buffer="";
+                    while($Response=fgets($Connect, 1024)){
+                        $buffer=$buffer.$Response;
+                    }
+                }else{ 
+                    $buffer = 0;
+                    echo "Koneksi Gagal";
+                }
+                $buffer = Parser::parseData($buffer,"<Information>","</Information>");
+                echo "<B>Result:</B><BR>";
+                echo $buffer.'<hr>';
+            }else{
                 $nama           = $pegawai->nama_lengkap;
                 $id             = substr($pegawai->nip, -9);
                 $data = [   'nip'               => $pegawai->nip,

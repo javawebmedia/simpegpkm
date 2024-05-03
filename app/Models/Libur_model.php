@@ -54,6 +54,18 @@ class Libur_model extends Model
         return $query;
     }
 
+    // tanggal_libur
+    public function tanggal_libur($tanggal_libur)
+    {
+        $query = DB::table('libur')
+            ->join('jenis_libur', 'jenis_libur.id_jenis_libur', '=', 'libur.id_jenis_libur','LEFT')
+            ->select('libur.*', 'jenis_libur.id_jenis_libur', 'jenis_libur.nama_jenis_libur')
+            ->where('libur.tanggal_libur',$tanggal_libur)
+            ->orderBy('libur.tanggal_libur','ASC')
+            ->first();
+        return $query;
+    }
+
      // listing thbl jenis_libur
     public function thbl_jenis_libur($thbl,$id_jenis_libur)
     {
