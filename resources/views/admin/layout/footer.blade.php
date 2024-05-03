@@ -148,6 +148,8 @@ $(document).on("click", ".approval-link", function(e){
 <script src="{{ asset('assets/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
 <script src="{{ asset('assets/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
 <script src="{{ asset('assets/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<!-- bootstrap color picker -->
+<script src="{{ asset('assets/admin/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
 <!-- Time And Date Picker -->
 <script src="{{ asset('assets/admin/plugins/daterangepicker/daterangepicker.js')}}"></script>
 
@@ -206,6 +208,15 @@ $awal     = $sekarang - 50;
 
 <script>
   $(function () {
+    // color picker
+    //Colorpicker
+    $('.my-colorpicker1').colorpicker()
+    //color picker with addon
+    $('.my-colorpicker2').colorpicker()
+
+    $('.my-colorpicker2').on('colorpickerChange', function(event) {
+      $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+    })
     //Initialize Select2 Elements
     $('.select2').select2()
 

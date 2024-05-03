@@ -25,6 +25,8 @@ $site_config = DB::table('konfigurasi')->first();
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
   <!-- icheck bootstrap -->
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+   <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="{{ asset('assets/admin/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('assets/admin/dist/css/adminlte.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/css-admin.css') }}">

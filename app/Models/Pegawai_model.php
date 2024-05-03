@@ -23,6 +23,20 @@ class Pegawai_model extends Model
         return $query;
     }
 
+    // shift
+    public function shift($status_shift)
+    {
+        $query = DB::table('pegawai')
+            ->join('agama', 'agama.id_agama', '=', 'pegawai.id_agama','LEFT')
+            ->join('divisi', 'divisi.id_divisi', '=', 'pegawai.id_divisi','LEFT')
+            ->join('jabatan', 'jabatan.id_jabatan', '=', 'pegawai.id_jabatan','LEFT')
+            ->select('pegawai.*', 'agama.nama_agama','divisi.nama_divisi', 'jabatan.nama_jabatan')
+            ->where('pegawai.status_shift',$status_shift)
+            ->orderBy('pegawai.nama_lengkap','ASC')
+            ->get();
+        return $query;
+    }
+
     // listing semua
     public function cari($keywords)
     {
@@ -68,6 +82,17 @@ class Pegawai_model extends Model
             ->where('pegawai.id_pegawai',$id_pegawai)
             ->orderBy('pegawai.nama_lengkap','ASC')
             ->first();
+        return $query;
+    }
+
+    // status_shift
+    public function status_shift($status_shift)
+    {
+        $query = DB::table('pegawai')
+            ->select('*')
+            ->where('pegawai.status_shift',$status_shift)
+            ->orderBy('pegawai.nama_lengkap','ASC')
+            ->count();
         return $query;
     }
 

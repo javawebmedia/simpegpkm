@@ -104,7 +104,7 @@ for ($hari = 1; $hari <= $jumlah_hari; $hari++) {
 			$hari 			= $website->get_hari($tanggal);
 			$libur 			= $m_libur->tanggal_libur($tanggal);
 			$jumat 			= $m_shift->jumat('Ya');
-			$check_jadwal 	= $m_jadwal_pegawai->check_tanggal($pegawai->nip,$tanggal);
+			$check_jadwal 	= $m_jadwal_pegawai->check_tanggal($pegawai->pin,$tanggal);
 		 ?>
 		 <div class="col-md-2">
 		 	<div class="card">

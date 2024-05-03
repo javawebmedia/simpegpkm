@@ -44,6 +44,7 @@ use ReflectionException;
 use ReturnTypeWillChange;
 use RuntimeException;
 use Throwable;
+use TypeError;
 
 // @codeCoverageIgnoreStart
 require PHP_VERSION < 8.2
@@ -595,11 +596,17 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
      */
     public function __construct(...$arguments)
     {
-        // Dummy construct, as properties are completely overridden
-        parent::__construct('R1/2000-01-01T00:00:00Z/P1D');
+        $raw = null;
 
-        if (is_a($this->dateClass, DateTimeImmutable::class, true)) {
-            $this->options = static::IMMUTABLE;
+        if (isset($arguments['raw'])) {
+            $raw = $arguments['raw'];
+            $this->isDefaultInterval = $arguments['isDefaultInterval'] ?? false;
+
+            if (isset($arguments['dateClass'])) {
+                $this->dateClass = $arguments['dateClass'];
+            }
+
+            $arguments = $raw;
         }
 
         // Parse and assign arguments one by one. First argument may be an ISO 8601 spec,
@@ -629,14 +636,19 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
             }
         }
 
+        if (is_a($this->dateClass, DateTimeImmutable::class, true)) {
+            $this->options = static::IMMUTABLE;
+        }
+
         $optionsSet = false;
+        $sortedArguments = [];
 
         foreach ($arguments as $argument) {
             $parsedDate = null;
 
             if ($argument instanceof DateTimeZone) {
                 $this->setTimezone($argument);
-            } elseif ($this->dateInterval === null &&
+            } elseif (!isset($sortedArguments['interval']) &&
                 (
                     (\is_string($argument) && preg_match(
                         '/^(-?\d(\d(?![\/-])|[^\d\/-]([\/-])?)*|P[T\d].*|(?:\h*\d+(?:\.\d+)?\h*[a-z]+)+)$/i',
@@ -648,23 +660,80 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
                 ) &&
                 $parsedInterval = self::makeInterval($argument)
             ) {
-                $this->setDateInterval($parsedInterval);
-            } elseif ($this->startDate === null && $parsedDate = $this->makeDateTime($argument)) {
-                $this->setStartDate($parsedDate);
-            } elseif ($this->endDate === null && ($parsedDate = $parsedDate ?? $this->makeDateTime($argument))) {
-                $this->setEndDate($parsedDate);
-            } elseif ($this->carbonRecurrences === null &&
-                $this->endDate === null &&
+                $sortedArguments['interval'] = $parsedInterval;
+            } elseif (!isset($sortedArguments['start']) && $parsedDate = $this->makeDateTime($argument)) {
+                $sortedArguments['start'] = $parsedDate;
+            } elseif (!isset($sortedArguments['end']) && ($parsedDate = $parsedDate ?? $this->makeDateTime($argument))) {
+                $sortedArguments['end'] = $parsedDate;
+            } elseif (!isset($sortedArguments['recurrences']) &&
+                !isset($sortedArguments['end']) &&
                 (\is_int($argument) || \is_float($argument))
                 && $argument >= 0
             ) {
-                $this->setRecurrences($argument);
+                $sortedArguments['recurrences'] = $argument;
             } elseif (!$optionsSet && (\is_int($argument) || $argument === null)) {
                 $optionsSet = true;
-                $this->setOptions(((int) $this->options) | ((int) $argument));
+                $sortedArguments['options'] = (((int) $this->options) | ((int) $argument));
             } else {
                 throw new InvalidPeriodParameterException('Invalid constructor parameters.');
             }
+        }
+
+        if ($raw === null && isset($sortedArguments['start'])) {
+            $end = $sortedArguments['end'] ?? max(1, $sortedArguments['recurrences'] ?? 1);
+
+            if (\is_float($end)) {
+                $end = $end === INF ? PHP_INT_MAX : (int) round($end);
+            }
+
+            $raw = [
+                $sortedArguments['start'],
+                $sortedArguments['interval'] ?? CarbonInterval::day(),
+                $end,
+            ];
+        }
+
+        if ($raw === null && \is_string($arguments[0] ?? null) && substr_count($arguments[0], '/') >= 1) {
+            $raw = [$arguments[0]];
+        }
+
+        $constructed = false;
+
+        if ($raw !== null) {
+            try {
+                parent::__construct(...$raw);
+                $constructed = true;
+            } catch (TypeError) {
+                // $constructed = false
+            }
+        }
+
+        if (!$constructed) {
+            parent::__construct('R1/2000-01-01T00:00:00Z/P1D');
+        }
+
+        if (isset($sortedArguments['start'])) {
+            $this->setStartDate($sortedArguments['start']);
+        }
+
+        if (isset($sortedArguments['start'])) {
+            $this->setStartDate($sortedArguments['start']);
+        }
+
+        if (isset($sortedArguments['end'])) {
+            $this->setEndDate($sortedArguments['end']);
+        }
+
+        if (isset($sortedArguments['recurrences'])) {
+            $this->setRecurrences($sortedArguments['recurrences']);
+        }
+
+        if (isset($sortedArguments['interval'])) {
+            $this->setDateInterval($sortedArguments['interval']);
+        }
+
+        if (isset($sortedArguments['options'])) {
+            $this->setOptions($sortedArguments['options']);
         }
 
         if ($this->startDate === null) {
@@ -925,7 +994,7 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
      *
      * @return static
      */
-    public function toggleOptions(int $options, bool $state = null): static
+    public function toggleOptions(int $options, ?bool $state = null): static
     {
         if ($state === null) {
             $state = ($this->options & $options) !== $options;
@@ -1216,7 +1285,7 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
      *
      * @return static
      */
-    public function setStartDate(mixed $date, bool $inclusive = null): static
+    public function setStartDate(mixed $date, ?bool $inclusive = null): static
     {
         if (!$this->isInfiniteDate($date) && !($date = ([$this->dateClass, 'make'])($date))) {
             throw new InvalidPeriodDateException('Invalid start date.');

@@ -12,7 +12,7 @@ class Jadwal_pegawai_model extends Model
     public function listing()
     {
         $query = DB::table('jadwal_pegawai')
-            ->select('jadwal_pegawai.*','shift.nama','shift.kode','pegawai.nama_lengkap')
+            ->select('jadwal_pegawai.*','shift.nama','shift.kode','shift.warna','pegawai.nama_lengkap')
             ->join('shift', 'shift.id_shift', '=', 'jadwal_pegawai.id_shift','LEFT')
             ->join('pegawai', 'pegawai.pin', '=', 'jadwal_pegawai.pin')
             ->orderBy('jadwal_pegawai.id_jadwal_pegawai','DESC')
@@ -24,7 +24,7 @@ class Jadwal_pegawai_model extends Model
     public function semua($paginasi)
     {
         $query = DB::table('jadwal_pegawai')
-            ->select('jadwal_pegawai.*','shift.nama','shift.kode','pegawai.nama_lengkap')
+            ->select('jadwal_pegawai.*','shift.nama','shift.kode','shift.warna','pegawai.nama_lengkap')
             ->join('shift', 'shift.id_shift', '=', 'jadwal_pegawai.id_shift','LEFT')
             ->join('pegawai', 'pegawai.pin', '=', 'jadwal_pegawai.pin')
             ->orderBy('jadwal_pegawai.id_jadwal_pegawai','DESC')
@@ -33,27 +33,28 @@ class Jadwal_pegawai_model extends Model
     }
 
     // check_bulan
-    public function check_bulan($nip,$thbl)
+    public function check_bulan($pin,$tahun,$bulan)
     {
         $query = DB::table('jadwal_pegawai')
-            ->select('jadwal_pegawai.*','shift.nama','shift.kode','pegawai.nama_lengkap')
+            ->select('jadwal_pegawai.*','shift.nama','shift.kode','shift.warna','pegawai.nama_lengkap')
             ->join('shift', 'shift.id_shift', '=', 'jadwal_pegawai.id_shift','LEFT')
             ->join('pegawai', 'pegawai.pin', '=', 'jadwal_pegawai.pin')
-            ->where('jadwal_pegawai.nip',$nip)
-            ->where('jadwal_pegawai.thbl',$thbl)
+            ->where('jadwal_pegawai.pin',$pin)
+            ->where('jadwal_pegawai.tahun',$tahun)
+            ->where('jadwal_pegawai.bulan',$bulan)
             ->orderBy('jadwal_pegawai.id_jadwal_pegawai','ASC')
             ->get();
         return $query;
     }
 
     // check_tanggal
-    public function check_tanggal($nip,$tanggal)
+    public function check_tanggal($pin,$tanggal)
     {
         $query = DB::table('jadwal_pegawai')
-            ->select('jadwal_pegawai.*','shift.nama','shift.kode','pegawai.nama_lengkap')
+            ->select('jadwal_pegawai.*','shift.nama','shift.kode','shift.warna','pegawai.nama_lengkap')
             ->join('shift', 'shift.id_shift', '=', 'jadwal_pegawai.id_shift','LEFT')
             ->join('pegawai', 'pegawai.pin', '=', 'jadwal_pegawai.pin')
-            ->where('jadwal_pegawai.nip',$nip)
+            ->where('jadwal_pegawai.pin',$pin)
             ->where('jadwal_pegawai.tanggal',$tanggal)
             ->orderBy('jadwal_pegawai.id_jadwal_pegawai','ASC')
             ->first();
@@ -64,7 +65,7 @@ class Jadwal_pegawai_model extends Model
     public function detail($id_jadwal_pegawai)
     {
         $query = DB::table('jadwal_pegawai')
-            ->select('jadwal_pegawai.*','shift.nama','shift.kode','pegawai.nama_lengkap')
+            ->select('jadwal_pegawai.*','shift.nama','shift.kode','shift.warna','pegawai.nama_lengkap')
             ->join('shift', 'shift.id_shift', '=', 'jadwal_pegawai.id_shift','LEFT')
             ->join('pegawai', 'pegawai.pin', '=', 'jadwal_pegawai.pin')
             ->where('jadwal_pegawai.id_jadwal_pegawai',$id_jadwal_pegawai)
@@ -77,7 +78,7 @@ class Jadwal_pegawai_model extends Model
     public function pegawai($nip)
     {
         $query = DB::table('jadwal_pegawai')
-            ->select('jadwal_pegawai.*','shift.nama','shift.kode','pegawai.nama_lengkap')
+            ->select('jadwal_pegawai.*','shift.nama','shift.kode','shift.warna','pegawai.nama_lengkap')
             ->join('shift', 'shift.id_shift', '=', 'jadwal_pegawai.id_shift','LEFT')
             ->join('pegawai', 'pegawai.pin', '=', 'jadwal_pegawai.pin')
             ->where('jadwal_pegawai.nip',$nip)

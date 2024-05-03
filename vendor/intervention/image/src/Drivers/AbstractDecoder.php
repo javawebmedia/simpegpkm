@@ -7,13 +7,14 @@ namespace Intervention\Image\Drivers;
 use Exception;
 use Intervention\Image\Collection;
 use Intervention\Image\Exceptions\DecoderException;
+use Intervention\Image\Exceptions\RuntimeException;
 use Intervention\Image\Interfaces\CollectionInterface;
 use Intervention\Image\Interfaces\ColorInterface;
 use Intervention\Image\Interfaces\DecoderInterface;
 use Intervention\Image\Interfaces\ImageInterface;
 use Intervention\Image\Traits\CanBuildFilePointer;
 
-abstract class AbstractDecoder extends DriverSpecialized implements DecoderInterface
+abstract class AbstractDecoder implements DecoderInterface
 {
     use CanBuildFilePointer;
 
@@ -25,8 +26,8 @@ abstract class AbstractDecoder extends DriverSpecialized implements DecoderInter
      * Try to decode given input to image or color object
      *
      * @param mixed $input
+     * @throws RuntimeException
      * @return ImageInterface|ColorInterface
-     * @throws DecoderException
      */
     final public function handle(mixed $input): ImageInterface|ColorInterface
     {
@@ -68,6 +69,33 @@ abstract class AbstractDecoder extends DriverSpecialized implements DecoderInter
     }
 
     /**
+     * Determine if given input is a path to an existing regular file
+     *
+     * @param mixed $input
+     * @return bool
+     */
+    protected function isFile(mixed $input): bool
+    {
+        if (!is_string($input)) {
+            return false;
+        }
+
+        if (strlen($input) > PHP_MAXPATHLEN) {
+            return false;
+        }
+
+        try {
+            if (!@is_file($input)) {
+                return false;
+            }
+        } catch (Exception) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Extract and return EXIF data from given input which can be binary image
      * data or a file path.
      *
@@ -82,7 +110,7 @@ abstract class AbstractDecoder extends DriverSpecialized implements DecoderInter
 
         try {
             $source = match (true) {
-                (strlen($path_or_data) <= PHP_MAXPATHLEN && is_file($path_or_data)) => $path_or_data, // path
+                $this->isFile($path_or_data) => $path_or_data, // path
                 default => $this->buildFilePointer($path_or_data), // data
             };
 

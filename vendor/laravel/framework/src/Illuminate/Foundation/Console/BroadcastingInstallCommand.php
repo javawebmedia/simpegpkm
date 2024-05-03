@@ -23,7 +23,9 @@ class BroadcastingInstallCommand extends Command
      */
     protected $signature = 'install:broadcasting
                     {--composer=global : Absolute path to the Composer binary which should be used to install packages}
-                    {--force : Overwrite any existing broadcasting routes file}';
+                    {--force : Overwrite any existing broadcasting routes file}
+                    {--without-reverb : Do not prompt to install Laravel Reverb}
+                    {--without-node : Do not prompt to install Node dependencies}';
 
     /**
      * The console command description.
@@ -42,19 +44,21 @@ class BroadcastingInstallCommand extends Command
         $this->call('config:publish', ['name' => 'broadcasting']);
 
         // Install channel routes file...
-        if (file_exists($broadcastingRoutesPath = $this->laravel->basePath('routes/channels.php')) &&
-            ! $this->option('force')) {
-            $this->components->error('Broadcasting routes file already exists.');
-        } else {
+        if (! file_exists($broadcastingRoutesPath = $this->laravel->basePath('routes/channels.php')) || $this->option('force')) {
             $this->components->info("Published 'channels' route file.");
 
             copy(__DIR__.'/stubs/broadcasting-routes.stub', $broadcastingRoutesPath);
         }
 
         $this->uncommentChannelsRoutesFile();
+        $this->enableBroadcastServiceProvider();
 
         // Install bootstrapping...
         if (! file_exists($echoScriptPath = $this->laravel->resourcePath('js/echo.js'))) {
+            if (! is_dir($directory = $this->laravel->resourcePath('js'))) {
+                mkdir($directory, 0755, true);
+            }
+
             copy(__DIR__.'/stubs/echo-js.stub', $echoScriptPath);
         }
 
@@ -101,10 +105,24 @@ class BroadcastingInstallCommand extends Command
                 'commands: __DIR__.\'/../routes/console.php\','.PHP_EOL.'        channels: __DIR__.\'/../routes/channels.php\',',
                 $appBootstrapPath,
             );
-        } else {
-            $this->components->warn('Unable to automatically add channel route definition to bootstrap file. Channel route file should be registered manually.');
+        }
+    }
 
-            return;
+    /**
+     * Uncomment the "BroadcastServiceProvider" in the application configuration.
+     *
+     * @return void
+     */
+    protected function enableBroadcastServiceProvider()
+    {
+        $config = ($filesystem = new Filesystem)->get(app()->configPath('app.php'));
+
+        if (str_contains($config, '// App\Providers\BroadcastServiceProvider::class')) {
+            $filesystem->replaceInFile(
+                '// App\Providers\BroadcastServiceProvider::class',
+                'App\Providers\BroadcastServiceProvider::class',
+                app()->configPath('app.php'),
+            );
         }
     }
 
@@ -115,7 +133,7 @@ class BroadcastingInstallCommand extends Command
      */
     protected function installReverb()
     {
-        if (InstalledVersions::isInstalled('laravel/reverb')) {
+        if ($this->option('without-reverb') || InstalledVersions::isInstalled('laravel/reverb')) {
             return;
         }
 
@@ -147,7 +165,7 @@ class BroadcastingInstallCommand extends Command
      */
     protected function installNodeDependencies()
     {
-        if (! confirm('Would you like to install and build the Node dependencies required for broadcasting?', default: true)) {
+        if ($this->option('without-node') || ! confirm('Would you like to install and build the Node dependencies required for broadcasting?', default: true)) {
             return;
         }
 
@@ -162,6 +180,11 @@ class BroadcastingInstallCommand extends Command
             $commands = [
                 'yarn add --dev laravel-echo pusher-js',
                 'yarn run build',
+            ];
+        } elseif (file_exists(base_path('bun.lockb'))) {
+            $commands = [
+                'bun add --dev laravel-echo pusher-js',
+                'bun run build',
             ];
         } else {
             $commands = [

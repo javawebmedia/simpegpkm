@@ -36,7 +36,7 @@
 		<?php $no=1; foreach($shift as $shift) { ?>
 		<tr>
 			<td>{{ $no }}</td>
-			<td>{{ $shift->kode }}</td>
+			<td><i class="far fa-square" style="background-color: <?php echo $shift->warna ?>;"></i> {{ $shift->kode }}</td>
 			<td>{{ $shift->nama }}</td>
 			<td>{{ $shift->jam_mulai }} - {{ $shift->jam_selesai }}</td>
 			<td>{{ $shift->shift_default }}</td>

@@ -73,6 +73,7 @@ class Shift extends Controller
             'shift_default' => $request->shift_default,
             'day_off'       => $request->day_off,
             'jumat'         => $request->jumat,
+            'warna'         => $request->warna,
         ]);
         // ambil
         $check  = DB::table('shift')->where('kode',$request->kode)->first();
@@ -120,6 +121,7 @@ class Shift extends Controller
             'shift_default' => $request->shift_default,
             'day_off'       => $request->day_off,
             'jumat'         => $request->jumat,
+            'warna'         => $request->warna,
         ]);
         // ambil
         DB::table('shift_hari')->where('id_shift',$request->id_shift)->delete();

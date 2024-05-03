@@ -13,10 +13,21 @@
         {{ csrf_field() }}
 
           <div class="form-group row">
-            <label class="col-md-3">Kode Shift</label>
-            <div class="col-md-9">
+            <label class="col-md-3">Kode dan Warna Shift</label>
+
+            <div class="col-md-3">
               <input type="text" name="kode" class="form-control" placeholder="Kode Shift" value="{{ old('kode') }}" required>
             </div>
+
+            <div class="col-md-5">
+              <div class="input-group my-colorpicker2">
+                <input type="text" name="warna" class="form-control" placeholder="Warna Shift" value="{{ old('warna') }}" required>
+                <div class="input-group-append">
+                  <span class="input-group-text"><i class="fas fa-square"></i></span>
+                </div>
+              </div>
+            </div>
+
           </div>
 
           <div class="form-group row">

@@ -1,3 +1,19 @@
+<p>
+	<a href="{{ asset('admin/jadwal-pegawai?shift=Ya') }}" class="btn btn-info">
+		<i class="fa fa-calendar-check"></i> Pegawai Shift (<?php echo $total_shift ?>)
+	</a>
+	<a href="{{ asset('admin/jadwal-pegawai?shift=Tidak') }}" class="btn btn-success">
+		<i class="fa fa-calendar"></i> Pegawai Non Shift (<?php echo $total_non_shift ?>)
+	</a>
+	<a href="{{ asset('admin/jadwal-pegawai') }}" class="btn btn-secondary">
+		<i class="fa fa-users"></i> Semua Pegawai (<?php echo $total_shift+$total_non_shift; ?>)
+	</a>
+
+	<a href="{{ asset('admin/jadwal-pegawai/lihat/'.$tahun.'/'.$bulan) }}" class="btn btn-warning">
+		<i class="fa fa-eye"></i> Lihat Jadwal
+	</a>
+</p>
+
 <form action="{{ asset('admin/jadwal-pegawai') }}" method="get" accept-charset="utf-8" class="mt-2">
 	{{ csrf_field() }}
 	<input type="hidden" name="thbl" value="<?php echo $thbl ?>">
@@ -22,11 +38,16 @@
 			<button type="submit" class="btn btn-info btn-flat" name="submit" value="submit">
 				<i class="fa fa-arrow-right"></i> Lihat Jadwal Kerja
 			</button>
+			
+			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
+			  <i class="fa fa-sync"></i> Generate Jadwal Pegawai Non Shift
+			</button>
 
 		</span>
 	</div>
 </form>
 
+@include('admin/jadwal_pegawai/generate')
 <br>
 
 <table class="table table-sm tabelku" id="example3">
@@ -35,21 +56,38 @@
 			<th width="15%">NIP / PIN</th>
 			<th width="20%">NAMA</th>
 			<th width="20%">DIVISI</th>
-			<th width="15%">JABATAN</th>
-			<th width="15%">STATUS JADWAL</th>
+			<th width="10%">SHIFT</th>
+			<th width="10%">STATUS JADWAL</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php foreach($pegawai as $pegawai) { ?>
+		<?php foreach($pegawai as $pegawai) {
+			$check_jadwal = $m_jadwal_pegawai->check_bulan($pegawai->pin,$tahun,$bulan);
+		 ?>
 		<tr>
 			<td><?php echo $pegawai->nip ?>
-			<small><br>PIN: <?php echo $pegawai->pin ?></small></td>
+			<small><br><strong>PIN:</strong> <?php echo $pegawai->pin ?>
+				</small></td>
 			<td><?php echo $pegawai->nama_lengkap ?></td>
 			<td><?php echo $pegawai->nama_divisi ?></td>
-			<td><?php echo $pegawai->nama_jabatan ?></td>
-			<td></td>
 			<td>
+				<?php if($pegawai->status_shift=='Ya') { ?>
+					<span class="badge badge-info"><i class="fa fa-calendar-check"></i> <?php echo $pegawai->status_shift ?></span>
+				<?php }else{ ?>
+					<span class="badge badge-warning"><i class="fa fa-calendar"></i> <?php echo $pegawai->status_shift ?></span>
+				<?php } ?>
+			</td>
+			<td>
+				<?php 
+				if(count($check_jadwal) > 1) { ?>
+					<span class="badge badge-success"><i class="fa fa-check-circle"></i> Sudah</span>
+				<?php }else{ ?>
+					<span class="badge badge-secondary"><i class="fa fa-times-circle"></i> Belum</span>
+				<?php } ?>
+			</td>
+			<td>
+				<a href="{{ asset('admin/jadwal-pegawai/lihat/'.$pegawai->id_pegawai.'/'.$tahun.'/'.$bulan) }}" class="btn btn-secondary btn-xs"><i class="fa fa-eye"></i></a>
 				<a href="{{ asset('admin/jadwal-pegawai/tambah/'.$pegawai->id_pegawai.'/'.$tahun.'/'.$bulan) }}" class="btn btn-secondary btn-xs"><i class="fa fa-calendar-check"></i> Atur Jadwal</a>
 			</td>
 		</tr>

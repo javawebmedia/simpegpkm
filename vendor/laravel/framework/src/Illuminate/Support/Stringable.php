@@ -732,7 +732,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      * Replace the patterns matching the given regular expression.
      *
      * @param  array|string  $pattern
-     * @param  \Closure|string  $replace
+     * @param  \Closure|string[]|string  $replace
      * @param  int  $limit
      * @return static
      */
@@ -968,7 +968,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      */
     public function trim($characters = null)
     {
-        return new static(trim(...array_merge([$this->value], func_get_args())));
+        return new static(Str::trim(...array_merge([$this->value], func_get_args())));
     }
 
     /**
@@ -979,7 +979,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      */
     public function ltrim($characters = null)
     {
-        return new static(ltrim(...array_merge([$this->value], func_get_args())));
+        return new static(Str::ltrim(...array_merge([$this->value], func_get_args())));
     }
 
     /**
@@ -990,7 +990,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      */
     public function rtrim($characters = null)
     {
-        return new static(rtrim(...array_merge([$this->value], func_get_args())));
+        return new static(Str::rtrim(...array_merge([$this->value], func_get_args())));
     }
 
     /**

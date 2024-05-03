@@ -171,6 +171,8 @@ Route::get('admin/jadwal-pegawai/edit/{id}', 'App\Http\Controllers\Admin\Jadwal_
 Route::post('admin/jadwal-pegawai/proses-tambah', 'App\Http\Controllers\Admin\Jadwal_pegawai@proses_tambah');
 Route::post('admin/jadwal-pegawai/proses-edit', 'App\Http\Controllers\Admin\Jadwal_pegawai@proses_edit');
 Route::get('admin/jadwal-pegawai/delete/{id}', 'App\Http\Controllers\Admin\Jadwal_pegawai@delete');
+Route::post('admin/jadwal-pegawai/proses-generate', 'App\Http\Controllers\Admin\Jadwal_pegawai@proses_generate');
+Route::get('admin/jadwal-pegawai/lihat/{id}/{id2}', 'App\Http\Controllers\Admin\Jadwal_pegawai@lihat');
 
 // modul gajian
 Route::get('admin/gajian', 'App\Http\Controllers\Admin\Gajian@index');
