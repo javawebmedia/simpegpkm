@@ -33,6 +33,9 @@ class Data_finger extends Controller
     // tarik
     public function tarik($id_mesin_absen)
     {
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', 0);
+        
         $m_mesin_absen          = new Mesin_absen_model();
         $m_data_finger          = new Data_finger_model();
         $mesin_absen            = $m_mesin_absen->detail($id_mesin_absen);

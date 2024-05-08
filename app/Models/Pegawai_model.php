@@ -23,6 +23,20 @@ class Pegawai_model extends Model
         return $query;
     }
 
+    // ujicoba
+    public function ujicoba()
+    {
+        $query = DB::table('pegawai')
+            ->join('agama', 'agama.id_agama', '=', 'pegawai.id_agama','LEFT')
+            ->join('divisi', 'divisi.id_divisi', '=', 'pegawai.id_divisi','LEFT')
+            ->join('jabatan', 'jabatan.id_jabatan', '=', 'pegawai.id_jabatan','LEFT')
+            ->select('pegawai.*', 'agama.nama_agama','divisi.nama_divisi', 'jabatan.nama_jabatan')
+            ->whereIn('pegawai.pin',array('123456','1','123456789','201303076','201909195','202103210','3','4'))
+            ->orderBy('pegawai.nama_lengkap','ASC')
+            ->get();
+        return $query;
+    }
+
     // shift
     public function shift($status_shift)
     {
@@ -105,6 +119,20 @@ class Pegawai_model extends Model
             ->join('jabatan', 'jabatan.id_jabatan', '=', 'pegawai.id_jabatan','LEFT')
             ->select('pegawai.*', 'agama.nama_agama','divisi.nama_divisi', 'jabatan.nama_jabatan')
             ->where('pegawai.nip',$nip)
+            ->orderBy('pegawai.nama_lengkap','ASC')
+            ->first();
+        return $query;
+    }
+
+    // pin
+    public function pin($pin)
+    {
+        $query = DB::table('pegawai')
+            ->join('agama', 'agama.id_agama', '=', 'pegawai.id_agama','LEFT')
+            ->join('divisi', 'divisi.id_divisi', '=', 'pegawai.id_divisi','LEFT')
+            ->join('jabatan', 'jabatan.id_jabatan', '=', 'pegawai.id_jabatan','LEFT')
+            ->select('pegawai.*', 'agama.nama_agama','divisi.nama_divisi', 'jabatan.nama_jabatan')
+            ->where('pegawai.pin',$pin)
             ->orderBy('pegawai.nama_lengkap','ASC')
             ->first();
         return $query;

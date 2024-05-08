@@ -45,16 +45,32 @@ class Kehadiran_model extends Model
     }
 
     // pegawai_thbl
-    public function pegawai_thbl($nip, $thbl)
+    public function pegawai_thbl($pin, $thbl)
     {
         $query = DB::table('kehadiran')
-            ->select(DB::raw('SUM(kehadiran.total_jam_kerja) AS total_jam_kerja'))
-            ->where('kehadiran.nip', $nip)
+            ->select(DB::raw('SUM(kehadiran.total_jam_kerja) AS total_jam_kerja'),
+                    DB::raw('SUM(kehadiran.jumlah_menit_terlambat) AS total_jumlah_menit_terlambat'),
+                    DB::raw('SUM(kehadiran.jumlah_menit_pulang_cepat) AS total_jumlah_menit_pulang_cepat')
+            )
+            ->where('kehadiran.pin', $pin)
             ->where('kehadiran.thbl', $thbl)
             // ->groupBy('thbl')
             ->orderBy('kehadiran.id_kehadiran', 'DESC')
             ->first();
 
+        return $query;
+    }
+
+    // pegawai_thbl_all
+    public function pegawai_thbl_all($pin, $thbl)
+    {
+        $query = DB::table('kehadiran')
+            ->select('kehadiran.*', 'shift.nama', 'shift.warna', 'shift.kode')
+            ->join('shift', 'shift.id_shift', '=', 'kehadiran.id_shift')
+            ->where('kehadiran.pin', $pin)
+            ->where('kehadiran.thbl', $thbl)
+            ->orderBy('kehadiran.tanggal_masuk', 'ASC')
+            ->get();
         return $query;
     }
 

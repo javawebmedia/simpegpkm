@@ -51,8 +51,18 @@ class Jadwal_pegawai_model extends Model
     public function check_tanggal($pin,$tanggal)
     {
         $query = DB::table('jadwal_pegawai')
-            ->select('jadwal_pegawai.*','shift.nama','shift.kode','shift.warna','pegawai.nama_lengkap')
-            ->join('shift', 'shift.id_shift', '=', 'jadwal_pegawai.id_shift','LEFT')
+            ->select('jadwal_pegawai.*',
+                        'shift.nama',
+                        'shift.kode',
+                        'shift.warna',
+                        'pegawai.nama_lengkap',
+                        'shift.jumat',
+                        'shift.ganti_hari',
+                        'shift.day_off',
+                        'shift.shift_default',
+                        'shift.jam_mulai',
+                        'shift.jam_selesai')
+            ->join('shift', 'shift.id_shift', '=', 'jadwal_pegawai.id_shift')
             ->join('pegawai', 'pegawai.pin', '=', 'jadwal_pegawai.pin')
             ->where('jadwal_pegawai.pin',$pin)
             ->where('jadwal_pegawai.tanggal',$tanggal)

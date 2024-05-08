@@ -52,6 +52,9 @@ class Mesin_absen extends Controller
     // unggah
     public function unggah($id_mesin_absen)
     {
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', 0);
+        
         $mesin_absen    = DB::table('mesin_absen')->where('id_mesin_absen',$id_mesin_absen)->first();
         $m_pegawai      = new Pegawai_model();
         $m_pin_pegawai  = new Pin_pegawai_model();

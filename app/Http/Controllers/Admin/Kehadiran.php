@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Pegawai_model;
 use App\Models\Kehadiran_model;
 use App\Models\Data_finger_model;
+use App\Models\Jadwal_pegawai_model;
+use App\Models\Absensi_model;
 use Image;
 use PDF;
 
@@ -46,19 +48,72 @@ class Kehadiran extends Controller
         return view('admin/layout/wrapper',$data);
     }
 
-    // proses tambah data
+    // detail
+    public function detail($pin,$tahun,$bulan)
+    {
+        $m_pegawai      = new Pegawai_model();
+        $m_kehadiran    = new Kehadiran_model();
+        $m_absensi      = new Absensi_model();
+        $pegawai        = $m_pegawai->pin($pin);
+        $thbl           = $tahun.$bulan;
+        $kehadiran      = $m_kehadiran->pegawai_thbl_all($pin,$thbl);
+
+        if($bulan=='01') {
+            $nama_bulan = 'Januari';
+        }elseif($bulan=='02') {
+            $nama_bulan = 'Februari';
+        }elseif($bulan=='03') {
+            $nama_bulan = 'Maret';
+        }elseif($bulan=='04') {
+            $nama_bulan = 'April';
+        }elseif($bulan=='05') {
+            $nama_bulan = 'Mei';
+        }elseif($bulan=='06') {
+            $nama_bulan = 'Juni';
+        }elseif($bulan=='07') {
+            $nama_bulan = 'Juli';
+        }elseif($bulan=='08') {
+            $nama_bulan = 'Agustus';
+        }elseif($bulan=='09') {
+            $nama_bulan = 'September';
+        }elseif($bulan=='10') {
+            $nama_bulan = 'Oktober';
+        }elseif($bulan=='11') {
+            $nama_bulan = 'November';
+        }elseif($bulan=='12') {
+            $nama_bulan = 'Desember';
+        }
+
+        $data = [   'title'             => 'Data Kehadiran: '.$pegawai->nama_lengkap.
+                                            ' (NIP: '.$pegawai->nip.') - '.$nama_bulan.' '.$tahun,
+                    'pegawai'           => $pegawai,
+                    'tahun'             => $tahun,
+                    'bulan'             => $bulan,
+                    'thbl'              => $tahun.$bulan,
+                    'm_kehadiran'       => $m_kehadiran,
+                    'kehadiran'         => $kehadiran,
+                    'content'           => 'admin/kehadiran/detail'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
+    // tambah
     public function tambah(Request $request)
     {
+        ini_set('memory_limit', -1);
+        ini_set('max_execution_time', 0);
+        date_default_timezone_set("Asia/Jakarta");
         // proteksi halaman
         if(Session()->get('username')=="") { 
             $last_page = url()->full();
             return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
         }
         // end proteksi halaman
-        $m_pegawai      = new Pegawai_model();
-        $m_kehadiran    = new Kehadiran_model();
-        $m_data_finger  = new Data_finger_model();
-        $pegawai        = $m_pegawai->listing();
+        $m_pegawai          = new Pegawai_model();
+        $m_kehadiran        = new Kehadiran_model();
+        $m_data_finger      = new Data_finger_model();
+        $m_jadwal_pegawai   = new Jadwal_pegawai_model();
+        $pegawai            = $m_pegawai->listing();
 
         request()->validate([
                             'tahun'     => 'required',
@@ -68,6 +123,11 @@ class Kehadiran extends Controller
         $TAHUN  = $request->tahun;
         $BULAN  = $request->bulan;
         $THBL   = $TAHUN.$BULAN;
+        $submit = $request->submit;
+
+        if($submit=='lihat') {
+            return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&submit='.$request->submit);
+        }
 
         DB::table('kehadiran')->where(['thbl' => $THBL])->delete();
 
@@ -82,62 +142,113 @@ class Kehadiran extends Controller
             }
             // Menampilkan semua tanggal
             foreach ($semua_tanggal as $tanggal) {
-                // echo $tanggal . "<br>";
-                $check_finger_awal      = $m_data_finger->check_finger_awal($pegawai->pin,$tanggal,'0');
-                $check_finger_akhir     = $m_data_finger->check_finger_akhir($pegawai->pin,$tanggal,'1');
+                // check jadwal pegawai sesuai tanggal
+                $pin                    = $pegawai->pin;
+                $check_jadwal           = $m_jadwal_pegawai->check_tanggal($pin,$tanggal);
 
-                if(!empty($check_finger_awal)) {
-                    $tanggal_masuk  = date('Y-m-d H:i:s',strtotime($check_finger_awal->waktu_finger));
+                if(!empty($check_jadwal)) {
+                    // data finger awal
+                    $check_finger_awal      = $m_data_finger->check_finger_awal($pegawai->pin,$tanggal,'0');
+                    $tanggal_kemarin        = $tanggal;
+                    // jika ganti hari
+                    if($check_jadwal->ganti_hari=='Ya') {
+                        $tanggal_keluar         = date("Y-m-d", strtotime($tanggal_kemarin . " +1 day"));
+                        $check_finger_akhir     = $m_data_finger->check_finger_akhir_shift($pegawai->pin,$tanggal_keluar,'1');
+                    }else{
+                        $tanggal_keluar         = $tanggal;
+                        $check_finger_akhir     = $m_data_finger->check_finger_akhir($pegawai->pin,$tanggal_keluar,'1');
+                    }
+                    // echo $tanggal . "<br>";
+
+                    if(!empty($check_finger_awal)) {
+                        $tanggal_masuk      = $check_finger_awal->tanggal_finger;
+                        $tanggal_jam_masuk  = $check_finger_awal->waktu_finger;
+                    }else{
+                        $tanggal_masuk      = $tanggal;
+                        $tanggal_jam_masuk  = null;
+                    }
+
+                    if(!empty($check_finger_akhir)) {
+                        $tanggal_keluar     = $check_finger_akhir->tanggal_finger;   
+                        $tanggal_jam_keluar = $check_finger_akhir->waktu_finger;
+                    }else{
+                        $tanggal_keluar     = $tanggal_keluar;
+                        $tanggal_jam_keluar = null;
+                    }
+
+                    // print_r($check_finger_awal);
+                    if($check_jadwal->day_off=='Ya') {
+                        $kehadiran                  = 'OFF';
+                        $keterangan                 = '-';
+                        $jumlah_menit_terlambat     = 0;
+                        $jumlah_menit_pulang_cepat  = 0;
+                        $lembur                     = 0;
+                        $total_jam_kerja            = 0;
+                    }else{
+                        if($tanggal_jam_masuk == null && $tanggal_jam_keluar == null) {
+                            $kehadiran                  = 'Tidak Hadir';
+                            $keterangan                 = '-';
+                            $jumlah_menit_terlambat     = 0;
+                            $jumlah_menit_pulang_cepat  = 0;
+                            $lembur                     = 0;
+                            $total_jam_kerja            = 0;
+                        }else{
+                            $kehadiran                  = 'Hadir';
+                            $keterangan                 = '-';
+                            // klo jam masuk ga ada
+                            if($tanggal_jam_masuk==null) {
+                                $jumlah_menit_terlambat     = 0;
+                                $jumlah_menit_pulang_cepat  = 0;
+                                $lembur                     = 0;
+                                $total_jam_kerja            = 225;
+                            }elseif($tanggal_jam_keluar == null) {
+                                $jumlah_menit_terlambat     = 0;
+                                $jumlah_menit_pulang_cepat  = 0;
+                                $lembur                     = 0;
+                                $total_jam_kerja            = 225;
+                            }elseif(!empty($check_finger_awal) && !empty($check_finger_akhir)) {
+                                $waktu_awal                 = $check_finger_awal->waktu_finger;
+                                $waktu_akhir                = $check_finger_akhir->waktu_finger;
+                                $timestamp_awal             = strtotime($waktu_awal);
+                                $timestamp_akhir            = strtotime($waktu_akhir);
+                                // Menghitung selisih waktu dalam detik
+                                $total_jam_kerja            = ($timestamp_akhir - $timestamp_awal)/60;
+                                // standar
+                                $jam_standar_masuk          = strtotime($tanggal_masuk.' '.$check_jadwal->jam_mulai);
+                                $jam_standar_pulang         = strtotime($tanggal_keluar.' '.$check_jadwal->jam_selesai);                
+                                $jumlah_menit_terlambat     = ($timestamp_awal - $jam_standar_masuk)/60;
+                                $jumlah_menit_pulang_cepat  = ($jam_standar_pulang - $timestamp_akhir)/60;
+                                $lembur                     = 0;
+                            }
+                        }
+                    }
+                    // hitung lainnya
+
+                    $data = [   'id_shift'                  => $check_jadwal->id_shift,
+                                'nip'                       => $pegawai->nip,
+                                'pin'                       => $pegawai->pin,
+                                'tanggal_masuk'             => $tanggal_masuk,
+                                'tanggal_keluar'            => $tanggal_keluar,
+                                'tanggal_jam_masuk'         => $tanggal_jam_masuk,
+                                'tanggal_jam_keluar'        => $tanggal_jam_keluar,
+                                'kehadiran'                 => $kehadiran,
+                                'keterangan'                => $keterangan,
+                                'jumlah_menit_terlambat'    => $jumlah_menit_terlambat,
+                                'jumlah_menit_pulang_cepat' => $jumlah_menit_pulang_cepat,
+                                'lembur'                    => $lembur,
+                                'total_jam_kerja'           => $total_jam_kerja,
+                                'thbl'                      => $THBL,
+                                'tahun'                     => $TAHUN,
+                                'bulan'                     => $BULAN,
+                                'id_pengguna'               => Session()->get('id_pegawai')
+                            ];
+                    DB::table('kehadiran')->insert($data);
                 }else{
-                    $tanggal_masuk  = null;
+                    //  jika tidak diset jadwal maka kehadiran tidak diproses
                 }
-
-                if(!empty($check_finger_akhir)) {
-                    $tanggal_keluar  = date('Y-m-d H:i:s',strtotime($check_finger_akhir->waktu_finger));
-                }else{
-                    $tanggal_keluar  = null;
-                }
-
-                if(!empty($check_finger_awal) && !empty($check_finger_akhir)) {
-                    $kehadiran          = 'Hadir';
-                    $keterangan         = '-';
-                    $waktu_awal         = $check_finger_awal->waktu_finger;
-                    $waktu_akhir        = $check_finger_akhir->waktu_finger;
-                    $timestamp_awal     = strtotime($waktu_awal);
-                    $timestamp_akhir    = strtotime($waktu_akhir);
-                    // Menghitung selisih waktu dalam detik
-                    $total_jam_kerja = $timestamp_akhir - $timestamp_awal;
-                }else{
-                    $kehadiran          = '';
-                    $keterangan         = '-';
-                    $total_jam_kerja    = 13500;
-                }
-
-                $jumlah_menit_terlambat     = 0;
-                $pulang_cepat               = 0;
-                $lembur               = 0;
-
-                $data = [   'id_shift'                  => 1,
-                            'nip'                       => $pegawai->nip,
-                            'pin'                       => $pegawai->pin,
-                            'tanggal_kehadiran'         => $tanggal,
-                            'tanggal_masuk'             => $tanggal_masuk,
-                            'tanggal_keluar'            => $tanggal_keluar,
-                            'kehadiran'                 => $kehadiran,
-                            'keterangan'                => $keterangan,
-                            'jumlah_menit_terlambat'    => $jumlah_menit_terlambat,
-                            'pulang_cepat'              => $pulang_cepat,
-                            'lembur'                    => $lembur,
-                            'total_jam_kerja'           => $total_jam_kerja,
-                            'thbl'                      => $THBL,
-                            'tahun'                     => $TAHUN,
-                            'bulan'                     => $BULAN,
-                            'id_pengguna'               => Session()->get('id_pegawai')
-                        ];
-                DB::table('kehadiran')->insert($data);
             }
         }
-        return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&tanggal_kehadiran=submit')->with(['sukses' => 'Data telah ditambah']);
+        return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&submit='.$request->submit)->with(['sukses' => 'Data kehadiran telah digenerate.']);
     }
 
     // import

@@ -214,6 +214,9 @@ Route::get('admin/kehadiran/delete/{id}/{id2}/{id3}', 'App\Http\Controllers\Admi
 Route::get('admin/kehadiran/import', 'App\Http\Controllers\Admin\Kehadiran@import');
 Route::post('admin/kehadiran/proses-import', 'App\Http\Controllers\Admin\Kehadiran@proses_import');
 
+Route::get('admin/kehadiran/detail/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Kehadiran@detail');
+Route::post('admin/kehadiran/proses-rekap', 'App\Http\Controllers\Admin\Kehadiran@proses_rekap');
+
 // modul pegawai
 Route::get('admin/pegawai', 'App\Http\Controllers\Admin\Pegawai@index');
 Route::get('admin/pegawai/generate-pin', 'App\Http\Controllers\Admin\Pegawai@generate_pin');

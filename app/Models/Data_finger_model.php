@@ -50,9 +50,22 @@ class Data_finger_model extends Model
         $query = DB::table('data_finger')
             ->select('*')
             ->where('data_finger.status_data_finger',$status_data_finger)
-            ->where('data_finger.tanggal_finger', '>=',$tanggal_finger)
+            ->where('data_finger.tanggal_finger',$tanggal_finger)
             ->where('data_finger.pin',$pin)
             ->orderBy('data_finger.id_data_finger','DESC')
+            ->first();
+        return $query;
+    }
+
+    // check_finger_akhir_shift
+    public function check_finger_akhir_shift($pin,$tanggal_finger,$status_data_finger)
+    {
+        $query = DB::table('data_finger')
+            ->select('*')
+            ->where('data_finger.status_data_finger',$status_data_finger)
+            ->where('data_finger.tanggal_finger', $tanggal_finger)
+            ->where('data_finger.pin',$pin)
+            ->orderBy('data_finger.id_data_finger','ASC')
             ->first();
         return $query;
     }

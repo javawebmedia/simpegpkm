@@ -44,82 +44,87 @@
 </table>
 
 <form action="{{ asset('admin/kehadiran/tambah') }}" method="post" accept-charset="utf-8" class="mt-2">
-        {{ csrf_field() }}
+	{{ csrf_field() }}
 
-<div class="input-group">
+	<div class="input-group">
 
-	<select name="bulan" class="form-control col-md-3 bg-light" required>
-		<option value="">Pilih Bulan</option>
-		<option value="01" <?php if($bulan=='01') { echo 'selected'; } ?>>Januari</option>
-		<option value="02" <?php if($bulan=='02') { echo 'selected'; } ?>>Februari</option>
-		<option value="03" <?php if($bulan=='03') { echo 'selected'; } ?>>Maret</option>
-		<option value="04" <?php if($bulan=='04') { echo 'selected'; } ?>>April</option>
-		<option value="05" <?php if($bulan=='05') { echo 'selected'; } ?>>Mei</option>
-		<option value="06" <?php if($bulan=='06') { echo 'selected'; } ?>>Juni</option>
-		<option value="07" <?php if($bulan=='07') { echo 'selected'; } ?>>Juli</option>
-		<option value="08" <?php if($bulan=='08') { echo 'selected'; } ?>>Agustus</option>
-		<option value="09" <?php if($bulan=='09') { echo 'selected'; } ?>>September</option>
-		<option value="10" <?php if($bulan=='10') { echo 'selected'; } ?>>Oktober</option>
-		<option value="11" <?php if($bulan=='11') { echo 'selected'; } ?>>November</option>
-		<option value="12" <?php if($bulan=='12') { echo 'selected'; } ?>>Desember</option>
-	</select>
+		<select name="bulan" class="form-control col-md-3 bg-light" required>
+			<option value="">Pilih Bulan</option>
+			<option value="01" <?php if($bulan=='01') { echo 'selected'; } ?>>Januari</option>
+			<option value="02" <?php if($bulan=='02') { echo 'selected'; } ?>>Februari</option>
+			<option value="03" <?php if($bulan=='03') { echo 'selected'; } ?>>Maret</option>
+			<option value="04" <?php if($bulan=='04') { echo 'selected'; } ?>>April</option>
+			<option value="05" <?php if($bulan=='05') { echo 'selected'; } ?>>Mei</option>
+			<option value="06" <?php if($bulan=='06') { echo 'selected'; } ?>>Juni</option>
+			<option value="07" <?php if($bulan=='07') { echo 'selected'; } ?>>Juli</option>
+			<option value="08" <?php if($bulan=='08') { echo 'selected'; } ?>>Agustus</option>
+			<option value="09" <?php if($bulan=='09') { echo 'selected'; } ?>>September</option>
+			<option value="10" <?php if($bulan=='10') { echo 'selected'; } ?>>Oktober</option>
+			<option value="11" <?php if($bulan=='11') { echo 'selected'; } ?>>November</option>
+			<option value="12" <?php if($bulan=='12') { echo 'selected'; } ?>>Desember</option>
+		</select>
 
-	<input type="number" class="form-control" name="tahun" value="{{ $tahun }}" placeholder="Tahun">
+		<input type="number" class="form-control" name="tahun" value="{{ $tahun }}" placeholder="Tahun">
 
-	<span class="input-group-append">
-		<button type="submit" class="btn btn-info btn-flat" name="tanggal" value="submit">
-			<i class="fa fa-arrow-right"></i> Generate Data Kehadiran
-		</button>
+		<span class="input-group-append">
+			<button type="submit" class="btn btn-success btn-flat" name="submit" value="lihat">
+				<i class="fa fa-eye"></i> Lihat Data Kehadiran
+			</button>
 
-	</span>
+			<button type="submit" class="btn btn-info btn-flat" name="submit" value="submit">
+				<i class="fa fa-arrow-right"></i> Generate Data Kehadiran
+			</button>
 
-</div>
+		</span>
 
- <hr>
+	</div>
 
-<div class="table-responsive mailbox-messages">
+	<hr>
 
-<table class="table table-sm tabelku">
-	<thead>
-		<tr class="bg-secondary text-center align-middle">
-			<th width="5%" class="align-middle">No</th>
-			<th width="20%" class="align-middle">Nama</th>
-			<th width="10%" class="align-middle">Total Jam Kerja</th>
-			<th width="10%" class="align-middle">Total Menit Terlambat</th>
-			<th width="10%" class="align-middle">Total Hari Kehadiran</th>
-			<th width="10%" class="align-middle">Sakit</th>
-			<th width="10%" class="align-middle">Izin</th>
-			<th width="10%" class="align-middle">Alpa</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php 
-		$no=1; foreach($pegawai as $pegawai) { 
-			$total 	= $m_kehadiran->pegawai_thbl($pegawai->nip,$thbl);
-		?>
-		<tr>
-			<td class="text-center">{{ $no }}</td>
-			<td>{{ $pegawai->nama_lengkap }}
-					<small>
-						<br>NIP: <?php echo $pegawai->nip ?>
-					</small>
-			</td>
-			<td><?php echo $total->total_jam_kerja ?></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td>
+	<div class="table-responsive mailbox-messages">
 
-				<a href="{{ asset('admin/kehadiran/detail/'.$pegawai->nip.'/'.$tahun.'/'.$bulan) }}" class="btn btn-warning btn-sm mb-1"><i class="fa fa-eye"></i> Detail</a>
-			</td>
-		</tr>
-		<?php $no++; } ?>
-	</tbody>
-</table>
-</div>
+		<table class="table table-sm tabelku" id="example1">
+			<thead>
+				<tr class="bg-secondary text-center align-middle">
+					<th width="5%" class="align-middle">No</th>
+					<th width="30%" class="align-middle">Nama</th>
+					<th width="10%" class="align-middle text-center">Jam Kerja (Menit)</th>
+					<th width="10%" class="align-middle text-center">Terlambat</th>
+					<th width="10%" class="align-middle text-center">Pulang Cepat</th>
+					<th width="10%" class="align-middle text-center">Kehadiran</th>
+					<th width="10%" class="align-middle text-center">Sakit</th>
+					<th width="10%" class="align-middle text-center">Izin</th>
+					<th width="10%" class="align-middle text-center">Alpa</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php 
+				$no=1; foreach($pegawai as $pegawai) { 
+					$total 	= $m_kehadiran->pegawai_thbl($pegawai->pin,$thbl);
+					?>
+					<tr>
+						<td class="text-center">{{ $no }}</td>
+						<td>{{ $pegawai->nama_lengkap }} (PIN: <?php echo $pegawai->pin ?>)</td>
+						<td class="text-center"><?php echo $total->total_jam_kerja ?></td>
+						<td class="text-center"><?php echo $total->total_jumlah_menit_terlambat ?></td>
+						<td class="text-center"><?php echo $total->total_jumlah_menit_pulang_cepat ?></td>
+						<td class="text-center"></td>
+						<td class="text-center"></td>
+						<td class="text-center"></td>
+						<td class="text-center"></td>
+						<td>
+						<?php if($total->total_jam_kerja =='') { ?>
+							<a href="#" class="btn btn-secondary disabled btn-sm mb-1"><i class="fa fa-eye"></i></a>
+						<?php }else{ ?>
+							<a href="{{ asset('admin/kehadiran/detail/'.$pegawai->pin.'/'.$tahun.'/'.$bulan) }}" class="btn btn-warning btn-sm mb-1"><i class="fa fa-eye"></i></a>
+						<?php } ?>
+						</td>
+					</tr>
+					<?php $no++; } ?>
+				</tbody>
+			</table>
+		</div>
 
-</form>
+	</form>
 

@@ -230,6 +230,7 @@ $awal     = $sekarang - 50;
       "responsive": true, 
       "lengthChange": false, 
       "autoWidth": false,
+      "lengthMenu": [[1000, 2500, 5000, -1], [1000, 2500, 5000, "All"]],
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     $('#example2').DataTable({
