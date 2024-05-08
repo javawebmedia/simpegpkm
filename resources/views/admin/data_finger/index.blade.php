@@ -1,12 +1,16 @@
 <p>
+	<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-input">
+	  <i class="fa fa-edit"></i> Input Data Finger
+	</button>
 	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
 	  <i class="fa fa-plus-circle"></i> Tarik Data Kehadiran dari Mesin Absen
 	</button>
 </p>
 
 @include('admin/data_finger/mesin')
+@include('admin/data_finger/input')
 
-<table class="table table-sm tabelku">
+<table class="table table-sm tabelku" id="example1">
 	<thead>
 		<tr>
 			<th></th>

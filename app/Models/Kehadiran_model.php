@@ -65,7 +65,7 @@ class Kehadiran_model extends Model
     public function pegawai_thbl_all($pin, $thbl)
     {
         $query = DB::table('kehadiran')
-            ->select('kehadiran.*', 'shift.nama', 'shift.warna', 'shift.kode')
+            ->select('kehadiran.*', 'shift.nama', 'shift.warna', 'shift.kode','shift.day_off')
             ->join('shift', 'shift.id_shift', '=', 'kehadiran.id_shift')
             ->where('kehadiran.pin', $pin)
             ->where('kehadiran.thbl', $thbl)

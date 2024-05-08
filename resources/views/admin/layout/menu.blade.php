@@ -66,7 +66,11 @@ $total_pegawai  = $m_dasbor->pegawai();
 
           <li class="nav-item"><a href="{{ asset('admin/mesin-absen') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Mesin Absen</p></a>
           </li>
+
           <li class="nav-item"><a href="{{ asset('admin/shift') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Data Master Shift</p></a>
+          </li>
+
+          <li class="nav-item"><a href="{{ asset('admin/status-absen') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Master Hadir/Absensi</p></a>
           </li>
 
         </ul>

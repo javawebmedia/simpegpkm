@@ -91,6 +91,7 @@ Route::get('admin/dasbor', 'App\Http\Controllers\Admin\Dasbor@index');
 // modul data_finger
 Route::get('admin/data-finger', 'App\Http\Controllers\Admin\Data_finger@index');
 Route::get('admin/data-finger/tarik/{par1}', 'App\Http\Controllers\Admin\Data_finger@tarik');
+Route::post('admin/data-finger/tambah', 'App\Http\Controllers\Admin\Data_finger@tambah');
 
 // modul kinerja
 Route::get('admin/kinerja', 'App\Http\Controllers\Admin\Kinerja@index');
@@ -280,6 +281,13 @@ Route::post('admin/divisi/tambah', 'App\Http\Controllers\Admin\Divisi@tambah');
 Route::get('admin/divisi/edit/{id}', 'App\Http\Controllers\Admin\Divisi@edit');
 Route::post('admin/divisi/proses-edit', 'App\Http\Controllers\Admin\Divisi@proses_edit');
 Route::get('admin/divisi/delete/{id}', 'App\Http\Controllers\Admin\Divisi@delete');
+
+// modul status_absen
+Route::get('admin/status-absen', 'App\Http\Controllers\Admin\Status_absen@index');
+Route::post('admin/status-absen/tambah', 'App\Http\Controllers\Admin\Status_absen@tambah');
+Route::get('admin/status-absen/edit/{id}', 'App\Http\Controllers\Admin\Status_absen@edit');
+Route::post('admin/status-absen/proses-edit', 'App\Http\Controllers\Admin\Status_absen@proses_edit');
+Route::get('admin/status-absen/delete/{id}', 'App\Http\Controllers\Admin\Status_absen@delete');
 
 // modul shift
 Route::get('admin/shift', 'App\Http\Controllers\Admin\Shift@index');

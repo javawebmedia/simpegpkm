@@ -11,6 +11,7 @@ use App\Models\Kehadiran_model;
 use App\Models\Data_finger_model;
 use App\Models\Jadwal_pegawai_model;
 use App\Models\Absensi_model;
+use App\Models\Status_absen_model;
 use Image;
 use PDF;
 
@@ -54,6 +55,8 @@ class Kehadiran extends Controller
         $m_pegawai      = new Pegawai_model();
         $m_kehadiran    = new Kehadiran_model();
         $m_absensi      = new Absensi_model();
+        $m_status_absen = new Status_absen_model();
+
         $pegawai        = $m_pegawai->pin($pin);
         $thbl           = $tahun.$bulan;
         $kehadiran      = $m_kehadiran->pegawai_thbl_all($pin,$thbl);
@@ -91,6 +94,7 @@ class Kehadiran extends Controller
                     'bulan'             => $bulan,
                     'thbl'              => $tahun.$bulan,
                     'm_kehadiran'       => $m_kehadiran,
+                    'm_status_absen'    => $m_status_absen,
                     'kehadiran'         => $kehadiran,
                     'content'           => 'admin/kehadiran/detail'
                 ];

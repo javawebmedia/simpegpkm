@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Libraries\Parser;
 use App\Models\Mesin_absen_model;
 use App\Models\Data_finger_model;
+use App\Models\Pegawai_model;
 
 class Data_finger extends Controller
 {
@@ -19,15 +20,73 @@ class Data_finger extends Controller
         }
         // end proteksi halaman
         $m_data_finger  = new Data_finger_model();
+        $m_pegawai      = new Pegawai_model();
+        $m_data_finger  = new Data_finger_model();
+
         $data_finger    = $m_data_finger->semua(1000);
+        $pegawai        = $m_pegawai->listing();
         $mesin_absen    = DB::table('mesin_absen')->get();
 
         $data = [   'title'         => 'Data Kehadiran Pegawai',
                     'data_finger'   => $data_finger,
                     'mesin_absen'   => $mesin_absen,
+                    'mesin_absen2'  => $mesin_absen,
+                    'mesin_absen3'  => $mesin_absen,
+                    'pegawai'       => $pegawai,
                     'content'       => 'admin/data_finger/index'
                 ];
         return view('admin/layout/wrapper',$data);
+    }
+
+    // tambah
+    public function tambah(Request $request)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_mesin_absen = new Mesin_absen_model();
+        $m_data_finger = new Data_finger_model();
+        $id_mesin_absen_masuk   = $request->id_mesin_absen;
+        $id_mesin_absen_pulang  = $request->id_mesin_absen_pulang;
+
+        $mesin_absen_masuk      = $m_mesin_absen->detail($id_mesin_absen_masuk);
+        $mesin_absen_pulang     = $m_mesin_absen->detail($id_mesin_absen_pulang);
+
+        $ip_address_masuk       = $mesin_absen_masuk->ip_mesin_absen;
+        $ip_address_pulang      = $mesin_absen_pulang->ip_mesin_absen;
+
+        $tanggal_finger_masuk   = date('Y-m-d', strtotime($request->tanggal_finger));
+        $tanggal_finger_pulang  = date('Y-m-d', strtotime($request->tanggal_finger_pulang));
+        $waktu_finger_masuk     = $tanggal_finger_masuk.' '.$request->jam_finger;
+        $waktu_finger_pulang    = $tanggal_finger_pulang.' '.$request->jam_finger_pulang;
+
+        request()->validate([
+                            'pin' => 'required'
+                            ]);
+
+        DB::table('data_finger')->insert([
+            'id_mesin_absen'    => $id_mesin_absen_masuk,
+            'ip_mesin_absen'    => $ip_address_masuk,
+            'pin'               => $request->pin,
+            'tanggal_finger'    => $tanggal_finger_masuk,
+            'waktu_finger'      => $waktu_finger_masuk,
+            'verified'          => 1,
+            'status_data_finger'=> 0,
+        ]);
+
+        DB::table('data_finger')->insert([
+            'id_mesin_absen'    => $id_mesin_absen_pulang,
+            'ip_mesin_absen'    => $ip_address_pulang,
+            'pin'               => $request->pin,
+            'tanggal_finger'    => $tanggal_finger_pulang,
+            'waktu_finger'      => $waktu_finger_pulang,
+            'verified'          => 1,
+            'status_data_finger'=> 1,
+        ]);
+        return redirect('admin/data-finger')->with(['sukses' => 'Data telah ditambah']);
     }
 
     // tarik
