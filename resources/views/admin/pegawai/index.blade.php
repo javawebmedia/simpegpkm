@@ -46,7 +46,7 @@
 
 <div class="mailbox-controls">
 	<div class="table-responsive mailbox-messages">
-		<table class="table table-bordered table-sm">
+		<table class="table table-sm tabelku">
 			<thead>
 				<tr class="bg-secondary text-center">
 					<th>
@@ -60,6 +60,7 @@
 					<th>Divisi</th>
 					<th>Jabatan</th>
 					<th>Agama</th>
+					<th>JPL</th>
 					<th>L/P</th>
 					<th>Status</th>
 					<th>Jenis</th>
@@ -91,6 +92,7 @@
 					<td><?php echo $pegawai->nama_divisi ?></td>
 					<td><?php echo $pegawai->nama_jabatan ?></td>
 					<td><?php echo $pegawai->nama_agama ?></td>
+					<td> /40</td>
 					<td><?php echo $pegawai->jenis_kelamin ?></td>
 					<td><?php echo $pegawai->status_pegawai ?></td>
 					<td><?php echo $pegawai->jenis_pegawai ?></td>

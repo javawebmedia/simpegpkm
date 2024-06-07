@@ -22,7 +22,8 @@
 			<th width="5%">No</th>
 			<th>Kode</th>
 			<th>Nama</th>
-			<th>Datang - Pulang</th>
+			<th>Datang</th>
+			<th>Pulang</th>
 			<th>Default</th>
 			<th>Ganti Hari</th>
 			<th>Status</th>
@@ -38,7 +39,8 @@
 			<td>{{ $no }}</td>
 			<td><i class="far fa-square" style="background-color: <?php echo $shift->warna ?>;"></i> {{ $shift->kode }}</td>
 			<td>{{ $shift->nama }}</td>
-			<td>{{ $shift->jam_mulai }} - {{ $shift->jam_selesai }}</td>
+			<td>{{ $shift->start_jam_mulai }} - {{ $shift->jam_mulai }} - {{ $shift->end_jam_mulai }}</td>
+			<td>{{ $shift->start_jam_selesai }} - {{ $shift->jam_selesai }} - {{ $shift->end_jam_selesai }}</td>
 			<td>{{ $shift->shift_default }}</td>
 			<td>{{ $shift->ganti_hari }}</td>
 			<td><?php echo $shift->status ?></td>

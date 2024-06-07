@@ -61,7 +61,12 @@ class Jadwal_pegawai_model extends Model
                         'shift.day_off',
                         'shift.shift_default',
                         'shift.jam_mulai',
-                        'shift.jam_selesai')
+                        'shift.jam_selesai',
+                        'shift.start_jam_mulai',
+                        'shift.end_jam_mulai',
+                        'shift.start_jam_selesai',
+                        'shift.end_jam_selesai'
+                    )
             ->join('shift', 'shift.id_shift', '=', 'jadwal_pegawai.id_shift')
             ->join('pegawai', 'pegawai.pin', '=', 'jadwal_pegawai.pin')
             ->where('jadwal_pegawai.pin',$pin)

@@ -11,6 +11,7 @@
 
         <form action="{{ asset('admin/kehadiran/tambah') }}" method="post" accept-charset="utf-8">
         {{ csrf_field() }}
+        <input type="hidden" name="pengalihan" value="<?php echo url()->full(); ?>">
 
         <div class="form-group row">
           <label class="col-md-3">Nama Pegawai</label>

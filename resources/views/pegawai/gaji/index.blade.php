@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-sm tabelku">
 	<tbody>
 		<tr>
 			<th class="bg-light" width="25%">Tahun Gaji</th>
@@ -82,7 +82,7 @@
 <hr>
 <h3>Data Gaji</h3>
 
-<table class="table table-bordered table-sm table-striped">
+<table class="table table-sm tabelku table-striped">
 	<thead class="text-center bg-secondary align-middle">
 		<tr>
 			<th width="5%" class="align-middle">NPWP</th>
@@ -116,7 +116,7 @@
 
 <hr>
 <h3>Data TKD</h3>
-<table class="table table-bordered table-sm table-striped">
+<table class="table table-sm tabelku table-striped">
 	<thead class="text-center bg-secondary align-middle">
 		<tr>
 			<th rowspan="2" width="5%" class="align-middle">GAPOK</th>

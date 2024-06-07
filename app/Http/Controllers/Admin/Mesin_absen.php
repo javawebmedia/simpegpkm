@@ -67,7 +67,7 @@ class Mesin_absen extends Controller
             $check          = $m_pin_pegawai->check_pegawai_mesin($pegawai->nip,$mesin_absen->id_mesin_absen);
             if(!empty($check)) {
                 $nama           = $pegawai->nama_lengkap;
-                $id             = substr($pegawai->nip, -9);
+                $id             = substr($pegawai->pin);
                 // proses masukin ke mesin absen
                 $Connect = @fsockopen($IP, "80", $errno, $errstr, 1);
                 if($Connect){
@@ -90,7 +90,7 @@ class Mesin_absen extends Controller
                 echo $buffer.'<hr>';
             }else{
                 $nama           = $pegawai->nama_lengkap;
-                $id             = substr($pegawai->nip, -9);
+                $id             = substr($pegawai->pin);
                 $data = [   'nip'               => $pegawai->nip,
                             'pin'               => $id,
                             'id_mesin_absen'    => $mesin_absen->id_mesin_absen,

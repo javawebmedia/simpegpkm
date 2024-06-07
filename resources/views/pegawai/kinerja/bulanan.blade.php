@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-sm tabelku">
 	<tbody>
 		<tr>
 			<th class="bg-light" width="25%">Tahun Kinerja</th>
@@ -81,7 +81,7 @@
 	<div class="card-body">
 
 
-		<table class="table table-bordered table-striped table-sm" id="example1">
+		<table class="table table-sm tabelku" id="example1">
 			<thead>
 				<tr class="bg-secondary text-center">
 					<th width="2%">No</th>

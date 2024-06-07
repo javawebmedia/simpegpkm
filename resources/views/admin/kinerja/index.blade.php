@@ -58,7 +58,7 @@ if(isset($_GET['tanggal_kinerja'])) {
 @include('admin/kinerja/approval-bulanan')
 <hr>
 
-<table class="table table-bordered table-sm" id="example3">
+<table class="table table-sm tabelku" id="example3">
 	<thead>
 		<tr class="bg-light text-center">
 			<th width="5%">No</th>
@@ -104,10 +104,10 @@ if(isset($_GET['tanggal_kinerja'])) {
 		?>
 		<tr>
 			<td class="text-center">{{ $no }}</td>
-			<td class="text-center">{{ $bawahan->nip }}</td>
+			<td>{{ $bawahan->nip }}</td>
 			<td>{{ $bawahan->nama_lengkap }}</td>
 			<td><?php echo $nama_atasan ?></td>
-			<td class="text-center">{{ $jumlah }} Aktivitas</td>
+			<td>{{ $jumlah }} Aktivitas</td>
 			<td>
 				<?php if($jumlah > 0) { ?>
 					<div class="progress progress-xs">

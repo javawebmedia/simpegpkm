@@ -70,6 +70,7 @@ class Status_absen extends Controller
                 'jenis_status_absen'          => $request->jenis_status_absen,
                 'warna_status_absen'          => $request->warna_status_absen,
                 'aktif_status_absen'          => $request->aktif_status_absen,
+                'status_kehadiran'            => $request->status_kehadiran,
                 'tanggal_post'                => date('Y-m-d H:i:s')
             ]);
         return redirect('admin/status-absen')->with(['sukses' => 'Data telah ditambah']);
@@ -98,6 +99,7 @@ class Status_absen extends Controller
                 'jenis_status_absen'          => $request->jenis_status_absen,
                 'warna_status_absen'          => $request->warna_status_absen,
                 'aktif_status_absen'          => $request->aktif_status_absen,
+                'status_kehadiran'            => $request->status_kehadiran,
             ]);
             return redirect('admin/status-absen')->with(['sukses' => 'Data telah diedit']);
     }

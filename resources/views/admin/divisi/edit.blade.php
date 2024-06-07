@@ -21,6 +21,13 @@
 </div>
 
 <div class="form-group row">
+  <label class="col-md-3">Kode</label>
+  <div class="col-md-9">
+    <input type="text" name="kode_divisi" class="form-control" placeholder="Nama divisi" value="{{ $divisi->kode_divisi }}">
+  </div>
+</div>
+
+<div class="form-group row">
   <label class="col-md-3">No urut tampil</label>
   <div class="col-md-9">
     <input type="number" name="urutan" class="form-control" placeholder="No urut tampil" value="{{ $divisi->urutan }}" required>

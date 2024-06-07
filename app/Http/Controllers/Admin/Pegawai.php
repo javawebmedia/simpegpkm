@@ -9,12 +9,25 @@ use Illuminate\Support\Facades\DB;
 use App\Libraries\Parser;
 // panggil model
 use App\Models\Pegawai_model;
-use App\Models\Jabatan_model;
+use App\Models\Absensi_model;
+use App\Models\Kehadiran_model;
+use App\Models\Data_finger_model;
+use App\Models\Jadwal_pegawai_model;
+use App\Models\Status_absen_model;
 use App\Models\Riwayat_jabatan_model;
 use App\Models\Pendidikan_model;
 use App\Models\Keluarga_model;
 use App\Models\Mesin_absen_model;
 use App\Models\Pin_pegawai_model;
+use App\Models\Diklat_model;
+use App\Models\Tkd_model;
+use App\Models\Gaji_model;
+use App\Models\Jenis_pelatihan_model;
+use App\Models\Rumpun_model;
+use App\Models\Metode_diklat_model;
+use App\Models\Kategori_diklat_model;
+use App\Models\Kode_diklat_model;
+use App\Models\Str_sip_model;
 // EXCEL
 use PhpOffice\PhpSpreadsheet\Helper\Sample;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -54,7 +67,14 @@ class Pegawai extends Controller
         $m_pegawai  = new Pegawai_model();
         $pegawai    = $m_pegawai->listing();
         foreach($pegawai as $pegawai) {
-            $data = ['pin'  => substr($pegawai->nip, -9)];
+        if($pegawai->jenis_pegawai=='PJLP'){
+            $pin = substr($pegawai->nik, -9);
+        }elseif($pegawai->jenis_pegawai=='PNS') {
+                $pin = $pegawai->nrk;
+            }else{
+                $pin = substr($pegawai->nip, -9);
+            }
+            $data = ['pin'  => $pin];
             DB::table('pegawai')->where('id_pegawai',$pegawai->id_pegawai)->update($data);
         }
         return redirect('admin/pegawai')->with(['sukses' => 'Data PIN berhasil dibuat']);
@@ -183,16 +203,24 @@ class Pegawai extends Controller
         $m_riwayat_jabatan  = new Riwayat_jabatan_model();
         $m_pendidikan       = new Pendidikan_model();
         $m_keluarga         = new Keluarga_model();
+        $m_diklat           = new Diklat_model();
+        $m_str_sip          = new Str_sip_model();
+
         $pegawai            = $m_pegawai->detail($id_pegawai);
+        $nip                = $pegawai->nip;
         $riwayat_jabatan    = $m_riwayat_jabatan->pegawai($id_pegawai);
         $pendidikan         = $m_pendidikan->pegawai($id_pegawai);
         $keluarga           = $m_keluarga->pegawai($id_pegawai);
+        $diklat             = $m_diklat->nip($nip);
+        $str_sip            = $m_str_sip->pegawai($id_pegawai);
 
-        $data = [   'title'             => $pegawai->nama_lengkap.' (NIP: '.$pegawai->nip.')',
+         $data = [   'title'             => $pegawai->nama_lengkap.' (NIP: '.$pegawai->nip.')',
                     'pegawai'           => $pegawai,
                     'riwayat_jabatan'   => $riwayat_jabatan,
                     'pendidikan'        => $pendidikan,
                     'keluarga'          => $keluarga,
+                    'diklat'            => $diklat,
+                    'str_sip'           => $str_sip,
                     'content'           => 'admin/pegawai/detail'
                 ];
         return view('admin/layout/wrapper',$data);
@@ -544,13 +572,13 @@ class Pegawai extends Controller
             $filenamewithextension  = $request->file('foto')->getClientOriginalName();
             $filename               = pathinfo($filenamewithextension, PATHINFO_FILENAME);
             $input['nama_file']     = Str::slug($filename, '-').'-'.time().'.'.$image->getClientOriginalExtension();
-            $destinationPath        = './assets/upload/images/thumbs/';
-            $img = Image::make($image->getRealPath(),array(
-                'width'     => 150,
-                'height'    => 150,
-                'grayscale' => false
-            ));
-            $img->save($destinationPath.'/'.$input['nama_file']);
+            // $destinationPath        = './assets/upload/images/thumbs/';
+            // $img = Image::make($image->getRealPath(),array(
+            //     'width'     => 150,
+            //     'height'    => 150,
+            //     'grayscale' => false
+            // ));
+            // $img->save($destinationPath.'/'.$input['nama_file']);
             $destinationPath = './assets/upload/images/';
             $image->move($destinationPath, $input['nama_file']);
             // END UPLOAD
@@ -641,13 +669,13 @@ class Pegawai extends Controller
             $filenamewithextension  = $request->file('foto')->getClientOriginalName();
             $filename               = pathinfo($filenamewithextension, PATHINFO_FILENAME);
             $input['nama_file']     = Str::slug($filename, '-').'-'.time().'.'.$image->getClientOriginalExtension();
-            $destinationPath        = './assets/upload/images/thumbs/';
-            $img = Image::make($image->getRealPath(),array(
-                'width'     => 150,
-                'height'    => 150,
-                'grayscale' => false
-            ));
-            $img->save($destinationPath.'/'.$input['nama_file']);
+            // $destinationPath        = './assets/upload/images/thumbs/';
+            // $img = Image::make($image->getRealPath(),array(
+            //     'width'     => 150,
+            //     'height'    => 150,
+            //     'grayscale' => false
+            // ));
+            // $img->save($destinationPath.'/'.$input['nama_file']);
             $destinationPath = './assets/upload/images/';
             $image->move($destinationPath, $input['nama_file']);
             // END UPLOAD

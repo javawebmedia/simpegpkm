@@ -8,7 +8,7 @@
 </p>
 
 
-<table class="table table-bordered table-striped table-sm" id="example1">
+<table class="table table-sm tabelku" id="example1">
 	<thead>
 		<tr class="bg-secondary text-center">
 			<th>No</th>

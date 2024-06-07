@@ -2,7 +2,7 @@
 	<a href="{{ asset('pegawai/kinerja/approval?tanggal_kinerja='.$tanggal_kinerja) }}" class="btn btn-outline-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</a>
 </p>
 
-<table class="table table-bordered">
+<table class="table table-sm tabelku">
 	<tbody>
 		<tr>
 			<th class="bg-light" width="25%">Nama pegawai</th>
@@ -57,7 +57,7 @@
 
 <div class="table-responsive mailbox-messages">
 
-<table class="table table-bordered table-sm">
+<table class="table table-sm tabelku">
 			<thead>
 				<tr class="bg-secondary text-center align-middle">
 					<th width="2%">

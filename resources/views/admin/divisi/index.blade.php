@@ -16,11 +16,12 @@
 
 @include('admin/divisi/tambah')
 
-<table class="table table-bordered" id="example1">
+<table class="table table-sm tabelku" id="example1">
 	<thead>
 		<tr>
 			<th width="5%">No</th>
 			<th>Nama</th>
+			<th>Kode</th>
 			<th>No. Urut</th>
 			<th>Aksi</th>
 		</tr>
@@ -30,6 +31,7 @@
 		<tr>
 			<td>{{ $no }}</td>
 			<td>{{ $divisi->nama_divisi }}</td>
+			<td>{{ $divisi->kode_divisi }}</td>
 			<td>{{ $divisi->urutan }}</td>
 			<td>
 				<a href="{{ asset('admin/divisi/edit/'.$divisi->id_divisi) }}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>

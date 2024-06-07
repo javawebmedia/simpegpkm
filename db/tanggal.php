@@ -1,7 +1,7 @@
 <?php
 // Tahun dan bulan yang ingin Anda tentukan
 $tahun = 2024;
-$bulan = 5; // Untuk bulan April, gunakan angka 4
+$bulan = '05'; // Untuk bulan April, gunakan angka 4
 
 // Mendapatkan jumlah hari dalam bulan tersebut
 $jumlah_hari = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);

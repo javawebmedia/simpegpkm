@@ -25,7 +25,7 @@ $site_config = DB::table('konfigurasi')->first();
               <lord-icon
               src="https://cdn.lordicon.com/rnuzkjnk.json"
               trigger="loop"
-              style="width:40px;height:40px">
+              style="width:20px;height:20px">
             </lord-icon>
             <p>
               Dashboard
@@ -39,7 +39,7 @@ $site_config = DB::table('konfigurasi')->first();
             src="https://cdn.lordicon.com/rfbqeber.json"
             trigger="loop"
             state="loop"
-            style="width:40px;height:40px">
+            style="width:20px;height:20px">
           </lord-icon>
           <p>
             Input Kinerja Harian
@@ -52,7 +52,7 @@ $site_config = DB::table('konfigurasi')->first();
           <lord-icon
           src="https://cdn.lordicon.com/ckatldkn.json"
           trigger="loop"
-          style="width:40px;height:40px">
+          style="width:20px;height:20px">
         </lord-icon>
         <p>
           Data Kinerja Bulanan
@@ -66,10 +66,23 @@ $site_config = DB::table('konfigurasi')->first();
           <lord-icon
           src="https://cdn.lordicon.com/ckatldkn.json"
           trigger="loop"
-          style="width:40px;height:40px">
+          style="width:20px;height:20px">
         </lord-icon>
         <p>
           Pengajuan Cuti
+        </p>
+      </a>
+    </li>
+
+     <li class="nav-item">
+        <a href="{{ asset('pegawai/diklat') }}" class="nav-link">
+          <lord-icon
+          src="https://cdn.lordicon.com/ckatldkn.json"
+          trigger="loop"
+          style="width:20px;height:20px">
+        </lord-icon>
+        <p>
+          Data Diklat
         </p>
       </a>
     </li>
@@ -88,10 +101,23 @@ $site_config = DB::table('konfigurasi')->first();
           <lord-icon
           src="https://cdn.lordicon.com/hrqqslfe.json"
           trigger="loop"
-          style="width:40px;height:40px">
+          style="width:20px;height:20px">
         </lord-icon>
         <p>
           Approval Kinerja
+        </p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+        <a href="{{ asset('pegawai/diklat/approval') }}" class="nav-link">
+          <lord-icon
+          src="https://cdn.lordicon.com/hrqqslfe.json"
+          trigger="loop"
+          style="width:20px;height:20px">
+        </lord-icon>
+        <p>
+          Approval Diklat
         </p>
       </a>
     </li>
@@ -104,7 +130,7 @@ $site_config = DB::table('konfigurasi')->first();
       <lord-icon
       src="https://cdn.lordicon.com/pjibjvxa.json"
       trigger="loop"
-      style="width:40px;height:40px">
+      style="width:20px;height:20px">
     </lord-icon>
     <p>
       Rencana Kinerja
@@ -117,7 +143,7 @@ $site_config = DB::table('konfigurasi')->first();
     <lord-icon
     src="https://cdn.lordicon.com/qmcsqnle.json"
     trigger="loop"
-    style="width:40px;height:40px">
+    style="width:20px;height:20px">
   </lord-icon>
   <p>
     Gaji dan TKD
@@ -132,7 +158,7 @@ $site_config = DB::table('konfigurasi')->first();
     trigger="loop"
     colors="primary:#f24c00,secondary:#646e78,tertiary:#4bb3fd,quaternary:#ebe6ef,quinary:#f9c9c0"
     state="loop"
-    style="width:40px;height:40px">
+    style="width:20px;height:20px">
   </lord-icon>
   <p>
    Profil dan Riwayat
@@ -147,7 +173,7 @@ $site_config = DB::table('konfigurasi')->first();
     trigger="loop"
     colors="primary:#f24c00,secondary:#646e78,tertiary:#4bb3fd,quaternary:#ebe6ef,quinary:#f9c9c0"
     state="loop"
-    style="width:40px;height:40px">
+    style="width:20px;height:20px">
   </lord-icon>
   <p>
    Riwayat STR &amp; SIP

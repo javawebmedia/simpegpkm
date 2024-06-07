@@ -30,7 +30,7 @@ $pekerjaan = DB::table('pekerjaan')->orderBy('urutan', 'ASC')->get();
 
 		@include('admin/pegawai/tambah-keluarga')
 
-		<table class="table table-bordered table-striped table-sm">
+		<table class="table table-sm tabelku">
 			<thead>
 				<tr class="text-center">
 					<th width="2%">No</th>

@@ -31,7 +31,7 @@
 		<div class="card">
 			<div class="card-body">
 
-				<table class="table table-bordered table-striped table-sm">
+				<table class="table table-sm tabelku">
 					<tbody>
 						<tr>
 							<td width="25%">Nama lengkap</td>

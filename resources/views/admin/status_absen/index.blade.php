@@ -22,6 +22,7 @@
 			<th width="5%">No</th>
 			<th>Kode</th>
 			<th>Nama</th>
+			<th>Status Kehadiran</th>
 			<th class="text-center">Jenis</th>
 			<th class="text-center">Aktif</th>
 			<th></th>
@@ -33,6 +34,7 @@
 			<td>{{ $no }}</td>
 			<td><i class="far fa-square" style="background-color: <?php echo $status_absen->warna_status_absen ?>;"></i> {{ $status_absen->kode_status_absen }}</td>
 			<td>{{ $status_absen->nama_status_absen }}</td>
+			<td>{{ $status_absen->status_kehadiran }}</td>
 			<td class="text-center">
 				<?php if($status_absen->jenis_status_absen=='Absensi') { ?>
 					<span class="badge badge-danger"><i class="fa fa-calendar-times"></i> <?php echo $status_absen->jenis_status_absen ?></span>
@@ -48,9 +50,9 @@
 				<?php } ?>
 			</td>
 			<td>
-				<a href="{{ asset('admin/status-absen/edit/'.$status_absen->id_status_absen) }}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a>
+				<a href="{{ asset('admin/status-absen/edit/'.$status_absen->id_status_absen) }}" class="btn btn-success btn-xs"><i class="fa fa-edit"></i></a>
 
-				<a href="{{ asset('admin/status-absen/delete/'.$status_absen->id_status_absen) }}" class="btn btn-dark btn-sm delete-link"><i class="fa fa-trash"></i></a>
+				<a href="{{ asset('admin/status-absen/delete/'.$status_absen->id_status_absen) }}" class="btn btn-dark btn-xs delete-link"><i class="fa fa-trash"></i></a>
 			</td>
 		</tr>
 		<?php $no++; } ?>

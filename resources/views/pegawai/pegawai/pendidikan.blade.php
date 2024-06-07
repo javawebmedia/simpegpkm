@@ -27,7 +27,7 @@ $jenjang_pendidikan = DB::table('jenjang_pendidikan')->get();
 
 		@include('pegawai/pegawai/tambah-pendidikan')
 
-		<table class="table table-bordered table-striped table-sm">
+		<table class="table table-sm tabelku">
 			<thead>
 				<tr class="text-center">
 					<th width="2%">No</th>

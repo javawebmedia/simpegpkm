@@ -39,15 +39,33 @@
 
 <div class="form-group row">
   <label class="col-md-3">Jam Mulai</label>
-  <div class="col-md-9">
-    <input type="text" name="jam_mulai" id="timepicker" class="form-control" placeholder="hh:mm:ss" value="<?php echo date('H:i:s',strtotime($shift->jam_mulai)) ?>" required>
+  <div class="col-md-3">
+    <input type="text" name="start_jam_mulai" id="timepicker" class="form-control" placeholder="hh:mm:ss" value="<?php echo date('H:i:s',strtotime($shift->start_jam_mulai)) ?>" required>
+    <small>Start Jam Mulai</small>
+  </div>
+  <div class="col-md-3">
+    <input type="text" name="jam_mulai" id="timepicker2" class="form-control" placeholder="hh:mm:ss" value="<?php echo date('H:i:s',strtotime($shift->jam_mulai)) ?>" required>
+    <small>Jam Mulai</small>
+  </div>
+  <div class="col-md-3">
+    <input type="text" name="end_jam_mulai" id="timepicker3" class="form-control" placeholder="hh:mm:ss" value="<?php echo date('H:i:s',strtotime($shift->end_jam_mulai)) ?>" required>
+    <small>End Jam Mulai</small>
   </div>
 </div>
 
 <div class="form-group row">
   <label class="col-md-3">Jam Selesai</label>
-  <div class="col-md-9">
-    <input type="text" name="jam_selesai" id="timepicker2" class="form-control" placeholder="hh:mm:ss" value="<?php echo date('H:i:s',strtotime($shift->jam_selesai)) ?>" required>
+  <div class="col-md-3">
+    <input type="text" name="start_jam_selesai" id="timepicker4" class="form-control" placeholder="hh:mm:ss" value="<?php echo date('H:i:s',strtotime($shift->start_jam_selesai)) ?>" required>
+    <small>Start Jam Selesai</small>
+  </div>
+  <div class="col-md-3">
+    <input type="text" name="jam_selesai" id="timepicker5" class="form-control" placeholder="hh:mm:ss" value="<?php echo date('H:i:s',strtotime($shift->jam_selesai)) ?>" required>
+    <small>Jam Selesai</small>
+  </div>
+  <div class="col-md-3">
+    <input type="text" name="end_jam_selesai" id="timepicker6" class="form-control" placeholder="hh:mm:ss" value="<?php echo date('H:i:s',strtotime($shift->end_jam_selesai)) ?>" required>
+    <small>End Jam Selesai</small>
   </div>
 </div>
 
@@ -68,46 +86,55 @@
     <!-- end hari -->
     <!-- pilih hari -->
     <div class="form-group">
-
-      <div class="custom-control custom-checkbox">
-        <input class="custom-control-input" type="checkbox" id="Senin" name="hari[]" value="Senin" <?php if(!empty($Senin)) { echo 'checked'; } ?>>
-        <label for="Senin" class="custom-control-label">Senin</label>
+      <div class="row">
+        <div class="col-sm-1">
+          <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" id="Senin" name="hari[]" value="Senin" <?php if(!empty($Senin)) { echo 'checked'; } ?>>
+            <label for="Senin" class="custom-control-label">Senin</label>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" id="Selasa" name="hari[]" value="Selasa" <?php if(!empty($Selasa)) { echo 'checked'; } ?>>
+            <label for="Selasa" class="custom-control-label">Selasa</label>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" id="Rabu" name="hari[]" value="Rabu" <?php if(!empty($Rabu)) { echo 'checked'; } ?>>
+            <label for="Rabu" class="custom-control-label">Rabu</label>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" id="Kamis" name="hari[]" value="Kamis" <?php if(!empty($Kamis)) { echo 'checked'; } ?>>
+            <label for="Kamis" class="custom-control-label">Kamis</label>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" id="Jumat" name="hari[]" value="Jumat" <?php if(!empty($Jumat)) { echo 'checked'; } ?>>
+            <label for="Jumat" class="custom-control-label">Jumat</label>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" id="Sabtu" name="hari[]" value="Sabtu" <?php if(!empty($Sabtu)) { echo 'checked'; } ?>>
+            <label for="Sabtu" class="custom-control-label">Sabtu</label>
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="custom-control custom-checkbox">
+            <input class="custom-control-input" type="checkbox" id="Minggu" name="hari[]" value="Minggu" <?php if(!empty($Minggu)) { echo 'checked'; } ?>>
+            <label for="Minggu" class="custom-control-label">Minggu</label>
+          </div>
+        </div>
       </div>
-
-      <div class="custom-control custom-checkbox">
-        <input class="custom-control-input" type="checkbox" id="Selasa" name="hari[]" value="Selasa" <?php if(!empty($Selasa)) { echo 'checked'; } ?>>
-        <label for="Selasa" class="custom-control-label">Selasa</label>
-      </div>
-
-      <div class="custom-control custom-checkbox">
-        <input class="custom-control-input" type="checkbox" id="Rabu" name="hari[]" value="Rabu" <?php if(!empty($Rabu)) { echo 'checked'; } ?>>
-        <label for="Rabu" class="custom-control-label">Rabu</label>
-      </div>
-
-      <div class="custom-control custom-checkbox">
-        <input class="custom-control-input" type="checkbox" id="Kamis" name="hari[]" value="Kamis" <?php if(!empty($Kamis)) { echo 'checked'; } ?>>
-        <label for="Kamis" class="custom-control-label">Kamis</label>
-      </div>
-
-      <div class="custom-control custom-checkbox">
-        <input class="custom-control-input" type="checkbox" id="Jumat" name="hari[]" value="Jumat" <?php if(!empty($Jumat)) { echo 'checked'; } ?>>
-        <label for="Jumat" class="custom-control-label">Jumat</label>
-      </div>
-
-      <div class="custom-control custom-checkbox">
-        <input class="custom-control-input" type="checkbox" id="Sabtu" name="hari[]" value="Sabtu" <?php if(!empty($Sabtu)) { echo 'checked'; } ?>>
-        <label for="Sabtu" class="custom-control-label">Sabtu</label>
-      </div>
-
-      <div class="custom-control custom-checkbox">
-        <input class="custom-control-input" type="checkbox" id="Minggu" name="hari[]" value="Minggu" <?php if(!empty($Minggu)) { echo 'checked'; } ?>>
-        <label for="Minggu" class="custom-control-label">Minggu</label>
-      </div>
-
     </div>
     <!-- end pilih hari -->
   </div>
 </div>
+
 
 <div class="form-group row">
   <label class="col-md-3">Status Shift dan Ganti Hari</label>
@@ -218,12 +245,116 @@ hourPadding: false,
 
 // theme of the timepicker
 // 'red', 'purple', 'indigo', 'teal', 'green', 'dark'
-theme: 'green',
+theme: 'red',
 
 // custom label text
 okLabel: 'Done',
 cancelLabel: 'Cancle',
 
 });
+</script>
+
+<script>
+  $('#timepicker3').mdtimepicker({
+
+    // time format
+    timeFormat: 'hh:mm:ss.000', 
+
+    // format of the input value
+    format: 'hh:mm tt',
+
+    // readonly mode
+    readOnly: false, 
+
+    // determines if display value has zero padding for hour value less than 10 (i.e. 05:30 PM); 24-hour format has padding by default
+    hourPadding: false,
+
+    // theme of the timepicker
+    // 'red', 'purple', 'indigo', 'teal', 'green', 'dark'
+    theme: 'red',
+
+    // custom label text
+    okLabel: 'Done',
+    cancelLabel: 'Cancle',
+
+    });
+</script>
+
+<script>
+  $('#timepicker4').mdtimepicker({
+
+    // time format
+    timeFormat: 'hh:mm:ss.000', 
+
+    // format of the input value
+    format: 'hh:mm tt',
+
+    // readonly mode
+    readOnly: false, 
+
+    // determines if display value has zero padding for hour value less than 10 (i.e. 05:30 PM); 24-hour format has padding by default
+    hourPadding: false,
+
+    // theme of the timepicker
+    // 'red', 'purple', 'indigo', 'teal', 'green', 'dark'
+    theme: 'green',
+
+    // custom label text
+    okLabel: 'Done',
+    cancelLabel: 'Cancle',
+
+    });
+</script>
+
+<script>
+  $('#timepicker5').mdtimepicker({
+
+    // time format
+    timeFormat: 'hh:mm:ss.000', 
+
+    // format of the input value
+    format: 'hh:mm tt',
+
+    // readonly mode
+    readOnly: false, 
+
+    // determines if display value has zero padding for hour value less than 10 (i.e. 05:30 PM); 24-hour format has padding by default
+    hourPadding: false,
+
+    // theme of the timepicker
+    // 'red', 'purple', 'indigo', 'teal', 'green', 'dark'
+    theme: 'green',
+
+    // custom label text
+    okLabel: 'Done',
+    cancelLabel: 'Cancle',
+
+    });
+</script>
+
+<script>
+  $('#timepicker6').mdtimepicker({
+
+    // time format
+    timeFormat: 'hh:mm:ss.000', 
+
+    // format of the input value
+    format: 'hh:mm tt',
+
+    // readonly mode
+    readOnly: false, 
+
+    // determines if display value has zero padding for hour value less than 10 (i.e. 05:30 PM); 24-hour format has padding by default
+    hourPadding: false,
+
+    // theme of the timepicker
+    // 'red', 'purple', 'indigo', 'teal', 'green', 'dark'
+    theme: 'green',
+
+    // custom label text
+    okLabel: 'Done',
+    cancelLabel: 'Cancle',
+
+    });
 </script>
 

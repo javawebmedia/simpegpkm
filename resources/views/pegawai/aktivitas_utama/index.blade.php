@@ -16,7 +16,7 @@
 
 @include('pegawai/aktivitas_utama/tambah')
 
-<table class="table table-bordered">
+<table class="table table-sm tabelku">
     <thead>
         <tr>
             <th width="5%">No</th>

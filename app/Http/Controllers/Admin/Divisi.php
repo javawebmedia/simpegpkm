@@ -61,10 +61,11 @@ class Divisi extends Controller
                             ]);
 
         DB::table('divisi')->insert([
-            'id_pegawai'    => Session()->get('id_pegawai'),
+            'id_pegawai'     => Session()->get('id_pegawai'),
             'nama_divisi'    => $request->nama_divisi,
-            'urutan'        => $request->urutan,
-            'tanggal_post'  => date('Y-m-d H:i:s')
+            'kode_divisi'    => $request->kode_divisi,
+            'urutan'         => $request->urutan,
+            'tanggal_post'   => date('Y-m-d H:i:s')
         ]);
         return redirect('admin/divisi')->with(['sukses' => 'Data telah ditambah']);
     }
@@ -86,6 +87,7 @@ class Divisi extends Controller
         DB::table('divisi')->where('id_divisi',$request->id_divisi)->update([
             'id_pegawai'    => Session()->get('id_pegawai'),
             'nama_divisi'    => $request->nama_divisi,
+            'kode_divisi'    => $request->kode_divisi,
             'urutan'        => $request->urutan
         ]);
         return redirect('admin/divisi')->with(['sukses' => 'Data telah diedit']);

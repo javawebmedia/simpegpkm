@@ -46,6 +46,19 @@
           </div>
 
           <div class="form-group row">
+            <label class="col-md-3">Status Kehadiran</label>
+            <div class="col-md-9">
+              <select name="status_kehadiran" id="status_kehadiran" class="form-control" required>
+                <option value="">Pilih Status Kehadiran</option>
+                <option value="Hadir" >Hadir</option>
+                <option value="Izin" >Izin</option>
+                <option value="Sakit" >Sakit</option>
+                <option value="Alpa" >Alpa</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row">
             <label class="col-md-3">Aktif ?</label>
             <div class="col-md-9">
               <select name="aktif_status_absen" id="aktif_status_absen" class="form-control" required>

@@ -42,7 +42,7 @@
           <!-- start -->
           <div class="col-md-12">
             
-            <table class="table table-bordered" id="example1">
+            <table class="table table-sm tabelku" id="example1">
   <thead>
     <tr>
       <th width="5%">No</th>

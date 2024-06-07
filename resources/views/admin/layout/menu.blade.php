@@ -31,10 +31,25 @@ $total_pegawai  = $m_dasbor->pegawai();
               <lord-icon
               src="https://cdn.lordicon.com/hftgdgfo.json"
               trigger="hover"
-              style="width:30px;height:30px">
+              style="width:20px;height:20px">
             </lord-icon>
             <p>
-              Dashboard Aplikasi
+              Dashboard
+            </p>
+          </a>
+        </li>
+
+        <!-- statistik -->
+        <li class="nav-item">
+            <a href="{{ asset('admin/dasbor/statistik') }}" class="nav-link">
+              <!-- <i class="nav-icon fas fa-tachometer-alt"></i> -->
+              <lord-icon
+              src="https://cdn.lordicon.com/hftgdgfo.json"
+              trigger="hover"
+              style="width:20px;height:20px">
+            </lord-icon>
+            <p>
+              Statistik Pegawai
             </p>
           </a>
         </li>
@@ -45,7 +60,7 @@ $total_pegawai  = $m_dasbor->pegawai();
             <lord-icon
             src="https://cdn.lordicon.com/lzgqzxrq.json"
             trigger="hover"
-            style="width:30px;height:30px">
+            style="width:20px;height:20px">
           </lord-icon>
           <p>
             Data Absensi
@@ -56,6 +71,9 @@ $total_pegawai  = $m_dasbor->pegawai();
         <ul class="nav nav-treeview">
           
           <li class="nav-item"><a href="{{ asset('admin/kehadiran') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Data Kehadiran</p></a>
+          </li>
+
+          <li class="nav-item"><a href="{{ asset('admin/absensi') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Rekap Absensi Semua</p></a>
           </li>
 
           <li class="nav-item"><a href="{{ asset('admin/jadwal-pegawai') }}" class="nav-link"><i class="fas fa-tools nav-icon"></i><p>Data Jadwal Kerja</p></a>
@@ -76,13 +94,15 @@ $total_pegawai  = $m_dasbor->pegawai();
         </ul>
       </li>
 
+      
+
         <!-- cuti -->
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <lord-icon
             src="https://cdn.lordicon.com/tsnvgrkp.json"
             trigger="hover"
-            style="width:30px;height:30px">
+            style="width:20px;height:20px">
           </lord-icon>
           <p>
             Data Cuti
@@ -118,7 +138,7 @@ $total_pegawai  = $m_dasbor->pegawai();
             <lord-icon
             src="https://cdn.lordicon.com/eaawyrxp.json"
             trigger="hover"
-            style="width:30px;height:30px">
+            style="width:20px;height:20px">
           </lord-icon>
           <p>
             Kinerja Pegawai
@@ -126,14 +146,14 @@ $total_pegawai  = $m_dasbor->pegawai();
         </a>
       </li>
 
-      <!-- Menu Pegawai -->
+      <!-- Menu Gaji Dan TKD -->
       <li class="nav-item">
         <a href="#" class="nav-link">
           <!-- <i class="nav-icon fas fa-shopping-cart"></i> -->
           <lord-icon
           src="https://cdn.lordicon.com/wvqpnihn.json"
           trigger="hover"
-          style="width:30px;height:30px">
+          style="width:20px;height:20px">
         </lord-icon>
         <p>
           Generate Gaji &amp; TKD
@@ -170,6 +190,8 @@ $total_pegawai  = $m_dasbor->pegawai();
   </ul>
 </li>
 
+
+
 <!-- Menu Pegawai -->
 <li class="nav-item">
   <a href="#" class="nav-link">
@@ -177,7 +199,7 @@ $total_pegawai  = $m_dasbor->pegawai();
     <lord-icon
     src="https://cdn.lordicon.com/ljvjsnvh.json"
     trigger="hover"
-    style="width:30px;height:30px">
+    style="width:20px;height:20px">
   </lord-icon>
   <p>
     Data Pegawai
@@ -233,7 +255,7 @@ $total_pegawai  = $m_dasbor->pegawai();
     <lord-icon
     src="https://cdn.lordicon.com/nqwqiffl.json"
     trigger="hover"
-    style="width:30px;height:30px">
+    style="width:20px;height:20px">
   </lord-icon>
   <p>
     Data Gaji dan Absensi
@@ -280,6 +302,112 @@ $total_pegawai  = $m_dasbor->pegawai();
 </ul>
 </li>
 
+<!-- Menu Diklat -->
+<li class="nav-item">
+  <a href="#" class="nav-link">
+    <!-- <i class="nav-icon fas fa-users"></i> -->
+    <lord-icon
+    src="https://cdn.lordicon.com/ljvjsnvh.json"
+    trigger="hover"
+    style="width:20px;height:20px">
+  </lord-icon>
+  <p>
+    Kediklatan
+    <i class="right fas fa-angle-left"></i>
+    <!-- <span class="right badge badge-danger"><?php echo $total_pegawai ?></span> -->
+  </p>
+</a>
+  <ul class="nav nav-treeview">
+  <li class="nav-item">
+      <a href="{{ asset('admin/diklat') }}" class="nav-link">
+        <lord-icon
+        src="https://cdn.lordicon.com/iifryyua.json"
+        trigger="loop"
+        colors="primary:#30c9e8"
+        state="hover-1"
+        style="width:20px;height:20px">
+        </lord-icon></i>
+        <p>Dasbor Diklat</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{ asset('admin/diklat/tambah') }}" class="nav-link">
+        <lord-icon
+        src="https://cdn.lordicon.com/iifryyua.json"
+        trigger="loop"
+        colors="primary:#30c9e8"
+        state="hover-1"
+        style="width:20px;height:20px">
+        </lord-icon></i>
+        <p>Tambah Data Diklat</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{ asset('admin/kode-diklat') }}" class="nav-link">
+        <lord-icon
+        src="https://cdn.lordicon.com/iifryyua.json"
+        trigger="loop"
+        colors="primary:#30c9e8"
+        state="hover-1"
+        style="width:20px;height:20px">
+        </lord-icon></i>
+        <p>Master Data Kodifikasi</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{ asset('admin/jenis-pelatihan') }}" class="nav-link">
+        <lord-icon
+        src="https://cdn.lordicon.com/iifryyua.json"
+        trigger="loop"
+        colors="primary:#30c9e8"
+        state="hover-1"
+        style="width:20px;height:20px">
+        </lord-icon></i>
+        <p>Master Jenis Pelatihan</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="{{ asset('admin/rumpun') }}" class="nav-link">
+        <lord-icon
+        src="https://cdn.lordicon.com/iifryyua.json"
+        trigger="loop"
+        colors="primary:#30c9e8"
+        state="hover-1"
+        style="width:20px;height:20px">
+        </lord-icon></i>
+        <p>Master Rumpun</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="{{ asset('admin/metode-diklat') }}" class="nav-link">
+        <lord-icon
+        src="https://cdn.lordicon.com/iifryyua.json"
+        trigger="loop"
+        colors="primary:#30c9e8"
+        state="hover-1"
+        style="width:20px;height:20px">
+        </lord-icon></i>
+        <p>Master Metode Diklat</p>
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a href="{{ asset('admin/kategori-diklat') }}" class="nav-link">
+        <lord-icon
+        src="https://cdn.lordicon.com/iifryyua.json"
+        trigger="loop"
+        colors="primary:#30c9e8"
+        state="hover-1"
+        style="width:20px;height:20px">
+        </lord-icon></i>
+        <p>Master Kategori Diklat</p>
+      </a>
+    </li>
+
+  </ul>
+</li>
+
 <!-- Menu Master Ekin -->
 <li class="nav-item">
   <a href="#" class="nav-link">
@@ -287,7 +415,7 @@ $total_pegawai  = $m_dasbor->pegawai();
     <lord-icon
     src="https://cdn.lordicon.com/xqgancly.json"
     trigger="hover"
-    style="width:30px;height:30px">
+    style="width:20px;height:20px">
   </lord-icon>
   <p>
     Master eKinerja
@@ -341,7 +469,7 @@ $total_pegawai  = $m_dasbor->pegawai();
             <lord-icon
             src="https://cdn.lordicon.com/hursldrn.json"
             trigger="hover"
-            style="width:30px;height:30px">
+            style="width:20px;height:20px">
           </lord-icon>
           <p>
             Master Data
@@ -451,7 +579,7 @@ $total_pegawai  = $m_dasbor->pegawai();
               <lord-icon
               src="https://cdn.lordicon.com/yrxnwkni.json"
               trigger="hover"
-              style="width:30px;height:30px">
+              style="width:20px;height:20px">
             </lord-icon>
             <p>
               Setting Struktur
@@ -465,7 +593,7 @@ $total_pegawai  = $m_dasbor->pegawai();
             <lord-icon
             src="https://cdn.lordicon.com/tsnvgrkp.json"
             trigger="hover"
-            style="width:30px;height:30px">
+            style="width:20px;height:20px">
           </lord-icon>
           <p>
             Konfigurasi
@@ -522,4 +650,4 @@ $total_pegawai  = $m_dasbor->pegawai();
               <h3 class="card-title">{{ $title }}</h3>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body" style="min-height: 500px;">

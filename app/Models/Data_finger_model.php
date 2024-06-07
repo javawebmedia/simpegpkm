@@ -36,7 +36,7 @@ class Data_finger_model extends Model
     {
         $query = DB::table('data_finger')
             ->select('*')
-            ->where('data_finger.status_data_finger',$status_data_finger)
+            // ->where('data_finger.status_data_finger',$status_data_finger)
             ->where('data_finger.tanggal_finger',$tanggal_finger)
             ->where('data_finger.pin',$pin)
             ->orderBy('data_finger.id_data_finger','ASC')
@@ -49,7 +49,7 @@ class Data_finger_model extends Model
     {
         $query = DB::table('data_finger')
             ->select('*')
-            ->where('data_finger.status_data_finger',$status_data_finger)
+            // ->where('data_finger.status_data_finger',$status_data_finger)
             ->where('data_finger.tanggal_finger',$tanggal_finger)
             ->where('data_finger.pin',$pin)
             ->orderBy('data_finger.id_data_finger','DESC')

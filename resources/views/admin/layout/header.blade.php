@@ -88,7 +88,7 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fas fa-user"></i>
-          {{ Session()->get('nama_lengkap') }} - {{ Session()->get('akses_level') }}
+          {{ Session()->get('gelar_depan') }} {{ Session()->get('nama_lengkap') }} {{ Session()->get('gelar_belakang') }} - {{ Session()->get('akses_level') }}
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">MENU PEGAWAI</span>

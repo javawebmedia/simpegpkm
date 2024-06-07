@@ -305,7 +305,7 @@ class Jadwal_pegawai extends Controller
 
         }
         // end proses
-        return redirect('admin/jadwal-pegawai/tambah/'.$id_pegawai.'/'.$tahun.'/'.$bulan)->with(['sukses' => 'Data jadwal kerja telah disetting']);
+        return redirect($request->pengalihan)->with(['sukses' => 'Data jadwal kerja telah disetting']);
     }
 
     // tarik

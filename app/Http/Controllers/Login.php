@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Konfigurasi_model;
 
 class Login extends Controller
 {
@@ -17,8 +18,12 @@ class Login extends Controller
             Session()->forget('redirect');
         }
         // end check
+        $m_site = new Konfigurasi_model();
+        $site   = $m_site->listing();
 
-        $data = [   'title'     => 'Halaman Login'];
+        $data = [   'title'     => 'Halaman Login',
+                    'site'      => $site,
+                ];
         return view('login/index',$data);
     }
 
@@ -35,6 +40,8 @@ class Login extends Controller
             $request->session()->put('id_pegawai', $pegawai->id_pegawai);
             $request->session()->put('nip', $pegawai->nip);
             $request->session()->put('username', $pegawai->nip);
+            $request->session()->put('gelar_depan', $pegawai->gelar_depan);
+            $request->session()->put('gelar_belakang', $pegawai->gelar_belakang);
             $request->session()->put('nama_lengkap', $pegawai->nama_lengkap);
             $request->session()->put('akses_level', $pegawai->akses_level);
             // Jika berhasil masuk halaman dasbor

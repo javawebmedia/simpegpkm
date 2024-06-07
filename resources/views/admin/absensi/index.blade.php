@@ -2,10 +2,10 @@
 	<a href="{{ asset('admin/absensi') }}" class="btn btn-outline-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</a>
 </p>
 
-<table class="table table-bordered">
+<table class="table table-sm tabelku">
 	<tbody>
 		<tr>
-			<th class="bg-light" width="25%">Tahun Absensi</th>
+			<th class="bg-light" width="20%">Tahun Absensi</th>
 			<td>{{ $tahun }}</td>
 		</tr>
 		<tr>
@@ -69,15 +69,19 @@
 
 	<span class="input-group-append">
 		<button type="submit" class="btn btn-info btn-flat" name="thbl" value="submit">
-			<i class="fa fa-arrow-right"></i> Lihat Data Absensi
+			<i class="fa fa-eye"></i> Lihat Absensi
+		</button>
+
+		<button type="submit" class="btn btn-success btn-flat" name="rekap" value="rekap">
+			<i class="fa fa-sync"></i> Buat Rekap
 		</button>
 
 		<button type="button" class="btn btn-primary btn-flat" data-toggle="modal" data-target="#modal-default">
-		  <i class="fa fa-plus-circle"></i> Tambah/Update Data Absensi
+		  <i class="fa fa-plus-circle"></i> Tambah/Update Absensi
 		</button>
 
-		<a href="{{ asset('admin/absensi/import') }}" class="btn btn-success btn-flat">
-			<i class="fa fa-file-excel"></i> Import Data Absensi (Excel)
+		<a href="{{ asset('admin/absensi/import') }}" class="btn btn-secondary btn-flat">
+			<i class="fa fa-file-excel"></i> Import Absensi (Excel)
 		</a>
 
 	</span>
@@ -88,7 +92,7 @@
 
 <div class="table-responsive mailbox-messages">
 
-<table class="table table-bordered table-sm">
+<table class="table table-sm tabelku" id="example1">
 	<thead>
 		<tr class="bg-secondary text-center align-middle">
 			<th width="5%">No</th>

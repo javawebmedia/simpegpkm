@@ -43,10 +43,10 @@ $site_config = DB::table('konfigurasi')->first();
 				<form class="login100-form validate-form" action="{{ asset('login/check') }}" method="POST">
 					{{ csrf_field() }}
 					<span class="login100-form-title" style="padding-bottom: 0;" style="padding-top: 0;">
-					 <h1>SIMPEG 1.0</h1>
+          <h1>{{ $site->singkatan }}</h1>
 					</span>
 					<center><h5>
-						Sistem Aplikasi Kepegawaian Puskesmas Kramat Jati
+          {{ $site->nama_singkat }}
 					</h5>
 					</center><br/>
 

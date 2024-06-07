@@ -8,6 +8,43 @@ use Illuminate\Support\Facades\DB;
 
 class Kehadiran_model extends Model
 {
+
+    // telat_harian
+    public function telat_harian($pin,$tanggal)
+    {
+        $query = DB::table('kehadiran')
+            ->select(DB::raw('SUM(jumlah_menit_terlambat) AS total'))
+            ->where('pin',$pin)
+            ->where('tanggal_masuk',$tanggal)
+            ->where('jumlah_menit_terlambat','>',0)
+            ->first();
+        return $query;
+    }
+
+    // telat_bulanan
+    public function telat_bulanan($pin,$thbl)
+    {
+        $query = DB::table('kehadiran')
+            ->select(DB::raw('SUM(jumlah_menit_terlambat) AS total'))
+            ->where('pin',$pin)
+            ->where('thbl',$thbl)
+            ->where('jumlah_menit_terlambat','>',0)
+            ->first();
+        return $query;
+    }
+
+    // telat_tahunan
+    public function telat_tahunan($pin,$tahun)
+    {
+        $query = DB::table('kehadiran')
+            ->select(DB::raw('SUM(jumlah_menit_terlambat) AS total'))
+            ->where('pin',$pin)
+            ->where('tahun',$tahun)
+            ->where('jumlah_menit_terlambat','>',0)
+            ->first();
+        return $query;
+    }
+
     // listing semua
     public function listing()
     {
@@ -44,6 +81,18 @@ class Kehadiran_model extends Model
         return $query;
     }
 
+    // check_pegawai_thbl
+    public function check_pegawai_thbl($pin, $tanggal_masuk)
+    {
+        $query = DB::table('kehadiran')
+            ->select('*')
+            ->where('kehadiran.pin', $pin)
+            ->where('kehadiran.tanggal_masuk', $tanggal_masuk)
+            ->count();
+
+        return $query;
+    }
+
     // pegawai_thbl
     public function pegawai_thbl($pin, $thbl)
     {
@@ -61,11 +110,26 @@ class Kehadiran_model extends Model
         return $query;
     }
 
+    // pegawai_thbl_status
+    public function pegawai_thbl_status($pin, $thbl, $status_kehadiran)
+    {
+        $query = DB::table('kehadiran')
+            ->select(DB::raw('COUNT(kehadiran.kehadiran) AS total_status_kehadiran'))
+            ->where('kehadiran.pin', $pin)
+            ->where('kehadiran.thbl', $thbl)
+            ->where('kehadiran.kehadiran', $status_kehadiran)
+            // ->groupBy('kehadiran.tanggal_masuk')
+            ->orderBy('kehadiran.id_kehadiran', 'DESC')
+            ->first();
+
+        return $query;
+    }
+
     // pegawai_thbl_all
     public function pegawai_thbl_all($pin, $thbl)
     {
         $query = DB::table('kehadiran')
-            ->select('kehadiran.*', 'shift.nama', 'shift.warna', 'shift.kode','shift.day_off')
+            ->select('kehadiran.*', 'shift.nama', 'shift.warna', 'shift.kode','shift.day_off','shift.jam_mulai','shift.jam_selesai')
             ->join('shift', 'shift.id_shift', '=', 'kehadiran.id_shift')
             ->where('kehadiran.pin', $pin)
             ->where('kehadiran.thbl', $thbl)

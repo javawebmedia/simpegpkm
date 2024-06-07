@@ -100,7 +100,7 @@
   
 </div>
 
-<table class="table table-bordered table-sm mt-3">
+<table class="table table-sm tabelku mt-3">
   <thead>
     <tr>
       <th>No</th>

@@ -17,7 +17,7 @@ $m_absensi 	= new Absensi_model();
 
 <input type="hidden" name="thbl" value="{{ $periode->thbl }}">
 
-<table class="table table-bordered table-sm">
+<table class="table table-sm tabelku">
 	<thead>
 		<tr>
 			<th width="25%">THBL</th>
@@ -51,7 +51,7 @@ $m_absensi 	= new Absensi_model();
 </p>
 
 <div class="table-responsive">
-<table class="table table-bordered table-sm table-striped">
+<table class="table table-sm tabelku table-striped">
 	<thead class="text-center bg-secondary align-middle">
 		<tr>
 			<th width="2%" rowspan="2" class="align-middle">NO</th>

@@ -13,29 +13,7 @@
 	</a>
 </p>
 
-<!--start Pengumuman -->
-<div class="modal hide fade" id="myModal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Pengumuman Kepegawaian</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>{{ $site->pengumuman }}&hellip;</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
- <!-- end pengumuman -->
+@include('pegawai/dasbor/notifikasi')
 
 <div class="row">
 	<div class="col-md-3 text-center">
@@ -45,7 +23,7 @@
 					<img src="{{ asset('assets/upload/images/'.$pegawai->foto) }}" alt="{{ $pegawai->nama_lengkap }}" class="img img-thumbnail">
 				</p>
 				<p>
-					<strong>{{ $pegawai->nama_lengkap }}</strong>
+				<strong>{{$pegawai->gelar_depan}} {{$pegawai->nama_lengkap}} {{$pegawai->gelar_belakang }}</strong>
 					<br>NIP: {{ $pegawai->nip }}
 				</p>
 			</div>
@@ -55,7 +33,7 @@
 		<div class="card">
 			<div class="card-body">
 
-				<table class="table table-bordered table-striped table-sm">
+				<table class="table table-sm tabelku">
 					<tbody>
 						<tr>
 							<td width="25%">Nama lengkap</td>
@@ -112,7 +90,7 @@
 		<h3>Riwayat Jabatan</h3>
 		<hr>
 		
-		<table class="table table-bordered table-striped table-sm">
+		<table class="table table-sm tabelku">
 			<thead>
 				<tr class="text-center">
 					<th width="2%">No</th>
@@ -147,7 +125,7 @@
 	<div class="col-md-12">
 		<h3>Riwayat Pendidikan</h3><hr>
 
-		<table class="table table-bordered table-striped table-sm">
+		<table class="table table-sm tabelku">
 			<thead>
 				<tr class="text-center">
 					<th width="2%">No</th>
@@ -182,7 +160,7 @@
 	<div class="col-md-12">
 		<h3>Data Keluarga</h3><hr>
 
-		<table class="table table-bordered table-striped table-sm">
+		<table class="table table-sm tabelku">
 			<thead>
 				<tr class="text-center">
 					<th width="2%">No</th>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Testing</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+	<input type="text" name="nilai" id="nilai" value="">
+
+	<p>
+		<button type="button" class="buttonku" value="Value1">
+			VAL1
+		</button>
+		<button type="button" class="buttonku" value="Value2">
+			VAL2
+		</button>
+	</p>
+
+	<script>
+		let previouslyClickedButton = null;
+
+		// Menambahkan event listener untuk semua elemen dengan class "buttonku"
+		document.querySelectorAll('.buttonku').forEach(button => {
+			button.addEventListener('click', function() {
+				// Mengambil nilai dari tombol yang diklik
+				const buttonValue = this.value;
+				// Menempatkan nilai tersebut ke dalam input dengan id "nilai"
+				document.getElementById('nilai').value = buttonValue;
+				
+				// Jika ada tombol sebelumnya yang diklik, aktifkan kembali tombol tersebut
+				if (previouslyClickedButton) {
+					previouslyClickedButton.disabled = false;
+				}
+				
+				// Menonaktifkan tombol yang diklik
+				this.disabled = true;
+				
+				// Simpan referensi tombol yang diklik
+				previouslyClickedButton = this;
+			});
+		});
+	</script>
+</body>
+</html>

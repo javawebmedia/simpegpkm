@@ -13,6 +13,8 @@ use App\Models\Riwayat_jabatan_model;
 use App\Models\Pendidikan_model;
 use App\Models\Keluarga_model;
 use App\Models\Konfigurasi_model;
+use App\Models\Diklat_model;
+
 use Image;
 use PDF;
 
@@ -39,12 +41,18 @@ class Pegawai extends Controller
         $m_site = new Konfigurasi_model();
         $site   = $m_site->listing();
 
-        $data = [   'title'             => $pegawai->nama_lengkap.' (NIP: '.$pegawai->nip.')',
+        $m_diklat   = new Diklat_model();
+        $nip        = Session()->get('nip');
+        $diklat     = $m_diklat->nip($nip);
+        $diklat_jpl = $m_diklat->nip_total($nip);
+
+        $data = [   'title'             => $pegawai->gelar_depan.' '.$pegawai->nama_lengkap.' '.$pegawai->gelar_belakang.' (NIP: '.$pegawai->nip.')',
                     'pegawai'           => $pegawai,
                     'riwayat_jabatan'   => $riwayat_jabatan,
                     'pendidikan'        => $pendidikan,
                     'keluarga'          => $keluarga,
                     'site'              => $site,
+                    'diklat_jpl'        => $diklat_jpl,
                     'content'           => 'pegawai/dasbor/index'
                 ];
         return view('pegawai/layout/wrapper',$data);
@@ -69,7 +77,7 @@ class Pegawai extends Controller
         $m_keluarga         = new Keluarga_model();
         $keluarga           = $m_keluarga->pegawai($id_pegawai);
 
-        $data = [   'title'             => $pegawai->nama_lengkap.' (NIP: '.$pegawai->nip.')',
+        $data = [   'title'             => $pegawai->gelar_depan.' '.$pegawai->nama_lengkap.' '.$pegawai->gelar_belakang.' (NIP: '.$pegawai->nip.')',
                     'pegawai'           => $pegawai,
                     'riwayat_jabatan'   => $riwayat_jabatan,
                     'pendidikan'        => $pendidikan,

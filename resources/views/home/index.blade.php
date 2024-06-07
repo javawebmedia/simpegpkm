@@ -5,7 +5,7 @@
       <div class="row justify-content-between">
         <div class="col-lg-7 pt-5 pt-lg-0 order-2 order-lg-1 d-flex align-items-center">
           <div data-aos="zoom-out">
-            <h1>Selamat Datang di <span><?php echo $site->singkatan ?></span></h1>
+            <h1> <span><?php echo $site->singkatan ?></span></h1>
             <h2><?php echo $site->deskripsi; ?></h2>
             <div class="text-center text-lg-start">
               <a href="{{ asset('login') }}" class="btn-get-started scrollto">Login Pegawai</a>

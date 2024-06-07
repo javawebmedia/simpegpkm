@@ -43,7 +43,7 @@
 	</tbody>
 </table>
 
-<form action="{{ asset('admin/kehadiran/tambah') }}" method="post" accept-charset="utf-8" class="mt-2">
+<form action="{{ asset('admin/kehadiran/tambah') }}" method="get" accept-charset="utf-8" class="mt-2">
 	{{ csrf_field() }}
 
 	<div class="input-group">
@@ -102,6 +102,10 @@
 				<?php 
 				$no=1; foreach($pegawai as $pegawai) { 
 					$total 	= $m_kehadiran->pegawai_thbl($pegawai->pin,$thbl);
+					$hadir 	= $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Hadir');
+					$alpa 	= $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Alpa');
+					$sakit 	= $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Sakit');
+					$izin 	= $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Izin');
 					?>
 					<tr>
 						<td class="text-center">{{ $no }}</td>
@@ -109,15 +113,15 @@
 						<td class="text-center"><?php echo $total->total_jam_kerja ?></td>
 						<td class="text-center"><?php echo $total->total_jumlah_menit_terlambat ?></td>
 						<td class="text-center"><?php echo $total->total_jumlah_menit_pulang_cepat ?></td>
-						<td class="text-center"></td>
-						<td class="text-center"></td>
-						<td class="text-center"></td>
-						<td class="text-center"></td>
+						<td class="text-center"><?php echo $hadir->total_status_kehadiran ?></td>
+						<td class="text-center"><?php echo $sakit->total_status_kehadiran ?></td>
+						<td class="text-center"><?php echo $izin->total_status_kehadiran ?></td>
+						<td class="text-center"><?php echo $alpa->total_status_kehadiran ?></td>
 						<td>
 						<?php if($total->total_jam_kerja =='') { ?>
-							<a href="#" class="btn btn-secondary disabled btn-sm mb-1"><i class="fa fa-eye"></i></a>
+							<a href="#" class="btn btn-secondary disabled btn-xs"><i class="fa fa-eye"></i></a>
 						<?php }else{ ?>
-							<a href="{{ asset('admin/kehadiran/detail/'.$pegawai->pin.'/'.$tahun.'/'.$bulan) }}" class="btn btn-warning btn-sm mb-1"><i class="fa fa-eye"></i></a>
+							<a href="{{ asset('admin/kehadiran/detail/'.$pegawai->pin.'/'.$tahun.'/'.$bulan) }}" class="btn btn-warning btn-xs"><i class="fa fa-eye"></i></a>
 						<?php } ?>
 						</td>
 					</tr>

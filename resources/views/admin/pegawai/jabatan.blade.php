@@ -32,7 +32,7 @@ $pangkat 			= DB::table('pangkat')->get();
 
 		@include('admin/pegawai/tambah-jabatan')
 
-		<table class="table table-bordered table-striped table-sm">
+		<table class="table table-sm tabelku">
 			<thead>
 				<tr class="text-center">
 					<th width="2%">No</th>

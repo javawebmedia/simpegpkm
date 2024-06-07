@@ -79,6 +79,7 @@ $website = new App\Libraries\Website();
 <input type="hidden" name="pin" value="<?php echo $pegawai->pin ?>">
 <input type="hidden" name="nip" value="<?php echo $pegawai->nip ?>">
 <input type="hidden" name="id_pegawai" value="<?php echo $pegawai->id_pegawai ?>">
+<input type="hidden" name="pengalihan" value="<?php echo url()->full(); ?>">
 
 <p class="text-right">
 	<button class="btn btn-success" type="submit" name="submit">

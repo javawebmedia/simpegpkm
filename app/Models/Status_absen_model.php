@@ -29,6 +29,17 @@ class Status_absen_model extends Model
         return $query;
     }
 
+    // nama_status_absen
+    public function nama_status_absen($nama_status_absen)
+    {
+        $query = DB::table('status_absen')
+            ->select('*')
+            ->where('status_absen.nama_status_absen',$nama_status_absen)
+            ->orderBy('status_absen.id_status_absen','DESC')
+            ->first();
+        return $query;
+    }
+
     // detail
     public function detail($id_status_absen)
     {

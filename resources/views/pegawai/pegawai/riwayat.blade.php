@@ -21,7 +21,7 @@
 					<img src="{{ asset('assets/upload/images/'.$pegawai->foto) }}" alt="{{ $pegawai->nama_lengkap }}" class="img img-thumbnail">
 				</p>
 				<p>
-					<strong>{{ $pegawai->nama_lengkap }}</strong>
+					<strong>{{$pegawai->gelar_depan}} {{$pegawai->nama_lengkap}} {{$pegawai->gelar_belakang }}</strong>
 					<br>NIP: {{ $pegawai->nip }}
 				</p>
 			</div>
@@ -31,7 +31,7 @@
 		<div class="card">
 			<div class="card-body">
 
-				<table class="table table-bordered table-striped table-sm">
+				<table class="table table-sm tabelku">
 					<tbody>
 						<tr>
 							<td width="25%">Nama lengkap</td>

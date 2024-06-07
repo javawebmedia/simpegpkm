@@ -8,6 +8,10 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pegawai_model;
 use App\Models\Absensi_model;
+use App\Models\Kehadiran_model;
+use App\Models\Data_finger_model;
+use App\Models\Jadwal_pegawai_model;
+use App\Models\Status_absen_model;
 use Image;
 use PDF;
 
@@ -32,13 +36,58 @@ class Absensi extends Controller
             $thbl   = date('Ym');
         }
         // ambil data absensi
-        $m_absensi  = new Absensi_model();
-        $m_pegawai  = new Pegawai_model();
-        $absensi    = $m_absensi->thbl($thbl);
-        $pegawai    = $m_pegawai->listing();
+        $m_absensi      = new Absensi_model();
+        $m_pegawai      = new Pegawai_model();
+        $m_kehadiran    = new Kehadiran_model();
+        $absensi        = $m_absensi->thbl($thbl);
+        $pegawai        = $m_pegawai->listing();
+
+         // bikin rekap
+        if(isset($_GET['rekap'])) {
+            foreach($pegawai as $pegawai) {
+                $nip    = $pegawai->nip;
+                $total  = $m_kehadiran->pegawai_thbl($pegawai->pin,$thbl);
+                $hadir  = $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Hadir');
+                $alpa   = $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Alpa');
+                $sakit  = $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Sakit');
+                $izin   = $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Izin');
+                $check      = $m_absensi->thbl_pegawai($thbl,$nip);
+                if($check) {
+                    $nilai_perilaku = $check->nilai_perilaku;
+                    $nilai_serapan  = $check->nilai_serapan;
+                    $keterangan     = $check->keterangan;
+                }else{
+                    $nilai_perilaku = 0;
+                    $nilai_serapan  = 0;
+                    $keterangan     = '-';
+                }
+                $data   = [
+                        'id_pegawai'        => Session()->get('id_pegawai'),
+                        'nip'               => $pegawai->nip,
+                        'thbl'              => $thbl,
+                        'bulan'             => $bulan,
+                        'tahun'             => $tahun,
+                        'menit_terlambat'   => $total->total_jumlah_menit_terlambat,
+                        'nilai_perilaku'    => $nilai_perilaku,
+                        'nilai_serapan'     => $nilai_serapan,
+                        'sakit'             => $sakit->total_status_kehadiran,
+                        'izin'              => $izin->total_status_kehadiran,
+                        'alpa'              => $alpa->total_status_kehadiran,
+                        'keterangan'        => $keterangan,
+                        'tanggal_post'      => date('Y-m-d H:i:s')
+                    ];
+                
+                if($check) {
+                    DB::table('absensi')->where(['nip' => $check->nip, 'thbl' => $check->thbl])->update($data); 
+                }else{
+                   DB::table('absensi')->insert($data); 
+                }
+            }
+            return redirect('admin/absensi?thbl='.$thbl.'&tahun='.$tahun.'&bulan='.$bulan.'&thbl='.$thbl)->with(['sukses' => 'Data rekap telah dibuat']);
+        }
 
         $data = [   'title'     => 'Data Master Absensi: '.$thbl,
-                    'absensi'      => $absensi,
+                    'absensi'   => $absensi,
                     'pegawai'   => $pegawai,
                     'thbl'      => $thbl,
                     'tahun'     => $tahun,
@@ -46,6 +95,42 @@ class Absensi extends Controller
                     'content'   => 'admin/absensi/index'
                 ];
         return view('admin/layout/wrapper',$data);
+    }
+
+    // fetchData
+    public function data_absensi()
+    {
+        $nip            = $_GET['nip'];
+        $tahun            = $_GET['tahun'];
+        $bulan            = $_GET['bulan'];
+        $m_absensi      = new Absensi_model();
+        $thbl           = $tahun.$bulan;
+        $absensi        = $m_absensi->thbl_pegawai($thbl,$nip);
+        // Gantikan logika berikut dengan panggilan ke sumber data remote Anda
+        // Misalnya, Anda mungkin akan mengambil data dari database atau API lain
+        if($absensi) {
+            return [
+                'menit_terlambat'   => $absensi->menit_terlambat,
+                'nilai_perilaku'    => $absensi->nilai_perilaku,
+                'nilai_serapan'     => $absensi->nilai_serapan,
+                'sakit'             => $absensi->sakit,
+                'izin'              => $absensi->izin,
+                'alpa'              => $absensi->alpa,
+                'keterangan'        => $absensi->keterangan
+            ];
+        }else{
+            return [
+                'menit_terlambat'   => 0,
+                'nilai_perilaku'    => 0,
+                'nilai_serapan'     => 0,
+                'sakit'             => 0,
+                'izin'              => 0,
+                'alpa'              => 0,
+                'keterangan'        => ''
+            ];
+        }
+
+        return response()->json($absensi);
     }
 
     // proses tambah data

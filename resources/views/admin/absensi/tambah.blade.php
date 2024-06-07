@@ -15,7 +15,7 @@
         <div class="form-group row">
           <label class="col-md-3">Nama Pegawai</label>
           <div class="col-md-9">
-            <select name="nip" id="nip" class="form-control select2bs4" required>
+            <select name="nip" id="nip" class="form-control select2bs4" id="nip" required>
               <option value="">Pilih pegawai</option>
               @foreach($pegawai as $pegawai)
               <option value="{{ $pegawai->nip }}">{{ $pegawai->nama_lengkap . ' - ' . $pegawai->nip }}</option>
@@ -28,11 +28,11 @@
           <label class="col-md-3">Tahun dan Bulan</label>
 
           <div class="col-md-3">
-            <input type="number" name="tahun" class="form-control" placeholder="Tahun" value="{{ $tahun }}" required>
+            <input type="number" name="tahun" class="form-control" id="tahun" placeholder="Tahun" value="{{ $tahun }}" required>
           </div>
 
           <div class="col-md-3">
-            <select name="bulan" class="form-control" required>
+            <select name="bulan" class="form-control" id="bulan" required>
               <option value="">Pilih Bulan</option>
               <option value="01" <?php if($bulan=='01') { echo 'selected'; } ?>>Januari</option>
               <option value="02" <?php if($bulan=='02') { echo 'selected'; } ?>>Februari</option>
@@ -54,7 +54,7 @@
         <div class="form-group row">
           <label class="col-md-3">Jumlah Menit Terlambat</label>
           <div class="col-md-6">
-            <input type="number" name="menit_terlambat" class="form-control" placeholder="Jumlah Menit Terlambat" value="{{ old('menit_terlambat') }}" required>
+            <input type="number" name="menit_terlambat" class="form-control" id="menit_terlambat" placeholder="Jumlah Menit Terlambat" value="{{ old('menit_terlambat') }}" required>
           </div>
           
         </div>
@@ -63,12 +63,12 @@
           <label class="col-md-3">Nilai pegawai</label>
 
           <div class="col-md-3">
-            <input type="text" name="nilai_perilaku" class="form-control" placeholder="Nilai perilaku" value="{{ old('nilai_perilaku') }}" required>
+            <input type="text" name="nilai_perilaku" class="form-control" id="nilai_perilaku" placeholder="Nilai perilaku" value="{{ old('nilai_perilaku') }}" required>
             <small class="text-secondary">Nilai perilaku dari atasan</small>
           </div>
 
           <div class="col-md-3">
-            <input type="text" name="nilai_serapan" class="form-control" placeholder="Nilai serapan" value="{{ old('nilai_serapan') }}" required>
+            <input type="text" name="nilai_serapan" class="form-control" id="nilai_serapan" placeholder="Nilai serapan" value="{{ old('nilai_serapan') }}" required>
             <small class="text-secondary">Nilai serapan (%)</small>
           </div>
           
@@ -78,17 +78,17 @@
           <label class="col-md-3">Info Ketidak Hadiran</label>
 
           <div class="col-md-3">
-            <input type="number" name="sakit" class="form-control" placeholder="Jumlah sakit (hari)" value="{{ old('sakit') }}" required>
+            <input type="number" name="sakit" class="form-control" id="sakit" placeholder="Jumlah sakit (hari)" value="{{ old('sakit') }}" required>
             <small class="text-secondary">Jumlah sakit (hari)</small>
           </div>
 
           <div class="col-md-3">
-            <input type="number" name="Jumlah sakit (hari)" class="form-control" placeholder="Jumlah izin (hari)" value="{{ old('Jumlah sakit (hari)') }}" required>
+            <input type="number" name="izin" id="izin" class="form-control" placeholder="Jumlah izin (hari)" value="{{ old('sakit') }}" required>
             <small class="text-secondary">Jumlah izin (hari)</small>
           </div>
 
           <div class="col-md-3">
-            <input type="number" name="alpa" class="form-control" placeholder="Jumlah alpa (hari)" value="{{ old('alpa') }}" required>
+            <input type="number" name="alpa" id="alpa" class="form-control" placeholder="Jumlah alpa (hari)" value="{{ old('alpa') }}" required>
             <small class="text-secondary">Jumlah alpa (hari)</small>
           </div>
 
@@ -98,7 +98,7 @@
           <label class="col-md-3">Keterangan</label>
 
           <div class="col-md-9">
-            <textarea name="keterangan" class="form-control" placeholder="Keterangan">{{ old('keterangan') }}</textarea>
+            <textarea name="keterangan" id="keterangan" class="form-control" placeholder="Keterangan">{{ old('keterangan') }}</textarea>
           </div>
 
         </div>
@@ -123,3 +123,46 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<script>
+   $(document).ready(function () {
+    // Event untuk memuat kd_metode_pengadaan setelah jenis_metode dipilih
+
+    // Event ketika kd_rup dipilih
+    $('#nip').on('change', function () {
+        var nip = $(this).val();
+        var tahun = $('#tahun').val();
+        var bulan = $('#bulan').val();
+
+        // Mengosongkan input
+        $('#izin').val('');
+        $('#alpa').val('');
+        $('#sakit').val('');
+        $('#nilai_serapan').val('');
+        $('#nilai_perilaku').val('');
+        $('#keterangan').val('');
+        $('#menit_terlambat').val('');
+        
+        // Lakukan pengambilan data terkait kd_rup yang dipilih
+        $.ajax({
+            url: '{{ asset("admin/absensi/data-absensi") }}',
+            method: 'GET',
+            data: { nip: nip, tahun: tahun, bulan: bulan},
+            dataType: 'json',
+            success: function (response) {
+                // Isi data ke dalam field yang sesuai
+                $('#izin').val(response.izin);
+                $('#alpa').val(response.alpa);
+                $('#sakit').val(response.sakit);
+                $('#nilai_serapan').val(response.nilai_serapan);
+                $('#nilai_perilaku').val(response.nilai_perilaku);
+                $('#keterangan').val(response.keterangan);
+                $('#menit_terlambat').val(response.menit_terlambat);
+            }
+        });
+    });
+
+});
+
+
+</script>

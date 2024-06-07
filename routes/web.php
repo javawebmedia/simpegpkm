@@ -87,6 +87,16 @@ Route::get('pegawai/pegawai/lihat-keluarga/{id}', 'App\Http\Controllers\Pegawai\
 
 // modul dasbor
 Route::get('admin/dasbor', 'App\Http\Controllers\Admin\Dasbor@index');
+Route::get('admin/dasbor/statistik', 'App\Http\Controllers\Admin\Dasbor@statistik');
+Route::get('admin/dasbor/cari', 'App\Http\Controllers\Admin\Dasbor@cari');
+// detai
+Route::get('admin/detail', 'App\Http\Controllers\Admin\Detail@index');
+Route::get('admin/detail/pegawai/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@pegawai');
+Route::get('admin/detail/jadwal/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@jadwal');
+Route::get('admin/detail/kehadiran/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@kehadiran');
+Route::get('admin/detail/absensi/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@absensi');
+Route::get('admin/detail/gaji/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@gaji');
+Route::get('admin/detail/generate/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@generate');
 
 // modul data_finger
 Route::get('admin/data-finger', 'App\Http\Controllers\Admin\Data_finger@index');
@@ -136,6 +146,51 @@ Route::post('admin/agama/tambah', 'App\Http\Controllers\Admin\Agama@tambah');
 Route::get('admin/agama/edit/{id}', 'App\Http\Controllers\Admin\Agama@edit');
 Route::post('admin/agama/proses-edit', 'App\Http\Controllers\Admin\Agama@proses_edit');
 Route::get('admin/agama/delete/{id}', 'App\Http\Controllers\Admin\Agama@delete');
+
+// modul Diklat
+Route::get('admin/diklat', 'App\Http\Controllers\Admin\Diklat@index');
+Route::get('admin/diklat/tambah', 'App\Http\Controllers\Admin\Diklat@tambah');
+Route::post('admin/diklat/proses-tambah', 'App\Http\Controllers\Admin\Diklat@proses_tambah');
+Route::get('admin/diklat/detail/{id}', 'App\Http\Controllers\Admin\Diklat@detail');
+Route::get('admin/diklat/edit/{id}', 'App\Http\Controllers\Admin\Diklat@edit');
+Route::post('admin/diklat/proses-edit', 'App\Http\Controllers\Admin\Diklat@proses_edit');
+Route::get('admin/diklat/delete/{id}', 'App\Http\Controllers\Admin\Diklat@delete');
+Route::get('admin/diklat/import', 'App\Http\Controllers\Admin\Diklat@import');
+Route::post('admin/diklat/proses-import', 'App\Http\Controllers\Admin\Diklat@proses_import');
+Route::post('admin/diklat/proses', 'App\Http\Controllers\Admin\Diklat@proses');
+
+// modul Diklat pegawai
+Route::get('pegawai/diklat', 'App\Http\Controllers\Pegawai\Diklat@index');
+Route::get('pegawai/diklat/approval', 'App\Http\Controllers\Pegawai\Diklat@approval');
+Route::get('pegawai/diklat/tambah', 'App\Http\Controllers\Pegawai\Diklat@tambah');
+Route::post('pegawai/diklat/proses-tambah', 'App\Http\Controllers\Pegawai\Diklat@proses_tambah');
+Route::get('pegawai/diklat/detail/{id}', 'App\Http\Controllers\Pegawai\Diklat@detail');
+Route::get('pegawai/diklat/detail-pimpinan/{id}', 'App\Http\Controllers\Pegawai\Diklat@detail_pimpinan');
+Route::get('pegawai/diklat/edit/{id}', 'App\Http\Controllers\Pegawai\Diklat@edit');
+Route::post('pegawai/diklat/proses-edit', 'App\Http\Controllers\Pegawai\Diklat@proses_edit');
+Route::get('pegawai/diklat/delete/{id}', 'App\Http\Controllers\Pegawai\Diklat@delete');
+Route::get('pegawai/diklat/import', 'App\Http\Controllers\Pegawai\Diklat@import');
+Route::post('pegawai/diklat/proses-import', 'App\Http\Controllers\Pegawai\Diklat@proses_import');
+Route::post('pegawai/diklat/proses', 'App\Http\Controllers\Pegawai\Diklat@proses');
+
+// modul kode-diklat
+Route::get('admin/kode-diklat', 'App\Http\Controllers\Admin\Kode_diklat@index');
+Route::post('admin/kode-diklat/tambah', 'App\Http\Controllers\Admin\Kode_diklat@tambah');
+Route::get('admin/kode-diklat/edit/{id}', 'App\Http\Controllers\Admin\Kode_diklat@edit');
+Route::post('admin/kode-diklat/proses-edit', 'App\Http\Controllers\Admin\Kode_diklat@proses_edit');
+Route::get('admin/kode-diklat/delete/{id}', 'App\Http\Controllers\Admin\Kode_diklat@delete');
+Route::get('admin/kode-diklat/import', 'App\Http\Controllers\Admin\Kode_diklat@import');
+Route::post('admin/kode-diklat/proses-import', 'App\Http\Controllers\Admin\Kode_diklat@proses_import');
+Route::post('admin/kode-diklat/proses', 'App\Http\Controllers\Admin\Kode_diklat@proses');
+
+// modul Jenis Pelatihan
+Route::get('admin/jenis-pelatihan', 'App\Http\Controllers\Admin\Jenis_pelatihan@index');
+Route::post('admin/jenis-pelatihan/tambah', 'App\Http\Controllers\Admin\Jenis_pelatihan@tambah');
+Route::get('admin/jenis-pelatihan/edit/{id}', 'App\Http\Controllers\Admin\Jenis_pelatihan@edit');
+Route::post('admin/jenis-pelatihan/proses-edit', 'App\Http\Controllers\Admin\Jenis_pelatihan@proses_edit');
+Route::get('admin/jenis-pelatihan/delete/{id}', 'App\Http\Controllers\Admin\Jenis_pelatihan@delete');
+Route::get('admin/jenis-pelatihan/import', 'App\Http\Controllers\Admin\Jenis_pelatihan@import');
+Route::post('admin/jenis-pelatihan/proses-import', 'App\Http\Controllers\Admin\Jenis_pelatihan@proses_import');
 
 // modul aktivitas
 Route::get('admin/aktivitas', 'App\Http\Controllers\Admin\Aktivitas@index');
@@ -207,14 +262,17 @@ Route::post('admin/absensi/tambah', 'App\Http\Controllers\Admin\Absensi@tambah')
 Route::get('admin/absensi/delete/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Absensi@delete');
 Route::get('admin/absensi/import', 'App\Http\Controllers\Admin\Absensi@import');
 Route::post('admin/absensi/proses-import', 'App\Http\Controllers\Admin\Absensi@proses_import');
+Route::post('admin/absensi/proses-import', 'App\Http\Controllers\Admin\Absensi@proses_import');
+Route::get('admin/absensi/data-absensi', 'App\Http\Controllers\Admin\Absensi@data_absensi');
 
 // modul kehadiran
 Route::get('admin/kehadiran', 'App\Http\Controllers\Admin\Kehadiran@index');
-Route::post('admin/kehadiran/tambah', 'App\Http\Controllers\Admin\Kehadiran@tambah');
+Route::get('admin/kehadiran/tambah', 'App\Http\Controllers\Admin\Kehadiran@tambah');
 Route::get('admin/kehadiran/delete/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Kehadiran@delete');
+Route::get('admin/kehadiran/pegawai/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Kehadiran@pegawai');
+Route::get('admin/kehadiran/gaji/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Kehadiran@gaji');
 Route::get('admin/kehadiran/import', 'App\Http\Controllers\Admin\Kehadiran@import');
 Route::post('admin/kehadiran/proses-import', 'App\Http\Controllers\Admin\Kehadiran@proses_import');
-
 Route::get('admin/kehadiran/detail/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Kehadiran@detail');
 Route::post('admin/kehadiran/proses-rekap', 'App\Http\Controllers\Admin\Kehadiran@proses_rekap');
 
@@ -340,6 +398,27 @@ Route::post('admin/pekerjaan/tambah', 'App\Http\Controllers\Admin\Pekerjaan@tamb
 Route::get('admin/pekerjaan/edit/{id}', 'App\Http\Controllers\Admin\Pekerjaan@edit');
 Route::post('admin/pekerjaan/proses-edit', 'App\Http\Controllers\Admin\Pekerjaan@proses_edit');
 Route::get('admin/pekerjaan/delete/{id}', 'App\Http\Controllers\Admin\Pekerjaan@delete');
+
+// modul rumpun
+Route::get('admin/rumpun', 'App\Http\Controllers\Admin\Rumpun@index');
+Route::post('admin/rumpun/tambah', 'App\Http\Controllers\Admin\Rumpun@tambah');
+Route::get('admin/rumpun/edit/{id}', 'App\Http\Controllers\Admin\Rumpun@edit');
+Route::post('admin/rumpun/proses-edit', 'App\Http\Controllers\Admin\Rumpun@proses_edit');
+Route::get('admin/rumpun/delete/{id}', 'App\Http\Controllers\Admin\Rumpun@delete');
+
+// modul metode-diklat
+Route::get('admin/metode-diklat', 'App\Http\Controllers\Admin\Metode_diklat@index');
+Route::post('admin/metode-diklat/tambah', 'App\Http\Controllers\Admin\Metode_diklat@tambah');
+Route::get('admin/metode-diklat/edit/{id}', 'App\Http\Controllers\Admin\Metode_diklat@edit');
+Route::post('admin/metode-diklat/proses-edit', 'App\Http\Controllers\Admin\Metode_diklat@proses_edit');
+Route::get('admin/metode-diklat/delete/{id}', 'App\Http\Controllers\Admin\Metode_diklat@delete');
+
+// modul kategori-diklat
+Route::get('admin/kategori-diklat', 'App\Http\Controllers\Admin\Kategori_diklat@index');
+Route::post('admin/kategori-diklat/tambah', 'App\Http\Controllers\Admin\Kategori_diklat@tambah');
+Route::get('admin/kategori-diklat/edit/{id}', 'App\Http\Controllers\Admin\Kategori_diklat@edit');
+Route::post('admin/kategori-diklat/proses-edit', 'App\Http\Controllers\Admin\Kategori_diklat@proses_edit');
+Route::get('admin/kategori-diklat/delete/{id}', 'App\Http\Controllers\Admin\Kategori_diklat@delete');
 
 // modul jenjang pendidikan
 Route::get('admin/jenjang-pendidikan', 'App\Http\Controllers\Admin\Jenjang_pendidikan@index');

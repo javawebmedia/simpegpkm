@@ -48,6 +48,19 @@
 </div>
 
 <div class="form-group row">
+  <label class="col-md-3">Status Kehadiran</label>
+  <div class="col-md-9">
+    <select name="status_kehadiran" id="status_kehadiran" class="form-control" required>
+      <option value="">Pilih Status Kehadiran</option>
+      <option value="Hadir" <?php if($status_absen->status_kehadiran=='Hadir') { echo 'selected'; } ?>>Hadir</option>
+      <option value="Izin" <?php if($status_absen->status_kehadiran=='Izin') { echo 'selected'; } ?>>Izin</option>
+      <option value="Sakit" <?php if($status_absen->status_kehadiran=='Sakit') { echo 'selected'; } ?>>Sakit</option>
+      <option value="Alpa" <?php if($status_absen->status_kehadiran=='Alpa') { echo 'selected'; } ?>>Alpa</option>
+    </select>
+  </div>
+</div>
+
+<div class="form-group row">
   <label class="col-md-3">Aktif ?</label>
   <div class="col-md-9">
     <select name="aktif_status_absen" id="aktif_status_absen" class="form-control" required>

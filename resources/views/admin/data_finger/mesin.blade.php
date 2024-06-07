@@ -9,7 +9,7 @@
       </div>
       <div class="modal-body">
 
-        <table class="table table-bordered table-sm">
+        <table class="table table-sm tabelku">
           <thead>
             <tr>
               <th width="5%">No</th>
