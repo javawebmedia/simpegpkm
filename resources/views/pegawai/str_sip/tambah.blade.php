@@ -66,8 +66,10 @@
 
         <div class="form-group row">
           <label class="col-md-3">Upload Sertifikat <span class="text-danger">*</span></label>
+          
           <div class="col-md-9">
             <input type="file" name="gambar" class="form-control" placeholder="Upload manual book" value="{{ old('gambar') }}" required>
+            <small>Size Maksimal 1 MB</small>
           </div>
         </div>
 

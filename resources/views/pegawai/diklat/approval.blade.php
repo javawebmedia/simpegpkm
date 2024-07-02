@@ -36,7 +36,7 @@
 
 <div class="mailbox-controls">
 	<div class="table-responsive mailbox-messages">
-<table class="table table-sm tabelku" id="example3">
+<table class="table table-sm tabelku" id="example1">
 	<thead>
 		<tr>
 			<th width="5%" class="text-center">
@@ -45,6 +45,7 @@
 			</th>
 			<th>Pegawai</th>
 			<th>Diklat</th>
+			<th>Kode Diklat</th>
 			<th>Tanggal</th>
 			<th>JPL</th>
 			<th>Status</th>
@@ -62,6 +63,7 @@
 			</td>
 			<td>{{ $diklat->nama_lengkap }}</td>
 			<td>{{ $diklat->nama_diklat }}</td>
+			<td>{{ $diklat->nama_kode_diklat }}</td>
 			<td>{{ $diklat->tanggal_awal }}</td>
 			<td>{{ $diklat->jpl }}</td>
 			<td>

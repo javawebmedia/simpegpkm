@@ -61,54 +61,20 @@
         $("#id_metode_diklat").chained("#jenis_metode");
       </script>
 
-        <div class="form-group row">
-        <label class="col-md-3">Rumpun dan Jenis Diklat</label>
-        <div class="col-md-4">
-          <select name="id_rumpun" class="form-control" id="id_rumpun" required>
-                <option value="">Pilih Rumpun</option>
-                <?php foreach($rumpun as $rumpun2) { ?>
-                <option value="<?php echo $rumpun2->id_rumpun ?>">
-                  <?php echo $rumpun2->nama_rumpun ?>
-                </option>
-              <?php } ?>
-          </select>
-        </div>
-     
-        <div class="col-md-5">
-            <select name="id_jenis_pelatihan" class="form-control" id="id_jenis_pelatihan" required>
-              <option value="">Pilih Jenis Pelatihan</option>
-              <?php foreach($jenis_pelatihan as $jenis_pelatihan) { ?>
-              <option value="<?php echo $jenis_pelatihan->id_jenis_pelatihan ?>"  class="{{ $jenis_pelatihan->id_rumpun }}">
-                <?php echo $jenis_pelatihan->nama_jenis_pelatihan ?>
-              </option>
-            <?php } ?>
-            </select>
-        </div>
-      </div>
-
-       <script>
-        $("#id_jenis_pelatihan").chained("#id_rumpun");
-      </script>
-
       <div class="form-group row">
         <label class="col-md-3">Pilih Kode Diklat</small></label>
         <div class="col-md-9">
-          <select name="id_kode_diklat" class="form-control" id="id_kode_diklat" required>
+          <select name="id_kode_diklat" class="form-control select2" id="id_kode_diklat" required>
               <option value="">Pilih Kode Diklat</option>
               <?php foreach($kode_diklat as $kode_diklat) { ?>
                 <option value="<?php echo $kode_diklat->id_kode_diklat ?>"  class="{{ $kode_diklat->id_jenis_pelatihan }}">
-                  <?php echo $kode_diklat->kode_diklat ?> <?php echo $kode_diklat->nama_kode_diklat ?>
+                  <?php echo $kode_diklat->kode_diklat ?> <?php echo $kode_diklat->nama_kode_diklat ?> 
+                  (<?php echo $kode_diklat->nama_jenis_pelatihan ?> - <?php echo $kode_diklat->nama_rumpun ?>)
                 </option>
               <?php } ?>
             </select>
         </div>
       </div>
-
-      <script>
-        $("#id_kode_diklat").chained("#id_jenis_pelatihan");
-      </script>
-
-      
 
       <div class="form-group row">
         <label class="col-md-3">Kategori Diklat</label>

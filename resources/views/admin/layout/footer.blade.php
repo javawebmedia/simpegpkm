@@ -1,3 +1,5 @@
+
+
 <script type="text/javascript">
     $(window).on('load', function() {
         $('#myModal').modal('show');
@@ -174,7 +176,7 @@ $(document).on("click", ".approval-link", function(e){
 
 <?php
 $sekarang = date('Y');
-$awal     = $sekarang - 50;
+$awal     = $sekarang - 100;
 ?>
 <script>
   $( function() {
@@ -233,6 +235,16 @@ $awal     = $sekarang - 50;
       "lengthMenu": [[1000, 2500, 5000, -1], [1000, 2500, 5000, "All"]],
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+    // Initialize DataTables
+    $(".example1").DataTable({
+      "responsive": true, 
+      "lengthChange": false, 
+      "autoWidth": false,
+      "lengthMenu": [[1000, 2500, 5000, -1], [1000, 2500, 5000, "All"]],
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('.example1_wrapper .col-md-6:eq(0)');
+
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,

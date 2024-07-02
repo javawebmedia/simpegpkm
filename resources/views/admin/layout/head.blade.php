@@ -16,6 +16,8 @@ $site_config = DB::table('konfigurasi')->first();
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/fontawesome-free/css/all.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/admin/plugins/fontawesome-free/css/solid.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/admin/plugins/fontawesome-free/css/brand.min.css') }}">
   <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/select2/css/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/admin/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
@@ -52,7 +54,7 @@ $site_config = DB::table('konfigurasi')->first();
 
   <!-- Bootstrap Switch -->
   <script src="{{ asset('assets/admin/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
-
+<script src="<?php echo asset('assets/viewerjs/pdf.js') ?>" type="text/javascript" charset="utf-8" async defer></script>
   <!-- LORD ICON -->
   <script src="https://cdn.lordicon.com/xdjxvujz.js"></script>
 
@@ -60,7 +62,11 @@ $site_config = DB::table('konfigurasi')->first();
   <link rel="stylesheet" href="{{ asset('assets/rtl-time/mdtimepicker.css') }}" />
   <script src="{{ asset('assets/rtl-time/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/rtl-time/mdtimepicker.js') }}"></script>
-
+  <!-- charts -->
+  <script src="{{ asset('assets/amcharts5') }}/index.js"></script>
+  <script src="{{ asset('assets/amcharts5') }}/percent.js"></script>
+  <script src="{{ asset('assets/amcharts5') }}/themes/Animated.js"></script>
+  <script src="{{ asset('assets/amcharts5') }}/plugins/exporting.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini sidebar-collapse">

@@ -308,7 +308,7 @@ class Kehadiran extends Controller
                                     $jumlah_menit_pulang_cepat  = 0;
                                     $lembur                     = 0;
                                     $total_jam_kerja            = 225;
-                                }elseif(!empty($check_finger_awal) && !empty($check_finger_akhir)) {
+                                }elseif(!empty($check_finger_awal) && !empty($check_finger_akhir)) {    
                                     $waktu_awal                 = $check_finger_awal->waktu_finger;
                                     $waktu_akhir                = $check_finger_akhir->waktu_finger;
                                     $timestamp_awal             = strtotime($waktu_awal);

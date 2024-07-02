@@ -109,7 +109,10 @@
       <th>Tanggal Pengajuan</th>
       <th>Tanggal Cuti</th>
       <th>Total Hari</th>
-      <th>Status Pengajuan</th>
+      <th>Approval 1</th>
+      <th>Approval 2</th>
+      <th>Approval 3</th>
+      <th>Status</th>
       <th></th>
     </tr>
   </thead>
@@ -122,6 +125,51 @@
       <td><?php echo $cuti->tanggal_pengajuan ?></td>
       <td>-</td>
       <td><?php echo $cuti->total_hari ?></td>
+      <td>
+        <?php if($cuti->approval_1=='Menunggu') { ?>
+          <span class="badge badge-warning"><i class="fa fa-clock"></i> <?php echo $cuti->approval_1 ?></span>
+        <?php }elseif($cuti->approval_1=='Ditolak') { ?>
+          <span class="badge badge-dark"><i class="fa fa-times"></i> <?php echo $cuti->approval_1 ?></span>
+        <?php }elseif($cuti->approval_1=='Disetujui') { ?>
+          <span class="badge badge-success"><i class="fa fa-check"></i> <?php echo $cuti->approval_1 ?></span>
+        <?php } ?>
+        <?php if($cuti->approval_1=='Menunggu') {}else{ ?>
+        <small class="text-secondary">
+          <br>Tgl: <?php echo $cuti->tanggal_approval_1 ?>
+          <br>Cat: <?php echo $cuti->catatan_1 ?>
+        </small>
+        <?php } ?>
+      </td>
+      <td>
+        <?php if($cuti->approval_2=='Menunggu') { ?>
+          <span class="badge badge-warning"><i class="fa fa-clock"></i> <?php echo $cuti->approval_2 ?></span>
+        <?php }elseif($cuti->approval_2=='Ditolak') { ?>
+          <span class="badge badge-dark"><i class="fa fa-times"></i> <?php echo $cuti->approval_2 ?></span>
+        <?php }elseif($cuti->approval_2=='Disetujui') { ?>
+          <span class="badge badge-success"><i class="fa fa-check"></i> <?php echo $cuti->approval_2 ?></span>
+        <?php } ?>
+        <?php if($cuti->approval_2=='Menunggu') {}else{ ?>
+        <small class="text-secondary">
+          <br>Tgl: <?php echo $cuti->tanggal_approval_2 ?>
+          <br>Cat: <?php echo $cuti->catatan_2 ?>
+        </small>
+        <?php } ?>
+      </td>
+      <td>
+        <?php if($cuti->approval_3=='Menunggu') { ?>
+          <span class="badge badge-warning"><i class="fa fa-clock"></i> <?php echo $cuti->approval_3 ?></span>
+        <?php }elseif($cuti->approval_3=='Ditolak') { ?>
+          <span class="badge badge-dark"><i class="fa fa-times"></i> <?php echo $cuti->approval_3 ?></span>
+        <?php }elseif($cuti->approval_3=='Disetujui') { ?>
+          <span class="badge badge-success"><i class="fa fa-check"></i> <?php echo $cuti->approval_3 ?></span>
+        <?php } ?>
+        <?php if($cuti->approval_3=='Menunggu') {}else{ ?>
+        <small class="text-secondary">
+          <br>Tgl: <?php echo $cuti->tanggal_approval_3 ?>
+          <br>Cat: <?php echo $cuti->catatan_3 ?>
+        </small>
+        <?php } ?>
+      </td>
       <td>
         <?php if($cuti->status_cuti=='Menunggu') { ?>
           <span class="badge badge-warning"><i class="fa fa-clock"></i> <?php echo $cuti->status_cuti ?></span>

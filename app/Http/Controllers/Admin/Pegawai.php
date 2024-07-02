@@ -358,14 +358,15 @@ class Pegawai extends Controller
         $data = [   'title'     => $pegawai->nama_lengkap.' (NIP: '.$pegawai->nip.')',
                     'pegawai'   => $pegawai
                 ];
-        // mulai unduh pdf
-        $config = [
-            'format' => 'A4-P', 
-        ];
-        $pdf        = PDF::loadview('admin/pegawai/cetak', $data,[] ,$config);
-        $nama_file  = 'cetak-pegawai-'.$pegawai->nama_lengkap.'-'.date('d-m-Y-H-i-s').'.pdf';
-        return $pdf->download($nama_file, 'I');
-        // end unduh
+        $mpdf = new \Mpdf\Mpdf([
+                        'default_font_size' => 11,
+                        'default_font'      => 'nunito-regular',
+                        'format'            => [210, 330]
+                    ]);
+        $html = view('admin/pegawai/cetak', $data);
+        $mpdf->WriteHTML($html);
+        // buka di browser
+        $mpdf->Output('cetak-cuti-'.$pegawai->nama_lengkap.'-'.date('d-m-Y-H-i-s').'.pdf','I');
     }
 
     // halaman unduh riwayat pegawai

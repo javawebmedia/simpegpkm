@@ -18,7 +18,7 @@
 						<select name="nip" class="form-control select2">
 							<?php foreach($pegawai2 as $pegawai) { ?>
 							<option value="<?php echo $pegawai->nip ?>">
-								<?php echo $pegawai->nama_lengkap ?>
+								<?php echo $pegawai->nip ?> <?php echo $pegawai->nama_lengkap ?>
 							</option>
 							<?php } ?>
 						</select>
@@ -28,10 +28,10 @@
 				<div class="form-group row">
 					<label class="col-3">Tahun dan Kuota Cuti</label>
 					<div class="col-3">
-						<input type="number" name="tahun" class="form-control" placeholder="<?php echo date('Y') ?>" value="<?php echo old('tahun') ?>" required>
+						<input type="number" name="tahun" class="form-control" placeholder="<?php echo date('Y') ?>" value="<?php if(isset($_POST['tahun'])) { echo old('tahun'); }else{ echo date('Y'); } ?>" required>
 					</div>
 					<div class="col-3">
-						<input type="number" name="kuota" class="form-control" id="kuota" placeholder="Kuota" value="<?php echo old('kuota') ?>" required>
+						<input type="number" name="kuota" class="form-control" id="kuota" placeholder="Kuota" value="<?php if(isset($_POST['tahun'])) { echo old('kuota'); }else{ echo 12; } ?>" required>
 					</div>
 				</div>
 

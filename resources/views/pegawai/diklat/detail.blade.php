@@ -5,10 +5,15 @@
 	<a href="{{ asset('pegawai/diklat/edit/'.$diklat->id_diklat) }}" class="btn btn-outline-warning btn-sm">
 		<i class="fa fa-edit"></i> Edit
 	</a>
+	<button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#lihat_<?php echo Session()->get('id_pegawai') ?>">
+		<i class="fa fa-eye"></i> Lihat Sertifikat
+	</button>
+	
+	@include('pegawai/diklat/sertifikat')
 </p>
-
+					
 <div class="row mt-2">
-	<dib class="col-md-5">
+	<div class="col-md-5">
 		<div class="card">
 			<div class="card-header bg-light">
 				<strong>DETAIL PEGAWAI</strong>
@@ -58,8 +63,8 @@
 
 			</div>
 		</div>
-	</dib>
-	<dib class="col-md-7">
+	</div>
+	<div class="col-md-7">
 		<div class="card">
 			<div class="card-header bg-light">
 				<strong>DETAIL DIKLAT</strong>
@@ -127,5 +132,5 @@
 				</table>
 			</div>
 		</div>
-	</dib>
+	</div>
 </div>

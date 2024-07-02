@@ -156,6 +156,7 @@
     <select name="jenis_pegawai" id="jenis_pegawai" class="form-control" required>
       <option value="">Pilih jenis pegawai</option>
       <option value="PNS">PNS</option>
+      <option value="P3K">P3K</option>
       <option value="CPNS">CPNS</option>
       <option value="PJLP">PJLP</option>
       <option value="Non PNS">Non PNS</option>

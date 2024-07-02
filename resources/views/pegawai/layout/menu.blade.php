@@ -1,7 +1,9 @@
 
 <?php 
 use Illuminate\Support\Facades\DB;
-$site_config = DB::table('konfigurasi')->first();
+$site_config    = DB::table('konfigurasi')->first();
+$id_pegawaix    = Session()->get('id_pegawai');
+$menu_pegawaix  = DB::table('menu_pegawai')->where('id_pegawai',$id_pegawaix)->get();
 ?>
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -22,11 +24,7 @@ $site_config = DB::table('konfigurasi')->first();
 
            <li class="nav-item">
             <a href="{{ asset('pegawai/dasbor') }}" class="nav-link">
-              <lord-icon
-              src="https://cdn.lordicon.com/rnuzkjnk.json"
-              trigger="loop"
-              style="width:20px;height:20px">
-            </lord-icon>
+            <i class="fa-solid fa-house"></i>
             <p>
               Dashboard
             </p>
@@ -34,13 +32,28 @@ $site_config = DB::table('konfigurasi')->first();
         </li>
 
         <li class="nav-item">
+            <a href="{{ asset('pegawai/dokumen') }}" class="nav-link">
+            <i class="fa-regular fa-folder-open"></i>
+            <p>
+              Dokumen Pegawai
+            </p>
+          </a>
+        </li>
+
+        <?php foreach($menu_pegawaix as $menu_pegawaix) { ?>
+          <li class="nav-item">
+            <a href="{{ asset($menu_pegawaix->link) }}" class="nav-link">
+            <i class="{{ $menu_pegawaix->icon }}"></i>
+            <p>
+              {{ $menu_pegawaix->nama_menu }}
+            </p>
+          </a>
+        </li>
+      <?php } ?>
+
+        <li class="nav-item">
           <a href="{{ asset('pegawai/kinerja') }}" class="nav-link">
-            <lord-icon
-            src="https://cdn.lordicon.com/rfbqeber.json"
-            trigger="loop"
-            state="loop"
-            style="width:20px;height:20px">
-          </lord-icon>
+          <i class="fa-solid fa-file-signature"></i>
           <p>
             Input Kinerja Harian
           </p>
@@ -49,11 +62,7 @@ $site_config = DB::table('konfigurasi')->first();
 
       <li class="nav-item">
         <a href="{{ asset('pegawai/kinerja/bulanan') }}" class="nav-link">
-          <lord-icon
-          src="https://cdn.lordicon.com/ckatldkn.json"
-          trigger="loop"
-          style="width:20px;height:20px">
-        </lord-icon>
+        <i class="fa-regular fa-pen-to-square"></i>
         <p>
           Data Kinerja Bulanan
         </p>
@@ -63,11 +72,7 @@ $site_config = DB::table('konfigurasi')->first();
     <!-- pengajuan cuti -->
      <li class="nav-item">
         <a href="{{ asset('pegawai/cuti') }}" class="nav-link">
-          <lord-icon
-          src="https://cdn.lordicon.com/ckatldkn.json"
-          trigger="loop"
-          style="width:20px;height:20px">
-        </lord-icon>
+        <i class="fa-regular fa-calendar-days"></i>
         <p>
           Pengajuan Cuti
         </p>
@@ -76,11 +81,7 @@ $site_config = DB::table('konfigurasi')->first();
 
      <li class="nav-item">
         <a href="{{ asset('pegawai/diklat') }}" class="nav-link">
-          <lord-icon
-          src="https://cdn.lordicon.com/ckatldkn.json"
-          trigger="loop"
-          style="width:20px;height:20px">
-        </lord-icon>
+        <i class="fa-solid fa-graduation-cap"></i>
         <p>
           Data Diklat
         </p>
@@ -90,48 +91,45 @@ $site_config = DB::table('konfigurasi')->first();
     <?php 
     use App\Models\Atasan_model;
     $m_atas       = new Atasan_model();
-    $id_pegawai   = Session()->get('id_pegawai');
-    $atas         = $m_atas->pegawai($id_pegawai);
+    
+    $atas         = $m_atas->pegawai($id_pegawaix);
           // kalau statusnya atasan, maka menu keluar
     if($atas) {
       ?>
 
       <li class="nav-item">
         <a href="{{ asset('pegawai/kinerja/approval') }}" class="nav-link">
-          <lord-icon
-          src="https://cdn.lordicon.com/hrqqslfe.json"
-          trigger="loop"
-          style="width:20px;height:20px">
-        </lord-icon>
+        <i class="fa-solid fa-clipboard-check"></i>
         <p>
           Approval Kinerja
         </p>
       </a>
     </li>
 
-    <li class="nav-item">
-        <a href="{{ asset('pegawai/diklat/approval') }}" class="nav-link">
-          <lord-icon
-          src="https://cdn.lordicon.com/hrqqslfe.json"
-          trigger="loop"
-          style="width:20px;height:20px">
-        </lord-icon>
-        <p>
-          Approval Diklat
-        </p>
-      </a>
-    </li>
-
   <?php } ?>
+
+    <?php 
+    use App\Models\Pegawai_model;
+    $nip   = Session()->get('nip');
+    // kalau statusnya atasan, maka menu keluar
+    
+    if($nip =='199007042019032015') { ?>
+
+      <li class="nav-item">
+          <a href="{{ asset('pegawai/diklat/approval') }}" class="nav-link">
+          <i class="fa-solid fa-file-circle-check"></i>
+          <p>
+            Approval Diklat
+          </p>
+        </a>
+      </li>
+
+    <?php } ?>
 
 
   <li class="nav-item">
     <a href="{{ asset('pegawai/aktivitas-utama') }}" class="nav-link">
-      <lord-icon
-      src="https://cdn.lordicon.com/pjibjvxa.json"
-      trigger="loop"
-      style="width:20px;height:20px">
-    </lord-icon>
+    <i class="fa-solid fa-arrows-to-circle"></i>  
     <p>
       Rencana Kinerja
     </p>
@@ -140,11 +138,7 @@ $site_config = DB::table('konfigurasi')->first();
 
 <li class="nav-item">
   <a href="{{ asset('pegawai/gaji') }}" class="nav-link">
-    <lord-icon
-    src="https://cdn.lordicon.com/qmcsqnle.json"
-    trigger="loop"
-    style="width:20px;height:20px">
-  </lord-icon>
+  <i class="fa-solid fa-rupiah-sign"></i>
   <p>
     Gaji dan TKD
   </p>
@@ -153,13 +147,7 @@ $site_config = DB::table('konfigurasi')->first();
 
 <li class="nav-item">
   <a href="{{ asset('pegawai/pegawai/riwayat') }}" class="nav-link">
-    <lord-icon
-    src="https://cdn.lordicon.com/dxoycpzg.json"
-    trigger="loop"
-    colors="primary:#f24c00,secondary:#646e78,tertiary:#4bb3fd,quaternary:#ebe6ef,quinary:#f9c9c0"
-    state="loop"
-    style="width:20px;height:20px">
-  </lord-icon>
+  <i class="fa-regular fa-user"></i>
   <p>
    Profil dan Riwayat
  </p>
@@ -168,13 +156,7 @@ $site_config = DB::table('konfigurasi')->first();
 
 <li class="nav-item">
   <a href="{{ asset('pegawai/str-sip') }}" class="nav-link">
-    <lord-icon
-    src="https://cdn.lordicon.com/dxoycpzg.json"
-    trigger="loop"
-    colors="primary:#f24c00,secondary:#646e78,tertiary:#4bb3fd,quaternary:#ebe6ef,quinary:#f9c9c0"
-    state="loop"
-    style="width:20px;height:20px">
-  </lord-icon>
+  <i class="fa-regular fa-newspaper"></i>
   <p>
    Riwayat STR &amp; SIP
  </p>

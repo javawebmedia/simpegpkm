@@ -23,6 +23,19 @@ class Cuti_model extends Model
     }
 
     // nip_tahun
+    public function tahun($tahun)
+    {
+        $query = DB::table('cuti')
+            ->join('jenis_cuti', 'jenis_cuti.id_jenis_cuti', '=', 'cuti.id_jenis_cuti','LEFT')
+            ->join('pegawai', 'pegawai.nip', '=', 'cuti.nip','LEFT')
+            ->select('cuti.*', 'jenis_cuti.nama_jenis_cuti','pegawai.nama_lengkap')
+            ->where('cuti.tahun',$tahun)
+            ->orderBy('cuti.id_cuti','DESC')
+            ->get();
+        return $query;
+    }
+
+    // nip_tahun
     public function tahun_nip($tahun,$nip)
     {
         $query = DB::table('cuti')

@@ -53,7 +53,7 @@ class Kinerja_model extends Model
             ->where([   'kinerja.nip'               => $nip,
                         'kinerja.tanggal_kinerja'   => $tanggal_kinerja
                     ])
-            ->orderBy('kinerja.id_kinerja','DESC')
+            ->orderBy('kinerja.tanggal_kinerja','ASC')
             ->get();
         return $query;
     }

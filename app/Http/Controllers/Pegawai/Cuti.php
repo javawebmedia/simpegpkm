@@ -18,6 +18,8 @@ use App\Models\Libur_model;
 use App\Models\Jenis_libur_model;
 use App\Models\Cuti_model;
 use App\Models\Tanggal_cuti_model;
+use App\Models\Menu_pegawai_model;
+
 use Image;
 use PDF;
 
@@ -66,6 +68,249 @@ class Cuti extends Controller
                     'content'           => 'pegawai/cuti/index'
                 ];
         return view('pegawai/layout/wrapper',$data);
+    }
+
+    // halaman cuti
+    public function approval1()
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $id_pegawai         = Session()->get('id_pegawai');
+
+        $m_pegawai          = new Pegawai_model();
+        $m_site             = new Konfigurasi_model();
+        $m_kuota_cuti       = new Kuota_cuti_model();
+        $m_jenis_cuti       = new Jenis_cuti_model();
+        $m_cuti             = new Cuti_model();
+        $m_tanggal_cuti     = new Tanggal_cuti_model();
+        $m_dokumen_pegawai  = new Menu_pegawai_model();
+        $menu_pegawai       = $m_dokumen_pegawai->pegawai($id_pegawai);
+        // proteksi halaman
+        if($menu_pegawai) {}else{ 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda tidak diizinkan mengakses halaman.']);
+        }
+        // end proteksi halaman
+
+        $pegawai            = $m_pegawai->detail($id_pegawai);
+        $site               = $m_site->listing();
+        $tahun              = date('Y');
+        $nip                = $pegawai->nip;
+        $kuota_cuti         = $m_kuota_cuti->tahun_nip_total($tahun,$nip);
+        $jenis_cuti         = $m_jenis_cuti->listing();
+        $cuti               = $m_cuti->tahun($tahun);
+
+        $data = [   'title'             => 'Approval Cuti Pegawai',
+                    'pegawai'           => $pegawai,
+                    'kuota_cuti'        => $kuota_cuti,
+                    'jenis_cuti'        => $jenis_cuti,
+                    'cuti'              => $cuti,
+                    'site'              => $site,
+                    'content'           => 'pegawai/cuti/approval1'
+                ];
+        return view('pegawai/layout/wrapper',$data);
+    }
+
+    // proses
+    public function proses1(Request $request)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+
+        // proses
+        $id_cuti        = $request->id_cuti;
+        $approval       = $request->approval;
+        $catatan        = $request->catatan;
+        $submit         = $request->submit;
+
+        // check berita
+        if(empty($id_cuti))
+        {
+           return redirect('pegawai/cuti/approval1')->with(['warning' => 'Anda belum memilih cuti']);
+        }
+        // end check berita
+        // proses
+        if(isset($submit) && $submit=='submit') {
+            for($i=0; $i < sizeof($id_cuti);$i++) {
+                DB::table('cuti')->where('id_cuti',$id_cuti[$i])->update([
+                    'id_approval_1'     => Session()->get('id_pegawai'),
+                    'approval_1'        => $approval,
+                    'catatan_1'         => $catatan,
+                    'tanggal_approval_1'=> date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+        return redirect('pegawai/cuti/approval1')->with(['sukses' => 'Data telah diupdate']);
+    }
+
+    // halaman cuti
+    public function approval2()
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $id_pegawai         = Session()->get('id_pegawai');
+
+        $m_pegawai          = new Pegawai_model();
+        $m_site             = new Konfigurasi_model();
+        $m_kuota_cuti       = new Kuota_cuti_model();
+        $m_jenis_cuti       = new Jenis_cuti_model();
+        $m_cuti             = new Cuti_model();
+        $m_tanggal_cuti     = new Tanggal_cuti_model();
+
+        $m_dokumen_pegawai  = new Menu_pegawai_model();
+        $menu_pegawai       = $m_dokumen_pegawai->pegawai($id_pegawai);
+        // proteksi halaman
+        if($menu_pegawai) {}else{ 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda tidak diizinkan mengakses halaman.']);
+        }
+        // end proteksi halaman
+
+        $pegawai            = $m_pegawai->detail($id_pegawai);
+        $site               = $m_site->listing();
+        $tahun              = date('Y');
+        $nip                = $pegawai->nip;
+        $kuota_cuti         = $m_kuota_cuti->tahun_nip_total($tahun,$nip);
+        $jenis_cuti         = $m_jenis_cuti->listing();
+        $cuti               = $m_cuti->tahun($tahun);
+
+        $data = [   'title'             => 'Approval Cuti Pegawai',
+                    'pegawai'           => $pegawai,
+                    'kuota_cuti'        => $kuota_cuti,
+                    'jenis_cuti'        => $jenis_cuti,
+                    'cuti'              => $cuti,
+                    'site'              => $site,
+                    'content'           => 'pegawai/cuti/approval2'
+                ];
+        return view('pegawai/layout/wrapper',$data);
+    }
+
+    // proses
+    public function proses2(Request $request)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+
+        // proses
+        $id_cuti        = $request->id_cuti;
+        $approval       = $request->approval;
+        $catatan        = $request->catatan;
+        $submit         = $request->submit;
+
+        // check berita
+        if(empty($id_cuti))
+        {
+           return redirect('pegawai/cuti/approval2')->with(['warning' => 'Anda belum memilih cuti']);
+        }
+        // end check berita
+        // proses
+        if(isset($submit) && $submit=='submit') {
+            for($i=0; $i < sizeof($id_cuti);$i++) {
+                DB::table('cuti')->where('id_cuti',$id_cuti[$i])->update([
+                    'id_approval_2'     => Session()->get('id_pegawai'),
+                    'approval_2'        => $approval,
+                    'catatan_2'         => $catatan,
+                    'tanggal_approval_2'=> date('Y-m-d H:i:s')
+                ]);
+            }
+        }
+        return redirect('pegawai/cuti/approval2')->with(['sukses' => 'Data telah diupdate']);
+    }
+
+    // halaman cuti
+    public function approval3()
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $id_pegawai         = Session()->get('id_pegawai');
+
+        $m_pegawai          = new Pegawai_model();
+        $m_site             = new Konfigurasi_model();
+        $m_kuota_cuti       = new Kuota_cuti_model();
+        $m_jenis_cuti       = new Jenis_cuti_model();
+        $m_cuti             = new Cuti_model();
+        $m_tanggal_cuti     = new Tanggal_cuti_model();
+
+        $m_dokumen_pegawai  = new Menu_pegawai_model();
+        $menu_pegawai       = $m_dokumen_pegawai->pegawai($id_pegawai);
+        // proteksi halaman
+        if($menu_pegawai) {}else{ 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda tidak diizinkan mengakses halaman.']);
+        }
+        // end proteksi halaman
+
+        $pegawai            = $m_pegawai->detail($id_pegawai);
+        $site               = $m_site->listing();
+        $tahun              = date('Y');
+        $nip                = $pegawai->nip;
+        $kuota_cuti         = $m_kuota_cuti->tahun_nip_total($tahun,$nip);
+        $jenis_cuti         = $m_jenis_cuti->listing();
+        $cuti               = $m_cuti->tahun($tahun);
+
+        $data = [   'title'             => 'Approval Cuti Pegawai',
+                    'pegawai'           => $pegawai,
+                    'kuota_cuti'        => $kuota_cuti,
+                    'jenis_cuti'        => $jenis_cuti,
+                    'cuti'              => $cuti,
+                    'site'              => $site,
+                    'content'           => 'pegawai/cuti/approval3'
+                ];
+        return view('pegawai/layout/wrapper',$data);
+    }
+
+    // proses
+    public function proses3(Request $request)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+
+        // proses
+        $id_cuti        = $request->id_cuti;
+        $approval       = $request->approval;
+        $catatan        = $request->catatan;
+        $submit         = $request->submit;
+
+        // check berita
+        if(empty($id_cuti))
+        {
+           return redirect('pegawai/cuti/approval3')->with(['warning' => 'Anda belum memilih cuti']);
+        }
+        // end check berita
+        // proses
+        if(isset($submit) && $submit=='submit') {
+            for($i=0; $i < sizeof($id_cuti);$i++) {
+                DB::table('cuti')->where('id_cuti',$id_cuti[$i])->update([
+                    'id_approval_3'     => Session()->get('id_pegawai'),
+                    'approval_3'        => $approval,
+                    'catatan_3'         => $catatan,
+                    'tanggal_approval_3'=> date('Y-m-d H:i:s'),
+                    'status_cuti'        => $approval,
+                ]);
+            }
+        }
+        return redirect('pegawai/cuti/approval3')->with(['sukses' => 'Data telah diupdate']);
     }
 
     // pengajuan
@@ -139,8 +384,6 @@ class Cuti extends Controller
             'approval_1'        => 'Menunggu',
             'approval_2'        => 'Menunggu',
             'approval_3'        => 'Menunggu',
-            'approval_4'        => 'Menunggu',
-            'approval_5'        => 'Menunggu',
             'status_cuti'       => 'Menunggu',
             'total_hari'        => $request->total_hari,
             'tanggal_post'      => date('Y-m-d H:i:s')

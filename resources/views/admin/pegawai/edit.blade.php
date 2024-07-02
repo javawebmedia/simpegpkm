@@ -158,6 +158,7 @@
     <select name="jenis_pegawai" id="jenis_pegawai" class="form-control" required>
       <option value="">Pilih jenis pegawai</option>
       <option value="PNS" <?php if($pegawai->jenis_pegawai=='PNS') { echo 'selected'; } ?>>PNS</option>
+      <option value="P3K" <?php if($pegawai->jenis_pegawai=='P3K') { echo 'selected'; } ?>>P3K</option>
       <option value="CPNS" <?php if($pegawai->jenis_pegawai=='CPNS') { echo 'selected'; } ?>>CPNS</option>
       <option value="PJLP" <?php if($pegawai->jenis_pegawai=='PJLP') { echo 'selected'; } ?>>PJLP</option>
       <option value="Non PNS" <?php if($pegawai->jenis_pegawai=='Non PNS') { echo 'selected'; } ?>>Non PNS</option>

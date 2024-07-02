@@ -26,6 +26,11 @@ Route::get('pegawai/aktivitas-utama', 'App\Http\Controllers\Pegawai\Aktivitas_ut
 Route::post('pegawai/aktivitas-utama/tambah', 'App\Http\Controllers\Pegawai\Aktivitas_utama@tambah');
 Route::get('pegawai/aktivitas-utama/delete/{id}', 'App\Http\Controllers\Pegawai\Aktivitas_utama@delete');
 
+// Dokumen
+Route::get('pegawai/dokumen', 'App\Http\Controllers\Pegawai\Dokumen@index');
+Route::post('pegawai/dokumen/unggah', 'App\Http\Controllers\Pegawai\Dokumen@unggah');
+Route::get('pegawai/dokumen/delete/{id}', 'App\Http\Controllers\Pegawai\Dokumen@delete');
+
 // modul kinerja
 Route::get('pegawai/kinerja', 'App\Http\Controllers\Pegawai\Kinerja@index');
 Route::get('pegawai/kinerja/approval', 'App\Http\Controllers\Pegawai\Kinerja@approval');
@@ -69,6 +74,13 @@ Route::get('pegawai/cuti/tambah', 'App\Http\Controllers\Pegawai\Cuti@tambah');
 Route::post('pegawai/cuti/proses-pengajuan/{par1}/{par2}', 'App\Http\Controllers\Pegawai\Cuti@proses_pengajuan');
 Route::get('pegawai/cuti/hapus/{par1}', 'App\Http\Controllers\Pegawai\Cuti@hapus');
 Route::get('pegawai/cuti/tanggal', 'App\Http\Controllers\Pegawai\Cuti@tanggal');
+Route::get('pegawai/cuti/approval1', 'App\Http\Controllers\Pegawai\Cuti@approval1');
+Route::get('pegawai/cuti/approval2', 'App\Http\Controllers\Pegawai\Cuti@approval2');
+Route::get('pegawai/cuti/approval3', 'App\Http\Controllers\Pegawai\Cuti@approval3');
+Route::post('pegawai/cuti/proses1', 'App\Http\Controllers\Pegawai\Cuti@proses1');
+Route::post('pegawai/cuti/proses2', 'App\Http\Controllers\Pegawai\Cuti@proses2');
+Route::post('pegawai/cuti/proses3', 'App\Http\Controllers\Pegawai\Cuti@proses3');
+
 
 /* input riwayat pegawai */
 Route::post('pegawai/pegawai/proses-pendidikan', 'App\Http\Controllers\Pegawai\Pegawai@proses_pendidikan');
@@ -83,12 +95,33 @@ Route::get('pegawai/pegawai/lihat-jabatan/{id}', 'App\Http\Controllers\Pegawai\P
 Route::get('pegawai/pegawai/lihat-pendidikan/{id}', 'App\Http\Controllers\Pegawai\Pegawai@lihat_pendidikan');
 Route::get('pegawai/pegawai/lihat-keluarga/{id}', 'App\Http\Controllers\Pegawai\Pegawai@lihat_keluarga');
 
+// modul Diklat pegawai
+Route::get('pegawai/diklat', 'App\Http\Controllers\Pegawai\Diklat@index');
+Route::get('pegawai/diklat/approval', 'App\Http\Controllers\Pegawai\Diklat@approval');
+Route::get('pegawai/diklat/tambah', 'App\Http\Controllers\Pegawai\Diklat@tambah');
+Route::post('pegawai/diklat/proses-tambah', 'App\Http\Controllers\Pegawai\Diklat@proses_tambah');
+Route::get('pegawai/diklat/detail/{id}', 'App\Http\Controllers\Pegawai\Diklat@detail');
+// Route::get('pegawai/diklat/sertifikat', 'App\Http\Controllers\Pegawai\Diklat@sertifikat');
+Route::get('pegawai/diklat/detail-pimpinan/{id}', 'App\Http\Controllers\Pegawai\Diklat@detail_pimpinan');
+Route::get('pegawai/diklat/edit/{id}', 'App\Http\Controllers\Pegawai\Diklat@edit');
+Route::post('pegawai/diklat/proses-edit', 'App\Http\Controllers\Pegawai\Diklat@proses_edit');
+Route::get('pegawai/diklat/delete/{id}', 'App\Http\Controllers\Pegawai\Diklat@delete');
+Route::get('pegawai/diklat/import', 'App\Http\Controllers\Pegawai\Diklat@import');
+Route::post('pegawai/diklat/proses-import', 'App\Http\Controllers\Pegawai\Diklat@proses_import');
+Route::post('pegawai/diklat/proses', 'App\Http\Controllers\Pegawai\Diklat@proses');
+
 // END MODUL PEGAWAI
 
 // modul dasbor
 Route::get('admin/dasbor', 'App\Http\Controllers\Admin\Dasbor@index');
 Route::get('admin/dasbor/statistik', 'App\Http\Controllers\Admin\Dasbor@statistik');
 Route::get('admin/dasbor/cari', 'App\Http\Controllers\Admin\Dasbor@cari');
+
+// modul laporan
+Route::get('admin/laporan', 'App\Http\Controllers\Admin\Laporan@index');
+Route::get('admin/laporan/diklat', 'App\Http\Controllers\Admin\Laporan@diklat');
+Route::get('admin/laporan/keterlambatan', 'App\Http\Controllers\Admin\Laporan@keterlambatan');
+
 // detai
 Route::get('admin/detail', 'App\Http\Controllers\Admin\Detail@index');
 Route::get('admin/detail/pegawai/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@pegawai');
@@ -97,6 +130,12 @@ Route::get('admin/detail/kehadiran/{id}/{id2}/{id3}', 'App\Http\Controllers\Admi
 Route::get('admin/detail/absensi/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@absensi');
 Route::get('admin/detail/gaji/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@gaji');
 Route::get('admin/detail/generate/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@generate');
+Route::get('admin/detail/dokumen/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@dokumen');
+Route::get('admin/detail/ekinerja/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@ekinerja');
+Route::get('admin/detail/cuti/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@cuti');
+Route::get('admin/detail/diklat/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@diklat');
+Route::get('admin/detail/str-sip/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@str_sip');
+Route::get('admin/detail/keluarga/{id}/{id2}/{id3}', 'App\Http\Controllers\Admin\Detail@keluarga');
 
 // modul data_finger
 Route::get('admin/data-finger', 'App\Http\Controllers\Admin\Data_finger@index');
@@ -158,20 +197,7 @@ Route::get('admin/diklat/delete/{id}', 'App\Http\Controllers\Admin\Diklat@delete
 Route::get('admin/diklat/import', 'App\Http\Controllers\Admin\Diklat@import');
 Route::post('admin/diklat/proses-import', 'App\Http\Controllers\Admin\Diklat@proses_import');
 Route::post('admin/diklat/proses', 'App\Http\Controllers\Admin\Diklat@proses');
-
-// modul Diklat pegawai
-Route::get('pegawai/diklat', 'App\Http\Controllers\Pegawai\Diklat@index');
-Route::get('pegawai/diklat/approval', 'App\Http\Controllers\Pegawai\Diklat@approval');
-Route::get('pegawai/diklat/tambah', 'App\Http\Controllers\Pegawai\Diklat@tambah');
-Route::post('pegawai/diklat/proses-tambah', 'App\Http\Controllers\Pegawai\Diklat@proses_tambah');
-Route::get('pegawai/diklat/detail/{id}', 'App\Http\Controllers\Pegawai\Diklat@detail');
-Route::get('pegawai/diklat/detail-pimpinan/{id}', 'App\Http\Controllers\Pegawai\Diklat@detail_pimpinan');
-Route::get('pegawai/diklat/edit/{id}', 'App\Http\Controllers\Pegawai\Diklat@edit');
-Route::post('pegawai/diklat/proses-edit', 'App\Http\Controllers\Pegawai\Diklat@proses_edit');
-Route::get('pegawai/diklat/delete/{id}', 'App\Http\Controllers\Pegawai\Diklat@delete');
-Route::get('pegawai/diklat/import', 'App\Http\Controllers\Pegawai\Diklat@import');
-Route::post('pegawai/diklat/proses-import', 'App\Http\Controllers\Pegawai\Diklat@proses_import');
-Route::post('pegawai/diklat/proses', 'App\Http\Controllers\Pegawai\Diklat@proses');
+Route::get('admin/diklat/laporan', 'App\Http\Controllers\Admin\Diklat@laporan');
 
 // modul kode-diklat
 Route::get('admin/kode-diklat', 'App\Http\Controllers\Admin\Kode_diklat@index');
@@ -198,6 +224,29 @@ Route::post('admin/aktivitas/tambah', 'App\Http\Controllers\Admin\Aktivitas@tamb
 Route::get('admin/aktivitas/edit/{id}', 'App\Http\Controllers\Admin\Aktivitas@edit');
 Route::post('admin/aktivitas/proses-edit', 'App\Http\Controllers\Admin\Aktivitas@proses_edit');
 Route::get('admin/aktivitas/delete/{id}', 'App\Http\Controllers\Admin\Aktivitas@delete');
+
+// dokumen
+Route::get('admin/dokumen-pegawai', 'App\Http\Controllers\Admin\Dokumen_pegawai@index');
+Route::get('admin/dokumen-pegawai/unduh/{par1}', 'App\Http\Controllers\Admin\Dokumen_pegawai@unduh');
+Route::get('admin/dokumen-pegawai/delete/{par1}', 'App\Http\Controllers\Admin\Dokumen_pegawai@delete');
+Route::get('admin/dokumen-pegawai/pegawai/{par1}', 'App\Http\Controllers\Admin\Dokumen_pegawai@pegawai');
+Route::get('admin/dokumen-pegawai/approval/{par1}', 'App\Http\Controllers\Admin\Dokumen_pegawai@approval');
+Route::post('admin/dokumen-pegawai/proses', 'App\Http\Controllers\Admin\Dokumen_pegawai@proses');
+
+// jenis-dokumen
+Route::get('admin/jenis-dokumen', 'App\Http\Controllers\Admin\Jenis_dokumen@index');
+Route::post('admin/jenis-dokumen/tambah', 'App\Http\Controllers\Admin\Jenis_dokumen@tambah');
+Route::get('admin/jenis-dokumen/edit/{par1}', 'App\Http\Controllers\Admin\Jenis_dokumen@edit');
+Route::get('admin/jenis-dokumen/sub/{par1}', 'App\Http\Controllers\Admin\Jenis_dokumen@sub');
+Route::get('admin/jenis-dokumen/edit-sub/{par1}/{par2}', 'App\Http\Controllers\Admin\Jenis_dokumen@edit_sub');
+Route::get('admin/jenis-dokumen/delete-sub/{par1}/{par2}', 'App\Http\Controllers\Admin\Jenis_dokumen@delete_sub');
+Route::get('admin/jenis-dokumen/activate/{par1}', 'App\Http\Controllers\Admin\Jenis_dokumen@activate');
+Route::post('admin/jenis-dokumen/proses_edit', 'App\Http\Controllers\Admin\Jenis_dokumen@proses_edit');
+Route::get('admin/jenis-dokumen/delete/{par1}', 'App\Http\Controllers\Admin\Jenis_dokumen@delete');
+Route::post('admin/jenis-dokumen/proses', 'App\Http\Controllers\Admin\Jenis_dokumen@proses');
+Route::post('admin/jenis-dokumen/tambah-sub', 'App\Http\Controllers\Admin\Jenis_dokumen@tambah_sub');
+Route::post('admin/jenis-dokumen/edit-sub', 'App\Http\Controllers\Admin\Jenis_dokumen@edit_sub');
+Route::get('admin/jenis-dokumen/delete-sub/{par1}/{par2}', 'App\Http\Controllers\Admin\Jenis_dokumen@delete_sub');
 
 // modul satuan
 Route::get('admin/satuan', 'App\Http\Controllers\Admin\Satuan@index');
@@ -340,6 +389,33 @@ Route::get('admin/divisi/edit/{id}', 'App\Http\Controllers\Admin\Divisi@edit');
 Route::post('admin/divisi/proses-edit', 'App\Http\Controllers\Admin\Divisi@proses_edit');
 Route::get('admin/divisi/delete/{id}', 'App\Http\Controllers\Admin\Divisi@delete');
 
+// modul Management Asset
+Route::get('admin/asset', 'App\Http\Controllers\Admin\Asset@index');
+Route::get('admin/asset/tambah', 'App\Http\Controllers\Admin\Asset@tambah');
+Route::post('admin/asset/proses-tambah', 'App\Http\Controllers\Admin\Asset@proses_tambah');
+Route::get('admin/asset/detail/{id}', 'App\Http\Controllers\Admin\Asset@detail');
+Route::get('admin/asset/edit/{id}', 'App\Http\Controllers\Admin\Asset@edit');
+Route::post('admin/asset/proses-edit', 'App\Http\Controllers\Admin\Asset@proses_edit');
+Route::get('admin/asset/delete/{id}', 'App\Http\Controllers\Admin\Asset@delete');
+Route::get('admin/asset/import', 'App\Http\Controllers\Admin\Asset@import');
+Route::post('admin/asset/proses-import', 'App\Http\Controllers\Admin\Asset@proses_import');
+Route::post('admin/asset/proses', 'App\Http\Controllers\Admin\Asset@proses');
+Route::get('admin/asset/laporan', 'App\Http\Controllers\Admin\Asset@laporan');
+
+// modul lokasi-asset
+Route::get('admin/lokasi', 'App\Http\Controllers\Admin\Lokasi@index');
+Route::post('admin/lokasi/tambah', 'App\Http\Controllers\Admin\Lokasi@tambah');
+Route::get('admin/lokasi/edit/{id}', 'App\Http\Controllers\Admin\Lokasi@edit');
+Route::post('admin/lokasi/proses-edit', 'App\Http\Controllers\Admin\Lokasi@proses_edit');
+Route::get('admin/lokasi/delete/{id}', 'App\Http\Controllers\Admin\Lokasi@delete');
+
+// modul jenis_asset
+Route::get('admin/jenis-asset', 'App\Http\Controllers\Admin\Jenis_asset@index');
+Route::post('admin/jenis-asset/tambah', 'App\Http\Controllers\Admin\Jenis_asset@tambah');
+Route::get('admin/jenis-asset/edit/{id}', 'App\Http\Controllers\Admin\Jenis_asset@edit');
+Route::post('admin/jenis-asset/proses-edit', 'App\Http\Controllers\Admin\Jenis_asset@proses_edit');
+Route::get('admin/jenis-asset/delete/{id}', 'App\Http\Controllers\Admin\Jenis_asset@delete');
+
 // modul status_absen
 Route::get('admin/status-absen', 'App\Http\Controllers\Admin\Status_absen@index');
 Route::post('admin/status-absen/tambah', 'App\Http\Controllers\Admin\Status_absen@tambah');
@@ -446,6 +522,13 @@ Route::post('admin/struktur/tambah-bawahan', 'App\Http\Controllers\Admin\Struktu
 Route::get('admin/struktur/edit-bawahan/{id}', 'App\Http\Controllers\Admin\Struktur@edit_bawahan');
 Route::post('admin/struktur/proses-edit-bawahan', 'App\Http\Controllers\Admin\Struktur@proses_edit_bawahan');
 Route::get('admin/struktur/delete-bawahan/{id}/{id_atasan}', 'App\Http\Controllers\Admin\Struktur@delete_bawahan');
+
+// Modul setting menu
+Route::get('admin/menu-pegawai', 'App\Http\Controllers\Admin\Menu_pegawai@index');
+Route::post('admin/menu-pegawai/tambah', 'App\Http\Controllers\Admin\Menu_pegawai@tambah');
+Route::get('admin/menu-pegawai/edit/{id}', 'App\Http\Controllers\Admin\Menu_pegawai@edit');
+Route::post('admin/menu-pegawai/proses-edit', 'App\Http\Controllers\Admin\Menu_pegawai@proses_edit');
+Route::get('admin/menu-pegawai/delete/{id}', 'App\Http\Controllers\Admin\Menu_pegawai@delete');
 
 // konfigurasi
 Route::get('admin/konfigurasi', 'App\Http\Controllers\Admin\Konfigurasi@index');

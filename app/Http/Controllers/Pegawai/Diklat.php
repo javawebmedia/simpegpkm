@@ -292,6 +292,8 @@ class Diklat extends Controller
     // proses tambah data
     public function proses_tambah(Request $request)
     {
+        $m_kode_diklat  = new Kode_diklat_model();
+
         $nip        = Session()->get('nip');
         // proteksi halaman
         if(Session()->get('username')=="") { 
@@ -317,11 +319,16 @@ class Diklat extends Controller
         $image->move($destinationPath, $input['nama_file']);
         // END UPLOAD
 
+            $id_kode_diklat         = $request->id_kode_diklat;
+            $kode_diklat            = $m_kode_diklat->detail($id_kode_diklat);
+            $id_jenis_pelatihan     = $kode_diklat->id_jenis_pelatihan;
+            $id_rumpun              = $kode_diklat->id_rumpun;
+
             DB::table('diklat')->insert([
                 'id_pegawai'            => Session()->get('id_pegawai'),
                 'id_kode_diklat'        => $request->id_kode_diklat,
-                'id_rumpun'             => $request->id_rumpun,
-                'id_jenis_pelatihan'    => $request->id_jenis_pelatihan,
+                'id_rumpun'             => $id_rumpun,
+                'id_jenis_pelatihan'    => $id_jenis_pelatihan,
                 'id_metode_diklat'      => $request->id_metode_diklat,
                 'id_kategori_diklat'    => $request->id_kategori_diklat,
                 'nip'                   => $nip,
@@ -345,6 +352,7 @@ class Diklat extends Controller
     // proses edit data
     public function proses_edit(Request $request)
     {
+        $m_kode_diklat  = new Kode_diklat_model();
         $nip        = Session()->get('nip');
         // proteksi halaman
         if(Session()->get('username')=="") { 
@@ -368,11 +376,16 @@ class Diklat extends Controller
             $image->move($destinationPath, $input['nama_file']);
             // END UPLOAD
 
+            $id_kode_diklat         = $request->id_kode_diklat;
+            $kode_diklat            = $m_kode_diklat->detail($id_kode_diklat);
+            $id_jenis_pelatihan     = $kode_diklat->id_jenis_pelatihan;
+            $id_rumpun              = $kode_diklat->id_rumpun;
+
             DB::table('diklat')->where('id_diklat',$request->id_diklat)->update([
                     'id_pegawai'            => Session()->get('id_pegawai'),
                     'id_kode_diklat'        => $request->id_kode_diklat,
-                    'id_rumpun'             => $request->id_rumpun,
-                    'id_jenis_pelatihan'    => $request->id_jenis_pelatihan,
+                    'id_rumpun'             => $id_rumpun,
+                    'id_jenis_pelatihan'    => $id_jenis_pelatihan,
                     'id_metode_diklat'      => $request->id_metode_diklat,
                     'id_kategori_diklat'    => $request->id_kategori_diklat,
                     'nip'                   => $nip,
@@ -389,11 +402,17 @@ class Diklat extends Controller
                     'status_diklat'         => 'Menunggu',
             ]);
         }else{
+
+            $id_kode_diklat         = $request->id_kode_diklat;
+            $kode_diklat            = $m_kode_diklat->detail($id_kode_diklat);
+            $id_jenis_pelatihan     = $kode_diklat->id_jenis_pelatihan;
+            $id_rumpun              = $kode_diklat->id_rumpun;
+            
             DB::table('diklat')->where('id_diklat',$request->id_diklat)->update([
                     'id_pegawai'            => Session()->get('id_pegawai'),
                     'id_kode_diklat'        => $request->id_kode_diklat,
-                    'id_rumpun'             => $request->id_rumpun,
-                    'id_jenis_pelatihan'    => $request->id_jenis_pelatihan,
+                    'id_rumpun'             => $id_rumpun,
+                    'id_jenis_pelatihan'    => $id_jenis_pelatihan,
                     'id_metode_diklat'      => $request->id_metode_diklat,
                     'id_kategori_diklat'    => $request->id_kategori_diklat,
                     'nip'                   => $nip,

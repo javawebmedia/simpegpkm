@@ -10,7 +10,7 @@
 	</a>
 
 	<a href="{{ asset('admin/jadwal-pegawai/lihat/'.$tahun.'/'.$bulan) }}" class="btn btn-warning">
-		<i class="fa fa-eye"></i> Lihat Jadwal
+		<i class="fa fa-eye"></i> Rekap Jadwal Kerja
 	</a>
 </p>
 

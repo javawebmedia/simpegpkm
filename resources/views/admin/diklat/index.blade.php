@@ -10,10 +10,19 @@
     </div>
 @endif
 
+<p>
+	<?php foreach($rekap_tahunan as $rekap_tahunan) { ?>
+		<a href="<?php echo asset('admin/diklat?tahun='.$rekap_tahunan->tahun) ?>" class="btn <?php if($rekap_tahunan->tahun==$tahun) { echo 'btn-info'; }else{ echo 'btn-secondary'; } ?> btn-sm">
+			<i class="fa fa-eye"></i> <?php echo $rekap_tahunan->tahun ?> (<?php echo number_format($rekap_tahunan->total_diklat) ?>)
+		</a>
+	<?php } ?>
+</p>
+
+
 <form action="{{ asset('admin/diklat/proses') }}" method="post" accept-charset="utf-8">
 			{{ csrf_field() }}
 <div class="row mb-2">
-	<div class="col-md-6">
+	<div class="col-md-7">
 		<div class="input-group">
 			<button type="submit" name="submit" value="delete" class="btn btn-secondary"><i class="fa fa-trash"></i></button>
     <select name="status_diklat" class="form-control">
@@ -24,14 +33,24 @@
 
     
       <span class="input-group-append">
-        <button type="submit" name="submit" value="submit" class="btn btn-secondary"><i class="fa fa-save"></i> Update</button>
+        <button type="submit" name="submit" value="submit" class="btn btn-secondary">
+        	<i class="fa fa-save"></i> Update
+        </button>
+        
         <a href="{{ asset('admin/diklat/tambah') }}" class="btn btn-success">
-			<i class="fa fa-plus-circle"></i> Tambah Diklat Baru
-	</a>
+			<i class="fa fa-plus-circle"></i> Tambah
+		</a>
+
+		<a href="{{ asset('admin/diklat/laporan') }}" class="btn btn-primary" target="_blank">
+			<i class="fa fa-file-excel"></i> Buat Laporan
+		</a>
+
       </span>
     </div>
 	</div>
-	
+	<div class="col-md-5">
+
+	</div>
 </div>
 
 
@@ -46,11 +65,12 @@
 				<button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
 						</button>
 			</th>
-			<th>Pegawai</th>
-			<th>Diklat</th>
-			<th>Tanggal</th>
-			<th>JPL</th>
-			<th>Status</th>
+			<th width="20%">Pegawai</th>
+			<th width="30%">Diklat</th>
+			<th width="10%">Tanggal</th>
+			<th width="5%">TAHUN</th>
+			<th width="10%">JPL</th>
+			<th width="10%">Status</th>
 			<th>Aksi</th>
 		</tr>
 	</thead>
@@ -63,9 +83,14 @@
                     <label for="check<?php echo $diklat->id_diklat ?>"></label>
                   </div>
 			</td>
-			<td>{{ $diklat->nama_lengkap }}</td>
+			<td>{{ $diklat->nama_lengkap }}
+				<small>
+					<br>NIP: {{ $diklat->nip }}
+				</small>
+			</td>
 			<td>{{ $diklat->nama_diklat }}</td>
-			<td>{{ $diklat->tanggal_awal }}</td>
+			<td>{{ date('d-m-Y',strtotime($diklat->tanggal_awal)) }}</td>
+			<td>{{ date('Y',strtotime($diklat->tanggal_awal)) }}</td>
 			<td>{{ $diklat->jpl }}</td>
 			<td>
 				<?php if($diklat->status_diklat=='Disetujui') { ?>

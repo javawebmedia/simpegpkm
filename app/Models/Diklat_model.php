@@ -24,6 +24,8 @@ class Diklat_model extends Model
                     'rumpun.nama_rumpun',
                     'jenis_pelatihan.nama_jenis_pelatihan',
                     'pegawai.nama_lengkap',
+                    'pegawai.nik',
+                    'pegawai.jenis_pegawai',
                     'kode_diklat.kode_diklat',
                     'kode_diklat.nama_kode_diklat',
                 )
@@ -31,6 +33,129 @@ class Diklat_model extends Model
             ->paginate($paginasi);
         return $query;
     }
+
+    // tahun
+    public function tahun($tahun)
+    {
+        $query = DB::table('diklat')
+            ->leftJoin('rumpun', 'rumpun.id_rumpun', '=', 'diklat.id_rumpun')
+            ->leftJoin('jenis_pelatihan', 'jenis_pelatihan.id_jenis_pelatihan', '=', 'diklat.id_jenis_pelatihan')
+            ->leftJoin('metode_diklat', 'metode_diklat.id_metode_diklat', '=', 'diklat.id_metode_diklat')
+            ->leftJoin('pegawai', 'pegawai.nip', '=', 'diklat.nip')
+            ->leftJoin('kode_diklat', 'kode_diklat.id_kode_diklat', '=', 'diklat.id_kode_diklat')
+            ->select('diklat.*', 
+                    'metode_diklat.jenis_metode',
+                    'metode_diklat.nama_metode_diklat',
+                    'metode_diklat.jp',
+                    'rumpun.nama_rumpun',
+                    'jenis_pelatihan.nama_jenis_pelatihan',
+                    'pegawai.nama_lengkap',
+                    'pegawai.nik',
+                    'pegawai.jenis_pegawai',
+                    'kode_diklat.kode_diklat',
+                    'kode_diklat.nama_kode_diklat'
+                )
+            ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun])
+            ->orderBy('diklat.id_diklat', 'DESC')
+            ->get();
+        return $query;
+    }
+
+    // tahun_pegawai
+    public function tahun_pegawai($tahun, $nip)
+    {
+        if($nip=='Semua') {
+            $query = DB::table('diklat')
+                ->leftJoin('pegawai', 'pegawai.nip', '=', 'diklat.nip')
+                ->select(
+                    DB::raw('SUM(diklat.jpl) AS total_jpl'),
+                    DB::raw('MAX(pegawai.nik) AS nik'),
+                    DB::raw('MAX(pegawai.nip) AS nip'),
+                    DB::raw('MAX(pegawai.nama_lengkap) AS nama_lengkap')
+                )
+                ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun])
+                ->groupBy('diklat.nip')
+                ->orderBy(DB::raw('SUM(diklat.jpl)'), 'DESC')
+                ->get();
+
+            return $query;
+        }else{
+            $query = DB::table('diklat')
+                ->leftJoin('pegawai', 'pegawai.nip', '=', 'diklat.nip')
+                ->select(
+                    DB::raw('SUM(diklat.jpl) AS total_jpl'),
+                    DB::raw('MAX(pegawai.nik) AS nik'),
+                     DB::raw('MAX(pegawai.nip) AS nip'),
+                    DB::raw('MAX(pegawai.nama_lengkap) AS nama_lengkap')
+                )
+                ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun])
+                ->where('diklat.nip', $nip)
+                ->groupBy('diklat.nip')
+                ->orderBy(DB::raw('SUM(diklat.jpl)'), 'ASC')
+                ->get();
+
+            return $query;
+        }
+        
+    }
+
+    // rekap
+    public function rekap_pertahun($tahun)
+    {
+        // Jumlah pegawai yang belum memiliki diklat sama sekali
+        $pegawai_tanpa_diklat = DB::table('pegawai')
+            ->leftJoin('diklat', function($join) use ($tahun) {
+                $join->on('pegawai.nip', '=', 'diklat.nip')
+                     ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun]);
+            })
+            ->whereNull('diklat.id_diklat')
+            ->count();
+
+        // Jumlah pegawai yang sudah memiliki diklat tapi JPL kurang dari 40
+        $pegawai_jpl_kurang_40 = DB::table('pegawai')
+            ->leftJoin('diklat', function($join) use ($tahun) {
+                $join->on('pegawai.nip', '=', 'diklat.nip')
+                     ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun]);
+            })
+            ->select('pegawai.nip')
+            ->groupBy('pegawai.nip')
+            ->havingRaw('SUM(diklat.jpl) < 40')
+            ->count();
+
+        // Jumlah pegawai yang sudah memiliki diklat dengan JPL lebih besar atau sama dengan 40
+        $pegawai_jpl_lebih_sama_40 = DB::table('pegawai')
+            ->leftJoin('diklat', function($join) use ($tahun) {
+                $join->on('pegawai.nip', '=', 'diklat.nip')
+                     ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun]);
+            })
+            ->select('pegawai.nip')
+            ->groupBy('pegawai.nip')
+            ->havingRaw('SUM(diklat.jpl) >= 40')
+            ->count();
+
+        return [
+            'pegawai_tanpa_diklat' => $pegawai_tanpa_diklat,
+            'pegawai_jpl_kurang_40' => $pegawai_jpl_kurang_40,
+            'pegawai_jpl_lebih_sama_40' => $pegawai_jpl_lebih_sama_40,
+        ];
+    }
+
+
+    // tahun
+    public function rekap_tahunan()
+    {
+        $query = DB::table('diklat')
+            ->select(
+                DB::raw('SUBSTR(diklat.tanggal_awal, 1, 4) AS tahun'),
+                DB::raw('COUNT(*) AS total_diklat')
+            )
+            ->groupBy(DB::raw('SUBSTR(diklat.tanggal_awal, 1, 4)'))
+            ->orderBy(DB::raw('SUBSTR(diklat.tanggal_awal, 1, 4)'), 'DESC')
+            ->get();
+
+        return $query;
+    }
+
 
     // listing semua
     public function nip($nip)

@@ -28,9 +28,12 @@ $website = new App\Libraries\Website();
 							<td><?php echo $pegawai->nama_jabatan ?></td>
 						</tr>
 						<tr>
-							<td class="bg-light">Shift &amp; Periode Jadwal Kerja</td>
-							<td><?php echo $pegawai->status_shift ?> / 
-								<?php 
+							<td class="bg-light">Shift</td>
+							<td><?php echo $pegawai->status_shift ?></td>
+						</tr>
+						<tr>
+							<td class="bg-light">Periode Jadwal Kerja</td>
+							<td><?php 
 								if($bulan=='01') {
 									echo 'Januari';
 								}elseif($bulan=='02') {
@@ -76,7 +79,9 @@ $website = new App\Libraries\Website();
 				$sakit 	= $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Sakit');
 				$izin 	= $m_kehadiran->pegawai_thbl_status($pegawai->pin,$thbl,'Izin'); 
 				$total_all 	= $hadir->total_status_kehadiran + $izin->total_status_kehadiran + $sakit->total_status_kehadiran + $alpa->total_status_kehadiran;
+
 				?>
+				<?php if(!empty($total)) { ?>
 				<table class="table table-sm tabelku">
 					<tbody>
 						<tr>
@@ -101,6 +106,11 @@ $website = new App\Libraries\Website();
 						</tr>
 					</tbody>
 				</table>
+				<?php }else{ ?>
+				<div class="callout callout-warning">
+					Data Kehadiran belum dibuat.
+				</div>
+			<?php } ?>
 			</div>
 		</div>
 	</div>

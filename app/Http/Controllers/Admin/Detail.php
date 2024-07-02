@@ -29,6 +29,16 @@ use App\Models\Str_sip_model;
 use App\Models\Shift_model;
 use App\Models\Shift_hari_model;
 use App\Models\Libur_model;
+use App\Models\Jenis_dokumen_model;
+use App\Models\Sub_jenis_dokumen_model;
+use App\Models\Dokumen_pegawai_model;
+// model
+use App\Models\Atasan_model;
+use App\Models\Bawahan_model;
+use App\Models\Aktivitas_model;
+use App\Models\Aktivitas_utama_model;
+use App\Models\Kinerja_model;
+
 use Image;
 use PDF;
 
@@ -76,6 +86,351 @@ class Detail extends Controller
                     'bulan'             => $bulan,
                     'flow'              => 'pegawai',
                     'content'           => 'admin/detail/pegawai'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
+    // gaji
+    public function gaji($pin,$tahun,$bulan)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_pegawai      = new Pegawai_model();
+        $m_kehadiran    = new Kehadiran_model();
+        $m_absensi      = new Absensi_model();
+        $m_status_absen = new Status_absen_model();
+        $m_gaji         = new Gaji_model();
+        $m_tkd          = new Tkd_model();
+
+        $pegawai        = $m_pegawai->pin($pin);
+        $thbl           = $tahun.$bulan;
+        $kehadiran      = $m_kehadiran->pegawai_thbl_all($pin,$thbl);
+        $nip            = $pegawai->nip;
+        $gaji           = $m_gaji->thbl_pegawai($thbl,$nip);
+        $tkd            = $m_tkd->thbl_pegawai($thbl,$nip);
+
+        if($bulan=='01') {
+            $nama_bulan = 'Januari';
+        }elseif($bulan=='02') {
+            $nama_bulan = 'Februari';
+        }elseif($bulan=='03') {
+            $nama_bulan = 'Maret';
+        }elseif($bulan=='04') {
+            $nama_bulan = 'April';
+        }elseif($bulan=='05') {
+            $nama_bulan = 'Mei';
+        }elseif($bulan=='06') {
+            $nama_bulan = 'Juni';
+        }elseif($bulan=='07') {
+            $nama_bulan = 'Juli';
+        }elseif($bulan=='08') {
+            $nama_bulan = 'Agustus';
+        }elseif($bulan=='09') {
+            $nama_bulan = 'September';
+        }elseif($bulan=='10') {
+            $nama_bulan = 'Oktober';
+        }elseif($bulan=='11') {
+            $nama_bulan = 'November';
+        }elseif($bulan=='12') {
+            $nama_bulan = 'Desember';
+        }
+
+        $data = [   'title'             => 'Data Gaji dan TKD: '.$pegawai->nama_lengkap.
+                                            ' (NIP: '.$pegawai->nip.') - '.$nama_bulan.' '.$tahun,
+                    'pegawai'           => $pegawai,
+                    'tahun'             => $tahun,
+                    'bulan'             => $bulan,
+                    'thbl'              => $tahun.$bulan,
+                    'm_kehadiran'       => $m_kehadiran,
+                    'm_status_absen'    => $m_status_absen,
+                    'kehadiran'         => $kehadiran,
+                    'gaji'              => $gaji,
+                    'tkd'               => $tkd,
+                    'flow'              => 'gaji',
+                    'content'           => 'admin/detail/gaji'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
+    // ekinerja
+    public function ekinerja($pin,$tahun,$bulan)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_pegawai      = new Pegawai_model();
+        $m_kehadiran    = new Kehadiran_model();
+        $m_absensi      = new Absensi_model();
+        $m_status_absen = new Status_absen_model();
+        $m_gaji         = new Gaji_model();
+        $m_tkd          = new Tkd_model();
+        $m_kinerja      = new Kinerja_model();
+
+        $pegawai        = $m_pegawai->pin($pin);
+        $thbl           = $tahun.$bulan;
+        $kehadiran      = $m_kehadiran->pegawai_thbl_all($pin,$thbl);
+        $nip            = $pegawai->nip;
+        $gaji           = $m_gaji->thbl_pegawai($thbl,$nip);
+        $tkd            = $m_tkd->thbl_pegawai($thbl,$nip);
+        $kinerja        = $m_kinerja->pegawai_thbl($nip,$thbl);
+
+        if($bulan=='01') {
+            $nama_bulan = 'Januari';
+        }elseif($bulan=='02') {
+            $nama_bulan = 'Februari';
+        }elseif($bulan=='03') {
+            $nama_bulan = 'Maret';
+        }elseif($bulan=='04') {
+            $nama_bulan = 'April';
+        }elseif($bulan=='05') {
+            $nama_bulan = 'Mei';
+        }elseif($bulan=='06') {
+            $nama_bulan = 'Juni';
+        }elseif($bulan=='07') {
+            $nama_bulan = 'Juli';
+        }elseif($bulan=='08') {
+            $nama_bulan = 'Agustus';
+        }elseif($bulan=='09') {
+            $nama_bulan = 'September';
+        }elseif($bulan=='10') {
+            $nama_bulan = 'Oktober';
+        }elseif($bulan=='11') {
+            $nama_bulan = 'November';
+        }elseif($bulan=='12') {
+            $nama_bulan = 'Desember';
+        }
+
+        $data = [   'title'             => 'eKinerja: '.$pegawai->nama_lengkap.
+                                            ' (NIP: '.$pegawai->nip.') - '.$nama_bulan.' '.$tahun,
+                    'pegawai'           => $pegawai,
+                    'tahun'             => $tahun,
+                    'bulan'             => $bulan,
+                    'thbl'              => $tahun.$bulan,
+                    'm_kehadiran'       => $m_kehadiran,
+                    'm_status_absen'    => $m_status_absen,
+                    'kehadiran'         => $kehadiran,
+                    'gaji'              => $gaji,
+                    'tkd'               => $tkd,
+                    'kinerja'           => $kinerja,
+                    'flow'              => 'ekinerja',
+                    'content'           => 'admin/detail/ekinerja'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
+    // str_sip
+    public function str_sip($pin,$tahun,$bulan)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_pegawai      = new Pegawai_model();
+        $m_kehadiran    = new Kehadiran_model();
+        $m_absensi      = new Absensi_model();
+        $m_status_absen = new Status_absen_model();
+        $m_gaji         = new Gaji_model();
+        $m_tkd          = new Tkd_model();
+        $m_str_sip      = new Str_sip_model();
+
+        $pegawai        = $m_pegawai->pin($pin);
+        $thbl           = $tahun.$bulan;
+        $kehadiran      = $m_kehadiran->pegawai_thbl_all($pin,$thbl);
+        $nip            = $pegawai->nip;
+        $id_pegawai     = $pegawai->id_pegawai;
+        $gaji           = $m_gaji->thbl_pegawai($thbl,$nip);
+        $tkd            = $m_tkd->thbl_pegawai($thbl,$nip);
+        $str_sip        = $m_str_sip->pegawai($id_pegawai);
+
+        if($bulan=='01') {
+            $nama_bulan = 'Januari';
+        }elseif($bulan=='02') {
+            $nama_bulan = 'Februari';
+        }elseif($bulan=='03') {
+            $nama_bulan = 'Maret';
+        }elseif($bulan=='04') {
+            $nama_bulan = 'April';
+        }elseif($bulan=='05') {
+            $nama_bulan = 'Mei';
+        }elseif($bulan=='06') {
+            $nama_bulan = 'Juni';
+        }elseif($bulan=='07') {
+            $nama_bulan = 'Juli';
+        }elseif($bulan=='08') {
+            $nama_bulan = 'Agustus';
+        }elseif($bulan=='09') {
+            $nama_bulan = 'September';
+        }elseif($bulan=='10') {
+            $nama_bulan = 'Oktober';
+        }elseif($bulan=='11') {
+            $nama_bulan = 'November';
+        }elseif($bulan=='12') {
+            $nama_bulan = 'Desember';
+        }
+
+        $data = [   'title'             => 'STR SIP: '.$pegawai->nama_lengkap.
+                                            ' (NIP: '.$pegawai->nip.') - '.$nama_bulan.' '.$tahun,
+                    'pegawai'           => $pegawai,
+                    'tahun'             => $tahun,
+                    'bulan'             => $bulan,
+                    'thbl'              => $tahun.$bulan,
+                    'm_kehadiran'       => $m_kehadiran,
+                    'm_status_absen'    => $m_status_absen,
+                    'kehadiran'         => $kehadiran,
+                    'gaji'              => $gaji,
+                    'tkd'               => $tkd,
+                    'str_sip'           => $str_sip,
+                    'flow'              => 'str-sip',
+                    'content'           => 'admin/detail/str-sip'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
+    // keluarga
+    public function keluarga($pin,$tahun,$bulan)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_pegawai      = new Pegawai_model();
+        $m_kehadiran    = new Kehadiran_model();
+        $m_absensi      = new Absensi_model();
+        $m_status_absen = new Status_absen_model();
+        $m_gaji         = new Gaji_model();
+        $m_tkd          = new Tkd_model();
+        $m_keluarga     = new Keluarga_model();
+
+        $pegawai        = $m_pegawai->pin($pin);
+        $thbl           = $tahun.$bulan;
+        $kehadiran      = $m_kehadiran->pegawai_thbl_all($pin,$thbl);
+        $nip            = $pegawai->nip;
+        $id_pegawai     = $pegawai->id_pegawai;
+        $gaji           = $m_gaji->thbl_pegawai($thbl,$nip);
+        $tkd            = $m_tkd->thbl_pegawai($thbl,$nip);
+        $keluarga       = $m_keluarga->pegawai($id_pegawai);
+
+        if($bulan=='01') {
+            $nama_bulan = 'Januari';
+        }elseif($bulan=='02') {
+            $nama_bulan = 'Februari';
+        }elseif($bulan=='03') {
+            $nama_bulan = 'Maret';
+        }elseif($bulan=='04') {
+            $nama_bulan = 'April';
+        }elseif($bulan=='05') {
+            $nama_bulan = 'Mei';
+        }elseif($bulan=='06') {
+            $nama_bulan = 'Juni';
+        }elseif($bulan=='07') {
+            $nama_bulan = 'Juli';
+        }elseif($bulan=='08') {
+            $nama_bulan = 'Agustus';
+        }elseif($bulan=='09') {
+            $nama_bulan = 'September';
+        }elseif($bulan=='10') {
+            $nama_bulan = 'Oktober';
+        }elseif($bulan=='11') {
+            $nama_bulan = 'November';
+        }elseif($bulan=='12') {
+            $nama_bulan = 'Desember';
+        }
+
+        $data = [   'title'             => 'Keluarga: '.$pegawai->nama_lengkap.
+                                            ' (NIP: '.$pegawai->nip.') - '.$nama_bulan.' '.$tahun,
+                    'pegawai'           => $pegawai,
+                    'tahun'             => $tahun,
+                    'bulan'             => $bulan,
+                    'thbl'              => $tahun.$bulan,
+                    'm_kehadiran'       => $m_kehadiran,
+                    'm_status_absen'    => $m_status_absen,
+                    'kehadiran'         => $kehadiran,
+                    'gaji'              => $gaji,
+                    'tkd'               => $tkd,
+                    'keluarga'          => $keluarga,
+                    'flow'              => 'keluarga',
+                    'content'           => 'admin/detail/keluarga'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
+    // diklat
+    public function diklat($pin,$tahun,$bulan)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_pegawai      = new Pegawai_model();
+        $m_kehadiran    = new Kehadiran_model();
+        $m_absensi      = new Absensi_model();
+        $m_status_absen = new Status_absen_model();
+        $m_gaji         = new Gaji_model();
+        $m_tkd          = new Tkd_model();
+        $m_diklat       = new Diklat_model();
+
+        $pegawai        = $m_pegawai->pin($pin);
+        $thbl           = $tahun.$bulan;
+        $kehadiran      = $m_kehadiran->pegawai_thbl_all($pin,$thbl);
+        $nip            = $pegawai->nip;
+        $id_pegawai     = $pegawai->id_pegawai;
+        $gaji           = $m_gaji->thbl_pegawai($thbl,$nip);
+        $tkd            = $m_tkd->thbl_pegawai($thbl,$nip);
+        $diklat         = $m_diklat->nip($nip);
+
+        if($bulan=='01') {
+            $nama_bulan = 'Januari';
+        }elseif($bulan=='02') {
+            $nama_bulan = 'Februari';
+        }elseif($bulan=='03') {
+            $nama_bulan = 'Maret';
+        }elseif($bulan=='04') {
+            $nama_bulan = 'April';
+        }elseif($bulan=='05') {
+            $nama_bulan = 'Mei';
+        }elseif($bulan=='06') {
+            $nama_bulan = 'Juni';
+        }elseif($bulan=='07') {
+            $nama_bulan = 'Juli';
+        }elseif($bulan=='08') {
+            $nama_bulan = 'Agustus';
+        }elseif($bulan=='09') {
+            $nama_bulan = 'September';
+        }elseif($bulan=='10') {
+            $nama_bulan = 'Oktober';
+        }elseif($bulan=='11') {
+            $nama_bulan = 'November';
+        }elseif($bulan=='12') {
+            $nama_bulan = 'Desember';
+        }
+
+        $data = [   'title'             => 'Data Diklat: '.$pegawai->nama_lengkap.
+                                            ' (NIP: '.$pegawai->nip.') - '.$nama_bulan.' '.$tahun,
+                    'pegawai'           => $pegawai,
+                    'tahun'             => $tahun,
+                    'bulan'             => $bulan,
+                    'thbl'              => $tahun.$bulan,
+                    'm_kehadiran'       => $m_kehadiran,
+                    'm_status_absen'    => $m_status_absen,
+                    'kehadiran'         => $kehadiran,
+                    'gaji'              => $gaji,
+                    'tkd'               => $tkd,
+                    'diklat'            => $diklat,
+                    'flow'              => 'diklat',
+                    'content'           => 'admin/detail/diklat'
                 ];
         return view('admin/layout/wrapper',$data);
     }
@@ -440,6 +795,70 @@ class Detail extends Controller
                     'kehadiran'         => $kehadiran,
                     'flow'              => 'absensi',
                     'content'           => 'admin/detail/absensi'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
+    // halaman dasbor
+    public function dokumen($pin,$tahun,$bulan)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        
+        $m_pegawai                  = new Pegawai_model();
+        $m_dokumen_pegawai          = new Dokumen_pegawai_model();
+        $m_jenis_dokumen            = new Jenis_dokumen_model();
+        $m_sub_jenis_dokumen        = new Sub_jenis_dokumen_model();
+        $pegawai                    = $m_pegawai->pin($pin);
+        $thbl                       = $tahun.$bulan;
+        $id_pegawai                 = $pegawai->id_pegawai;
+        $jenis_dokumen              = $m_jenis_dokumen->status_jenis_dokumen('Aktif');
+        $sub_jenis_dokumen          = $m_sub_jenis_dokumen->status_sub_jenis_dokumen('Aktif');
+        $pegawai                    = $m_pegawai->detail($id_pegawai);
+
+        if($bulan=='01') {
+            $nama_bulan = 'Januari';
+        }elseif($bulan=='02') {
+            $nama_bulan = 'Februari';
+        }elseif($bulan=='03') {
+            $nama_bulan = 'Maret';
+        }elseif($bulan=='04') {
+            $nama_bulan = 'April';
+        }elseif($bulan=='05') {
+            $nama_bulan = 'Mei';
+        }elseif($bulan=='06') {
+            $nama_bulan = 'Juni';
+        }elseif($bulan=='07') {
+            $nama_bulan = 'Juli';
+        }elseif($bulan=='08') {
+            $nama_bulan = 'Agustus';
+        }elseif($bulan=='09') {
+            $nama_bulan = 'September';
+        }elseif($bulan=='10') {
+            $nama_bulan = 'Oktober';
+        }elseif($bulan=='11') {
+            $nama_bulan = 'November';
+        }elseif($bulan=='12') {
+            $nama_bulan = 'Desember';
+        }
+
+        $data = [   'title'                     => 'Data Dokumen Pegawai',
+                    'pegawai'                   => $pegawai,
+                    'jenis_dokumen'             => $jenis_dokumen,
+                    'jenis_dokumen2'            => $jenis_dokumen,
+                    'sub_jenis_dokumen'         => $sub_jenis_dokumen,
+                    'm_sub_jenis_dokumen'       => $m_sub_jenis_dokumen,
+                    'm_dokumen_pegawai'         => $m_dokumen_pegawai,
+                    'id_pegawai'                => $id_pegawai,
+                    'tahun'                     => $tahun,
+                    'bulan'                     => $bulan,
+                    'thbl'                      => $tahun.$bulan,
+                    'flow'                      => 'dokumen',
+                    'content'                   => 'admin/detail/dokumen'
                 ];
         return view('admin/layout/wrapper',$data);
     }
