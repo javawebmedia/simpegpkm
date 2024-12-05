@@ -53,6 +53,66 @@ class Diklat extends Controller
         return view('admin/layout/wrapper',$data);
     }
 
+    // rekap
+    public function rekap()
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_diklat   = new Diklat_model();
+        if(isset($_GET['tahun'])) {
+            $tahun = $_GET['tahun'];
+        }else{
+            $tahun = date('Y');
+        }
+        $title      = 'Rekap Diklat Pegawai';
+        $diklat     = $m_diklat->rekap($tahun);
+
+        $data = [   'title'           => $title.' - Tahun '.$tahun,
+                    'diklat'          => $diklat,
+                    'tahun'           => $tahun,
+                    'content'         => 'admin/diklat/rekap'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
+    // listing
+    public function listing($total_jpl)
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
+        }
+        // end proteksi halaman
+        $m_diklat   = new Diklat_model();
+        if(isset($_GET['tahun'])) {
+            $tahun = $_GET['tahun'];
+        }else{
+            $tahun = date('Y');
+        }
+        if($total_jpl=='0') {
+            $title      = 'Pegawai belum Diklat sama sekali';
+            $diklat     = $m_diklat->tanpa_diklat($tahun);
+        }elseif($total_jpl==20) {
+            $title      = 'Pegawai Sudah Diklat tapi Kurang dari 40 JPL';
+            $diklat     = $m_diklat->jpl_kurang($tahun);
+        }else{
+            $title      = 'Pegawai Sudah Diklat dengan JPL Cukup';
+            $diklat     = $m_diklat->jpl_cukup($tahun);
+        }
+
+        $data = [   'title'           => $title.' - Tahun '.$tahun,
+                    'diklat'          => $diklat,
+                    'tahun'           => $tahun,
+                    'content'         => 'admin/diklat/listing'
+                ];
+        return view('admin/layout/wrapper',$data);
+    }
+
     // laporan
     public function laporan()
     {

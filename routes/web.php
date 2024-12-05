@@ -198,6 +198,8 @@ Route::get('admin/diklat/import', 'App\Http\Controllers\Admin\Diklat@import');
 Route::post('admin/diklat/proses-import', 'App\Http\Controllers\Admin\Diklat@proses_import');
 Route::post('admin/diklat/proses', 'App\Http\Controllers\Admin\Diklat@proses');
 Route::get('admin/diklat/laporan', 'App\Http\Controllers\Admin\Diklat@laporan');
+Route::get('admin/diklat/rekap', 'App\Http\Controllers\Admin\Diklat@rekap');
+Route::get('admin/diklat/listing/{par1}', 'App\Http\Controllers\Admin\Diklat@listing');
 
 // modul kode-diklat
 Route::get('admin/kode-diklat', 'App\Http\Controllers\Admin\Kode_diklat@index');

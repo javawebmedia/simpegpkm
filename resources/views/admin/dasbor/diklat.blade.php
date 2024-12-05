@@ -81,20 +81,36 @@ series.appear(1000, 100);
 		<tr>
 			<th>KETERANGAN</th>
 			<th>JUMLAH</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td>Belum Diklat sama sekali</td>
 			<td><?php echo $diklat2['pegawai_tanpa_diklat'] ?></td>
+			<td>
+				<a href="{{ asset('admin/diklat/listing/0') }}" class="btn btn-secondary btn-xs" target="_blank">
+					<i class="fa fa-eye"></i> Lihat
+				</a>
+			</td>
 		</tr>
 		<tr>
 			<td>Sudah Diklat tapi kurang dari 40 JP</td>
 			<td><?php echo $diklat2['pegawai_jpl_kurang_40'] ?></td>
+			<td>
+				<a href="{{ asset('admin/diklat/listing/20') }}" class="btn btn-secondary btn-xs" target="_blank">
+					<i class="fa fa-eye"></i> Lihat
+				</a>
+			</td>
 		</tr>
 		<tr>
 			<td>Sudah Diklat Cukup untuk 40 JP</td>
 			<td><?php echo $diklat2['pegawai_jpl_lebih_sama_40'] ?></td>
+			<td>
+				<a href="{{ asset('admin/diklat/listing/40') }}" class="btn btn-secondary btn-xs" target="_blank">
+					<i class="fa fa-eye"></i> Lihat
+				</a>
+			</td>
 		</tr>
 	</tbody>
 </table>

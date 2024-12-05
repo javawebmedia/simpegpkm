@@ -57,6 +57,7 @@ class Dasbor extends Controller
         $telat_harian       = $m_kehadiran->telat_harian($pin,$hari_ini);
         $telat_bulanan      = $m_kehadiran->telat_bulanan($pin,$bulan_ini);
         $telat_tahunan      = $m_kehadiran->telat_tahunan($pin,$tahun_ini);
+        
         $str_sip            = $m_str_sip->pegawai($id_pegawai);
 
         $data = [   'title'             => $pegawai->nama_lengkap.' (NIP: '.$pegawai->nip.')',

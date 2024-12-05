@@ -1,5 +1,3 @@
-
-
 @if($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -39,6 +37,10 @@
         
         <a href="{{ asset('admin/diklat/tambah') }}" class="btn btn-success">
 			<i class="fa fa-plus-circle"></i> Tambah
+		</a>
+
+		<a href="{{ asset('admin/diklat/rekap') }}" class="btn btn-info" target="_blank">
+			<i class="fa fa-file-excel"></i> Rekap
 		</a>
 
 		<a href="{{ asset('admin/diklat/laporan') }}" class="btn btn-primary" target="_blank">

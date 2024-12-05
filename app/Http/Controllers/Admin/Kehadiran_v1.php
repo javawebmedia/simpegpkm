@@ -189,7 +189,7 @@ class Kehadiran extends Controller
             'catatan'           => $request->catatan,
             'nama_status_absen' => $nama_status_absen
         ]);
-        return redirect('admin/kehadiran/detail/'.$pin.'/'.$tahun.'/'.$bulan)->with(['sukses' => 'Data telah diedit']);
+        return redirect($request->pengalihan)->with(['sukses' => 'Data telah diedit']);
     }
 
     // tambah
@@ -272,8 +272,6 @@ class Kehadiran extends Controller
                         }
 
                         // print_r($check_finger_awal);
-                        // print_r($check_jadwal);
-
                         if($check_jadwal->day_off=='Ya') {
                             $kehadiran                  = 'OFF';
                             $keterangan                 = '-';
@@ -310,7 +308,7 @@ class Kehadiran extends Controller
                                     $jumlah_menit_pulang_cepat  = 0;
                                     $lembur                     = 0;
                                     $total_jam_kerja            = 225;
-                                }elseif(!empty($check_finger_awal) && !empty($check_finger_akhir)) {
+                                }elseif(!empty($check_finger_awal) && !empty($check_finger_akhir)) {    
                                     $waktu_awal                 = $check_finger_awal->waktu_finger;
                                     $waktu_akhir                = $check_finger_akhir->waktu_finger;
                                     $timestamp_awal             = strtotime($waktu_awal);
@@ -318,7 +316,6 @@ class Kehadiran extends Controller
 
                                     // Menghitung selisih waktu dalam detik
                                     $total_jam_kerja            = ($timestamp_akhir - $timestamp_awal)/60;
-                                    // print_r($check_jadwal->jam_mulai);
                                     // standar
                                     $jam_standar_masuk          = strtotime($tanggal_masuk.' '.$check_jadwal->jam_mulai);
                                     $jam_standar_pulang         = strtotime($tanggal_keluar.' '.$check_jadwal->jam_selesai);
@@ -327,40 +324,43 @@ class Kehadiran extends Controller
                                     $jam_awal_standar_pulang    = strtotime($tanggal_keluar.' '.$check_jadwal->start_jam_selesai);
 
                                     $jam_akhir_standar_masuk    = strtotime($tanggal_masuk.' '.$check_jadwal->end_jam_mulai);
-                                    $jam_akhir_standar_pulang   = strtotime($tanggal_keluar.' '.$check_jadwal->end_jam_selesai);
-
-                                    // print_r($check_jadwal->jam_mulai);
-                                    // print_r($check_jadwal->end_jam_selesai); 
+                                    $jam_akhir_standar_pulang   = strtotime($tanggal_keluar.' '.$check_jadwal->end_jam_selesai); 
 
                                     if($timestamp_awal >= $jam_awal_standar_masuk && $timestamp_awal <= $jam_akhir_standar_masuk) {
-                                        $jumlah_menit_terlambat     = 0;
                                         $jumlah_menit_pulang_cepat  = 0;
                                         $lembur                     = 0;
                                         $total_jam_kerja            = $total_jam_kerja;
-                                        $jumlah_menit_terlambat     = ($timestamp_awal - $jam_standar_masuk)/60;
+                                        $jumlah_menit_terlambat     = ($jam_standar_masuk - $timestamp_awal)/60;
                                     }else{
-                                        $jumlah_menit_terlambat     = 0;
                                         $jumlah_menit_pulang_cepat  = 0;
                                         $lembur                     = 0;
-                                        $total_jam_kerja            = $total_jam_kerja;
-                                        $jumlah_menit_terlambat     = ($timestamp_awal - $jam_standar_masuk)/60;
+                                        $total_jam_kerja            = 225;
+                                        $jumlah_menit_terlambat     = 0;
                                     }              
                                     
                                     if($timestamp_akhir >= $jam_awal_standar_pulang && $timestamp_akhir <= $jam_akhir_standar_pulang) {
                                         $jumlah_menit_terlambat     = 0;
-                                        $jumlah_menit_pulang_cepat  = 0;
                                         $lembur                     = 0;
                                         $total_jam_kerja            = $total_jam_kerja;
                                         $jumlah_menit_pulang_cepat  = ($jam_standar_pulang - $timestamp_akhir)/60;
                                         $lembur                     = 0;
                                     }else{
                                         $jumlah_menit_terlambat     = 0;
+                                        $lembur                     = 0;
+                                        $total_jam_kerja            = 225;
                                         $jumlah_menit_pulang_cepat  = 0;
                                         $lembur                     = 0;
-                                        $total_jam_kerja            = $total_jam_kerja;
-                                        $jumlah_menit_pulang_cepat  = ($jam_standar_pulang - $timestamp_akhir)/60;
-                                        $lembur                     = 0;
-                                    }                                 
+                                    }   
+                                        // echo "Tanggal: $tanggal_masuk<br>";
+                                        // echo "Jam Masuk: $tanggal_jam_masuk<br>";
+                                        // echo "Jam Keluar: $tanggal_jam_keluar<br>";
+                                        // echo "Kehadiran: $kehadiran<br>";
+                                        // echo "Keterangan: $keterangan<br>";
+                                        // echo "Menit Terlambat: $jumlah_menit_terlambat menit<br>";
+                                        // echo "Menit Pulang Cepat: $jumlah_menit_pulang_cepat menit<br>";
+                                        // echo "Lembur: $lembur menit<br>";
+                                        // echo "Total Jam Kerja: $total_jam_kerja menit<br>";
+                                        // echo "<br>";                              
                                 }
                             }
                         }
@@ -418,83 +418,119 @@ class Kehadiran extends Controller
         return view('admin/layout/wrapper',$data);
     }
 
+    // proses import
     public function proses_import(Request $request)
-{
-    // proteksi halaman
-    if (Session()->get('username') == "") { 
-        $last_page = url()->full();
-        return redirect('login?redirect=' . $last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
-    }
-    
-    $m_kehadiran = new Kehadiran_model();
-    $m_pegawai = new Pegawai_model();
-    
-    // end proteksi halaman
-    // start import
-    request()->validate([
-        'file_excel' => 'required|file|mimes:xls,xlsx,csv|max:8024',
-    ]);
-    
-    // UPLOAD START
-    $image = $request->file('file_excel');
-    $filenamewithextension = $request->file('file_excel')->getClientOriginalName();
-    $filename = pathinfo($filenamewithextension, PATHINFO_FILENAME);
-    $input['nama_file'] = Str::slug($filename, '-') . '-' . time() . '.' . $image->getClientOriginalExtension();
-    $destinationPath = './assets/upload/file';
-    $image->move($destinationPath, $input['nama_file']);
-    // END UPLOAD
-
-    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
-    $reader->setReadDataOnly(TRUE);
-    $spreadsheet = $reader->load('./assets/upload/file/' . $input['nama_file']);
-    $worksheet = $spreadsheet->getActiveSheet();
-
-    $i = 1;
-    $rows = [];
-    foreach ($worksheet->getRowIterator() as $row) {
-        $cellIterator = $row->getCellIterator();
-        $cellIterator->setIterateOnlyExistingCells(FALSE);
-
-        $cells = [];
-        foreach ($cellIterator as $cell) {
-            $cells[] = $cell->getValue();
+    {
+        // proteksi halaman
+        if(Session()->get('username')=="") { 
+            $last_page = url()->full();
+            return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
         }
-        $rows[] = $cells;
+        $m_kehadiran     = new Kehadiran_model();
+        $m_pegawai  = new Pegawai_model();
+        // end proteksi halaman
+        // start import
+        request()->validate([
+                     'file_excel' => 'required|file|mimes:xls,xlsx,csv|max:8024',
+                            ]);
+        // UPLOAD START
+        $image                  = $request->file('file_excel');
+        $filenamewithextension  = $request->file('file_excel')->getClientOriginalName();
+        $filename               = pathinfo($filenamewithextension, PATHINFO_FILENAME);
+        $input['nama_file']     = Str::slug($filename, '-').'-'.time().'.'.$image->getClientOriginalExtension();
+        $destinationPath        = './assets/upload/file';
+        $image->move($destinationPath, $input['nama_file']);
+        // END UPLOAD
+        $reader                 = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+        $reader->setReadDataOnly(TRUE);
+        $spreadsheet            = $reader->load('./assets/upload/file/'.$input['nama_file']);
+        $worksheet              = $spreadsheet->getActiveSheet();
 
-        if (isset($rows[$i][0]) && isset($rows[$i][1]) && isset($rows[$i][3])) {
-            $nip = $rows[$i][0];
-            $tanggal_masuk = !empty($rows[$i][2]) ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($rows[$i][2]) : null;
-            $jumlah_menit_terlambat = $rows[$i][3];
+        $i=1;
+        $rows[]="";
+        foreach ($worksheet->getRowIterator() as $row) {
+            $cellIterator   = $row->getCellIterator();
+            $hasil          = $cellIterator->setIterateOnlyExistingCells(FALSE); 
 
-            $tanggal_kehadiran = $request->tahun . $request->bulan;
-            $kehadiran = $m_kehadiran->tanggal_kehadiran($tanggal_kehadiran);
-
-            if ($nip != '') {
-                $pegawai = $m_pegawai->nrk($nip);
-                if ($pegawai) {
-                    $nip = $pegawai->nip;
-                    $check = DB::table('kehadiran')->where(['nip' => $nip])->first();
-                    if ($check) {
-                        DB::table('kehadiran')->insert([
-                            'nip' => $nip,
-                            'pin' => substr($nip,9),
-                            'tanggal_masuk' => $tanggal_masuk,
-                            'jumlah_menit_terlambat' => $jumlah_menit_terlambat,
-                        ]);
-                    } else {
-                        
-                    }
-                }
+            $cells = [];
+            foreach ($cellIterator as $cell) {
+                $cells[] = $cell->getValue();
             }
-        }
-        $i++;
-    }
-    // hapus
-    unlink('./assets/upload/file/' . $input['nama_file']);
-    return redirect('admin/kehadiran?bulan=' . $request->bulan . '&tahun=' . $request->tahun . '&tanggal_kehadiran=submit')->with(['sukses' => 'Data telah ditambah']);
-    // end import
-}
+            $rows[] = $cells;
+            if($i>3) {
+                $nrk                = $rows[$i][0];
+                $menit_terlambat    = $rows[$i][2];
+                $nilai_perilaku     = $rows[$i][3];
+                $nilai_serapan      = $rows[$i][4];
+                $sakit              = $rows[$i][5];
+                $izin               = $rows[$i][6];
+                $alpa               = $rows[$i][7];
+                $keterangan         = $rows[$i][8];
+                // check nip
+                // check
+                $tanggal_kehadiran               = $request->tahun.$request->bulan;
+                
 
+                $kehadiran            = $m_kehadiran->tanggal_kehadiran($tanggal_kehadiran);
+                
+
+                if($nrk=='') {
+
+                }else{
+                    $pegawai    = $m_pegawai->nrk($nrk);
+                    if($pegawai) {
+                    $nip        = $pegawai->nip;
+                    $check      = $m_kehadiran->tanggal_kehadiran_pegawai($tanggal_kehadiran,$nip);
+
+                    if($check) {
+                        DB::table('kehadiran')->where(['nip' => $nip, 'tanggal_kehadiran' => $tanggal_kehadiran])->update([
+                            'id_pegawai'        => Session()->get('id_pegawai'),
+                            'nip'               => $nip,
+                            'nrk'               => $nrk,
+                            'tanggal_kehadiran'=> $request->tahun.$request->bulan,
+                            'bulan'             => $request->bulan,
+                            'tahun'             => $request->tahun,
+                            'menit_terlambat'   => $menit_terlambat,
+                            'nilai_perilaku'    => $nilai_perilaku,
+                            'nilai_serapan'     => $nilai_serapan,
+                            'sakit'             => $sakit,
+                            'izin'              => $izin,
+                            'alpa'              => $alpa,
+                            'keterangan'        => $keterangan,
+                        ]); 
+                    }else{
+                       DB::table('kehadiran')->insert([
+                            'id_pegawai'        => Session()->get('id_pegawai'),
+                            'nip'               => $nip,
+                            'nrk'               => $nrk,
+                            'tanggal_kehadiran'              => $request->tahun.$request->bulan,
+                            'bulan'             => $request->bulan,
+                            'tahun'             => $request->tahun,
+                            'menit_terlambat'   => $menit_terlambat,
+                            'nilai_perilaku'    => $nilai_perilaku,
+                            'nilai_serapan'     => $nilai_serapan,
+                            'sakit'             => $sakit,
+                            'izin'              => $izin,
+                            'alpa'              => $alpa,
+                            'keterangan'        => $keterangan,
+                            'tanggal_kehadiran_post'      => date('Y-m-d H:i:s')
+                        ]); 
+                    }
+                    }else{
+                    //Diem bae
+                    }
+                    
+                }
+                
+                // end check nip
+            }
+            $i++;
+        }
+        // hapus
+        unlink('./assets/upload/file/'.$input['nama_file']);
+        return redirect('admin/kehadiran?bulan='.$request->bulan.'&tahun='.$request->tahun.'&tanggal_kehadiran=submit')->with(['sukses' => 'Data telah ditambah']);
+        // end import
+    }
 
     // delete
     public function delete($id_kehadiran,$tahun,$bulan)

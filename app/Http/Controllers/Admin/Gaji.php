@@ -238,7 +238,8 @@ class Gaji extends Controller
             $rows[] = $cells;
             if($i>3) {
                 $nip                = $rows[$i][0];
-                $tmt                = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($rows[$i][2]);
+                // Check if TMT is not null before converting
+                $tmt                = !empty($rows[$i][2]) ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($rows[$i][2]) : null;
                 $gaji               = $rows[$i][3];
                 $pengali            = $rows[$i][4];
                 $bpjs_kes           = $rows[$i][5];

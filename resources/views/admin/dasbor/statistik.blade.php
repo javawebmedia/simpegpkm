@@ -87,6 +87,7 @@ $total_lainnya  = $m_dasbor->total_jenis_pegawai('Lainnya');
         <!-- /.row -->
 
         <hr>
+        
 <div class="row">
   <!-- 6 -->
   <div class="col-md-6">
@@ -107,7 +108,34 @@ $total_lainnya  = $m_dasbor->total_jenis_pegawai('Lainnya');
       </div>
     </div>
   </div>
-  <!-- /6 -->
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header bg-light">REKAP KETERLAMBATAN HARIAN</div>
+      <div class="card-body">
+         @include('admin/dasbor/kehadiran-hari')
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header bg-light">REKAP KETERLAMBATAN BULANAN</div>
+      <div class="card-body">
+         @include('admin/dasbor/kehadiran-bulan')
+      </div>
+    </div>  
+  </div>
+
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header bg-light">REKAP KETERLAMBATAN TAHUNAN</div>
+      <div class="card-body">
+         @include('admin/dasbor/kehadiran')
+      </div>
+    </div>
+  </div>
+  
 </div>
        
 

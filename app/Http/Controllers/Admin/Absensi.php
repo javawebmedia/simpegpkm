@@ -212,8 +212,8 @@ class Absensi extends Controller
             $last_page = url()->full();
             return redirect('login?redirect='.$last_page)->with(['warning' => 'Mohon maaf, Anda belum login']);
         }
-        $m_absensi     = new Absensi_model();
-        $m_pegawai  = new Pegawai_model();
+        $m_absensi      = new Absensi_model();
+        $m_pegawai      = new Pegawai_model();
         // end proteksi halaman
         // start import
         request()->validate([

@@ -19,6 +19,51 @@ class Absensi_model extends Model
         return $query;
     }
 
+     // listing menit terlambat tertinggi 1tahun
+     public function ranking($thbl)
+     {
+         $query = DB::table('absensi')
+             ->join('pegawai', 'pegawai.nip', '=', 'absensi.nip','LEFT')
+             ->select('absensi.*', 'pegawai.nip', 'pegawai.nama_lengkap')
+             ->where('absensi.thbl',$thbl)
+             ->orderBy('absensi.menit_terlambat','DESC')
+             ->limit(15)
+             ->get();
+         return $query;
+     }
+
+     // listing menit terlambat tertinggi 1bulan
+     public function ranking_hari($tanggal)
+     {
+        $bulan = date('m'); // Mendapatkan bulan saat ini (format 2 digit)
+        $tanggal = date('d'); // Mendapatkan tanggal saat ini (format 2 digit)
+
+         $query = DB::table('absensi')
+             ->join('pegawai', 'pegawai.nip', '=', 'absensi.nip','LEFT')
+             ->select('absensi.*', 'pegawai.nip', 'pegawai.nama_lengkap')
+             ->where('absensi.thbl', $tanggal) // Menambahkan kondisi untuk hari ini 
+             ->orderBy('absensi.menit_terlambat','DESC')
+             ->limit(15)
+             ->get();
+         return $query;
+     }
+
+      // listing menit terlambat tertinggi 1hari
+      public function ranking_bulan($bulan)
+      {
+         $bulan = date('m'); // Mendapatkan bulan saat ini (format 2 digit)
+         $tanggal = date('d'); // Mendapatkan tanggal saat ini (format 2 digit)
+ 
+          $query = DB::table('absensi')
+              ->join('pegawai', 'pegawai.nip', '=', 'absensi.nip','LEFT')
+              ->select('absensi.*', 'pegawai.nip', 'pegawai.nama_lengkap')
+              ->where('absensi.bulan', $bulan)
+              ->orderBy('absensi.menit_terlambat','DESC')
+              ->limit(15)
+              ->get();
+          return $query;
+      }
+
     // listing thbl
     public function thbl($thbl)
     {
@@ -67,4 +112,6 @@ class Absensi_model extends Model
             ->first();
         return $query;
     }
+
+    
 }

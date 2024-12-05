@@ -1,5 +1,6 @@
 <p class="text-right">
 	<a href="{{ asset('admin/kehadiran') }}" class="btn btn-outline-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</a>
+	<a href="{{ asset('admin/kehadiran/import') }}" class="btn btn-outline-success btn-sm"><i class="fa fa-file-excel"></i> Import</a>
 </p>
 
 <table class="table table-sm tabelku">

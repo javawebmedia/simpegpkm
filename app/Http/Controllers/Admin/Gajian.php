@@ -167,6 +167,7 @@ class Gajian extends Controller
         $m_gaji         = new Gaji_model();
         $m_absensi      = new Absensi_model();
         $m_kinerja      = new Kinerja_model();
+
         $pegawai        = $m_pegawai->aktif();
         $periode        = DB::table('periode')->where('thbl',$thblnya)->first();
         $site           = $m_konfigurasi->listing();
@@ -177,6 +178,7 @@ class Gajian extends Controller
             $gaji       = $m_gaji->thbl_pegawai($thbl,$nip);
             $absensi    = $m_absensi->thbl_pegawai($thbl,$nip);
             $kinerja    = $m_kinerja->total_menit_bulan($nip,$thbl);
+
             // hitung kinerja
             if($kinerja->total_menit >0) {
                 if($absensi) {
@@ -188,22 +190,26 @@ class Gajian extends Controller
                 if($nkinerja > 100) {
                     $nilai_kinerja = 100;
                 }else{
-                    $nilai_kinerja = $nkinerja;
+                    //bypass sementara
+                    $nilai_kinerja = 100;
+                    // $nilai_kinerja = $nkinerja;
                 }
             }else{
-                $nilai_kinerja = 0;
+                //bypass sementara
+                $nilai_kinerja = 100;
+                // $nilai_kinerja = 0;
             }
             // end kinerja
             // hitung tkd
             if($gaji) {
-                $gapok          = $gaji->gaji;
-                $pengali        = $gaji->pengali;
-                $pph21          = $gaji->pph_tkd;
+                $gapok              = $gaji->gaji;
+                $pengali            = $gaji->pengali;
+                $pph21              = $gaji->pph_tkd;
                 $potongan_bpjs      = $gaji->bpjs_kes;
                 $potongan_bpjs_tk   = $gaji->bpjs_tk;
-                $potongan_lain   = $gaji->potongan_lainnya;
-                $tkd            = $gaji->pengali*$gaji->gaji*$nilai_kinerja; 
-                $total_potongan = $gaji->pph_tkd+$gaji->bpjs_kes+$gaji->bpjs_tk;
+                $potongan_lain      = $gaji->potongan_lainnya;
+                $tkd                = $gaji->pengali*$gaji->gaji*$nilai_kinerja/100; 
+                $total_potongan     = $gaji->pph_tkd+$gaji->bpjs_kes+$gaji->bpjs_tk;
             }else{
                 $gapok          = 0;
                 $pengali        = 0;
@@ -284,7 +290,7 @@ class Gajian extends Controller
         return redirect('admin/gajian/tkd/'.$thbl)->with(['sukses' => 'Berikut hasil generate gaji dan TKD']);
     }
 
-    // proses tkd
+    // proses gaji
     public function proses_gaji(Request $request)
     {
         // proteksi halaman
@@ -384,7 +390,7 @@ class Gajian extends Controller
         return view('admin/layout/wrapper-2',$data);
     }
 
-    // tkd
+    // gaji
     public function data_gaji($thbl)
     {
         // proteksi halaman

@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers\Admin;
+use DateTime; // Import class DateTime
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -126,6 +127,23 @@ class Data_finger extends Controller
             $Verified   = Parser::parseData($data,"<Verified>","</Verified>");
             $Status     = Parser::parseData($data,"<Status>","</Status>");
             $WorkCode   = Parser::parseData($data,"<WorkCode>","</WorkCode>");
+
+            $inputDateTimeStr = date('H:i:s',strtotime($DateTime));
+            $inputDateTime = new DateTime($inputDateTimeStr);
+
+            $hour = (int) $inputDateTime->format('H');
+            $minute = (int) $inputDateTime->format('i');
+
+            // Menentukan nilai berdasarkan rentang waktu
+            if (($hour >= 5 && $hour < 12) || ($hour == 11 && $minute <= 50)) {
+                $result = 0;
+            } elseif (($hour >= 12 && $hour <= 23) || ($hour == 0 && $minute == 0) || ($hour == 23 && $minute <= 50)) {
+                $result = 1;
+            } else {
+                // Handle kondisi di luar rentang yang diinginkan
+                $result = null; // atau sesuai dengan kebutuhan
+            }
+
             if($PIN =='') {}else{
                 // echo 'PIN: '.$PIN.'<br>';
                 // echo 'DateTime: '.$DateTime.'<br>';
@@ -141,7 +159,7 @@ class Data_finger extends Controller
                                 'tanggal_finger'        => date('Y-m-d',strtotime($DateTime)),
                                 'waktu_finger'          => $DateTime,
                                 'verified'              => $Verified,
-                                'status_data_finger'    => $Status,
+                                'status_data_finger'    => $result,
                                 'work_code'             => $WorkCode
                             ];
                     DB::table('data_finger')->insert($data);

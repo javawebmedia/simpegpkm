@@ -61,6 +61,92 @@ class Diklat_model extends Model
         return $query;
     }
 
+    // rekap
+    public function rekap($tahun)
+    {
+        $query = DB::table('diklat')
+        ->join('pegawai', 'pegawai.nip', '=', 'diklat.nip')
+        ->join('kode_diklat', 'kode_diklat.id_kode_diklat', '=', 'diklat.id_kode_diklat')
+        ->select(
+            'diklat.nip',
+            'diklat.nama_diklat',
+            'kode_diklat.kode_diklat',
+            DB::raw('SUM(diklat.jpl) as total_jpl'),
+            DB::raw('MAX(pegawai.nik) AS nik'),
+            DB::raw('MAX(pegawai.nama_lengkap) AS nama_lengkap')
+        )
+        ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun])
+        ->groupBy('diklat.nip')
+        ->orderBy('total_jpl', 'DESC')
+        ->get();
+
+    return $query;
+
+        return $query;
+    }
+
+    // tanpa_diklat
+    public function tanpa_diklat($tahun)
+    {
+        $query = DB::table('pegawai')
+            ->select(
+                'pegawai.nip',
+                DB::raw('0 as total_jpl'), // Inisialisasi total_jpl karena tidak ada diklat
+                DB::raw('MAX(pegawai.nik) AS nik'),
+                DB::raw('MAX(pegawai.nama_lengkap) AS nama_lengkap')
+            )
+            ->leftJoin('diklat', function ($join) use ($tahun) {
+                $join->on('pegawai.nip', '=', 'diklat.nip')
+                     ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun]);
+            })
+            ->whereNull('diklat.nip') // Memastikan pegawai tidak memiliki entri diklat pada tahun tersebut
+            ->groupBy('pegawai.nip')
+            ->orderBy('pegawai.nip', 'ASC') // Menggunakan nip untuk pengurutan yang lebih konsisten
+            ->get();
+
+        return $query;
+    }
+
+    // tanpa_diklat
+    public function jpl_kurang($tahun)
+    {
+        $query = DB::table('diklat')
+            ->join('pegawai', 'pegawai.nip', '=', 'diklat.nip')
+            ->select(
+                'diklat.nip',
+                DB::raw('SUM(diklat.jpl) as total_jpl'),
+                DB::raw('MAX(pegawai.nik) AS nik'),
+                DB::raw('MAX(pegawai.nama_lengkap) AS nama_lengkap')
+            )
+            ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun])
+            ->groupBy('diklat.nip')
+            ->havingRaw('SUM(diklat.jpl) < 40')
+            ->orderBy('total_jpl', 'DESC')
+            ->get();
+
+        return $query;
+    }
+
+    // tanpa_diklat
+    public function jpl_cukup($tahun)
+    {
+        $query = DB::table('diklat')
+            ->join('pegawai', 'pegawai.nip', '=', 'diklat.nip')
+            ->select(
+                'diklat.nip',
+                DB::raw('SUM(diklat.jpl) as total_jpl'),
+                DB::raw('MAX(pegawai.nik) AS nik'),
+                DB::raw('MAX(pegawai.nama_lengkap) AS nama_lengkap')
+            )
+            ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun])
+            ->groupBy('diklat.nip')
+            ->havingRaw('SUM(diklat.jpl) >= 40')
+            ->orderBy('total_jpl', 'DESC')
+            ->get();
+
+        return $query;
+    }
+
     // tahun_pegawai
     public function tahun_pegawai($tahun, $nip)
     {
@@ -102,6 +188,16 @@ class Diklat_model extends Model
     // rekap
     public function rekap_pertahun($tahun)
     {
+
+        // Jumlah pegawai yang belum memiliki diklat sama sekali
+        $pegawai_diklat_semua = DB::table('pegawai')
+            ->leftJoin('diklat', function($join) use ($tahun) {
+                $join->on('pegawai.nip', '=', 'diklat.nip')
+                     ->whereRaw('SUBSTR(diklat.tanggal_awal, 1, 4) = ?', [$tahun]);
+            })
+            ->where('diklat.id_diklat')
+            ->count();
+
         // Jumlah pegawai yang belum memiliki diklat sama sekali
         $pegawai_tanpa_diklat = DB::table('pegawai')
             ->leftJoin('diklat', function($join) use ($tahun) {
@@ -134,6 +230,7 @@ class Diklat_model extends Model
             ->count();
 
         return [
+            'pegawai_diklat_semua' => $pegawai_diklat_semua,
             'pegawai_tanpa_diklat' => $pegawai_tanpa_diklat,
             'pegawai_jpl_kurang_40' => $pegawai_jpl_kurang_40,
             'pegawai_jpl_lebih_sama_40' => $pegawai_jpl_lebih_sama_40,
